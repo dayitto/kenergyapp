@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Notificaciones</ion-title>
+
+    <ion-buttons left  class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/home/info.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: bottom center;
+background-repeat: no-repeat;
+background-color: white;">
+<div class="alignRight" style="margin-bottom: 9px;margin-top: 5%;">
+  <strong><a (click)="borrarTodasNotificaciones()" style="color:#c1272d">Borrar todo</a></strong>
+</div>
+<div *ngFor="let notif of notificacion.notificaciones" (click)="mostrarNotificacion(notif.id)">
+  <div style="box-shadow: 0px 0px 6px 1px #b0b2b3;
+              border-radius: 18px;margin-bottom: 9px;padding: 9px;" 
+              [style.height]="notif.mostrar ? '9em' : '4em'"
+              [style.background-color]="notif.visto ? 'white' : '#10358a'"
+              [style.color]="notif.visto ? 'black' : 'white'">
+    <strong><div style="font-size:120%;margin-left: 10px;">{{notif.titulo}}</div></strong>
+    <button ion-button clear item-end style="float: right;
+    display: inline-block;
+    padding: 2px 5px;
+    margin-top: -1.5em; font-size: 20px; font-weight: bold;"
+    [style.color]="notif.visto ? 'black' : 'white'" (click)="borrarNotificacion(notif.id)">X</button>
+    <div style="font-size:100%;margin-left: 10px;">{{notif.fecha}}</div>
+    <div [style.display]="notif.mostrar ? 'block' : 'none'">
+    <div style="font-size:110%;margin-left: 10px;font-weight: 500; text-align: justify; margin-top: 7px;">{{notif.mensaje}}</div>
+    </div>
+  </div>
+</div>
+</ion-content>
+
+<ion-fab top right class="animated swing">
+<button ion-fab color="light" style="">
+    <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+</button>
+<button *ngIf="notificacion.num > 0" ion-fab color="light" class="miniBoton">
+  {{notificacion.num}}
+</button>
+</ion-fab>

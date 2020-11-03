@@ -1,0 +1,122 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
+import { AlertaServiceProvider } from '../../providers/alerta-service';
+import { RestServiceProvider } from '../../providers/rest-service';
+import { HttpParams } from '@angular/common/http';
+
+@IonicPage()
+@Component({
+  selector: 'page-datos-facturacion',
+  templateUrl: 'datos-facturacion.html',
+})
+export class DatosFacturacionPage {
+  public rfc: string = "";
+  public razonSocial: string = "";
+  public email: string = "";
+  public calle: string = "";
+  public ne: string = "";
+  public ni: string = "";
+  public cp: string = "";
+  public estado: string = "";
+  public municipio: string = "";
+  public colonia: string = "";
+  public idFactura: number = 0;
+  public usuario: any = null;
+  
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
+  private alertaService: AlertaServiceProvider, private restService: RestServiceProvider, public loadingCtrl: LoadingController) {
+		this.usuario = navParams.get("usuario");
+		if(undefined != navParams.get("editar")) {
+			let factura = navParams.get("factura");
+			this.idFactura = factura.id;
+			this.rfc = factura.rfc;
+			this.email = factura.correoElectronico;
+			this.razonSocial = factura.razonSocial;
+			this.calle = factura.calle;
+		}
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad DatosFacturacionPage');
+  }
+
+  cancelar() {
+    this.viewCtrl.dismiss();
+  }
+  
+  registrar() {
+  	let loading = this.loadingCtrl.create();
+   loading.present();
+	this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      if (data == null) {
+        loading.dismiss();
+        this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+      } else {
+			const bodys = new HttpParams()
+        .set('IdUser', this.usuario.Id)
+        .set('RFC', this.rfc)
+        .set('RazonSocial', this.razonSocial)
+        .set('Email', this.email)
+        .set('Calle', this.calle)
+        .set('NoInt', this.ni)
+        .set('NoExt', this.ne)
+        .set('CP', this.cp)
+        .set('Estado', this.estado)
+        .set('Municipio', this.estado)
+		  .set('Colonia', this.colonia);
+		  let param = "";
+		  if(this.idFactura != 0) {
+				param = "/" + this.idFactura;
+				let bodyObj = {
+					IdUser:this.usuario.Id,
+        			RFC:this.rfc,
+        			RazonSocial:this.razonSocial,
+		         Email:this.email,
+      		   Calle:this.calle,
+        			NoInt:this.ni,
+        			NoExt:this.ne,
+        			CP:this.cp,
+        			Estado:this.estado,
+        			Municipio:this.estado,
+		  			Colonia:this.colonia
+      		};		
+				this.restService.restServicePUTToken("invoiceto/regular" + param, bodyObj, data.toString()).timeout(this.restService.timeOver).subscribe(
+        dataRegistro => {
+          let dato = dataRegistro['Response'];
+          if (dato != undefined && dato == true) {
+            this.alertaService.alertaBasica("Bien!", "Se han actualizado los datos", null);
+          } else {
+            this.alertaService.warnAlert("Atención!", dataRegistro['Message'], null);
+          }
+          loading.dismiss();
+        }, error => {
+        	loading.dismiss();
+          console.log(error);
+          this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+        }
+      );  
+		  } else {
+				this.restService.restServicePOSTTokenXForm("invoiceto/regular" + param, bodys, data.toString()).timeout(this.restService.timeOver).subscribe(
+        dataRegistro => {
+          let dato = dataRegistro['Response'];
+          if (dato != undefined && dato == true) {
+            this.alertaService.alertaBasica("Bien!", "Se ha agregado tu factura", null);
+          } else {
+            this.alertaService.warnAlert("Atención!", dataRegistro['Message'], null);
+          }
+          loading.dismiss();
+        }, error => {
+        	loading.dismiss();
+          console.log(error);
+          this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+        }
+      );		  
+		  }
+		   
+      }  
+  }, error => {
+      console.log(error);
+      this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+    });
+  }
+}

@@ -1,0 +1,264 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { ProductoModel } from '../../models/productoModel';
+import { CargasInfoCreditoPage } from '../cargas-info-credito/cargas-info-credito';
+import { AlertaServiceProvider } from '../../providers/alerta-service';
+import { RestServiceProvider } from '../../providers/rest-service';
+import { Storage } from '@ionic/storage';
+import { HttpParams } from '@angular/common/http';
+
+@IonicPage()
+@Component({
+  selector: 'page-cargas-credito',
+  templateUrl: 'cargas-credito.html',
+})
+export class CargasCreditoPage {
+  public idEstacion = 0;
+  public idProducto = 0;
+  public idVehiculo = 0;
+  public idChofer = 0;
+
+  public desde: Date = new Date();
+  public hasta: Date = new Date();
+  //
+  public estaciones: ProductoModel[] = [];
+  public productos: ProductoModel[] = [];
+  public vehiculos: ProductoModel[] = [];
+  public choferes: ProductoModel[] = [];
+  public cargas: any[] = [];
+
+  public usuario: any = null;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public localStorage: Storage,
+    public alertaService: AlertaServiceProvider, public restService: RestServiceProvider,
+    public loadingCtrl: LoadingController) {
+    this.estaciones.push(new ProductoModel(0, "Estacion"));
+    this.productos.push(new ProductoModel(0, "Producto"));
+    this.vehiculos.push(new ProductoModel(0, "Vehículo"));
+    this.choferes.push(new ProductoModel(0, "Chofer"));
+    this.hasta.setDate(this.desde.getDate() + 1);
+
+    /*this.cargas.push({fecha:"12-10-18",placa:"979-WEDE",lts:45.85,precio:1008.70});
+    this.cargas.push({fecha:"11-10-18",placa:"979-WEDE",lts:45.85,precio:1008.70});
+    this.cargas.push({fecha:"10-10-18",placa:"979-WEDE",lts:45.85,precio:1008.70});
+    this.cargas.push({fecha:"09-10-18",placa:"979-WEDE",lts:45.85,precio:1008.70});
+    this.cargas.push({fecha:"08-10-18",placa:"979-WEDE",lts:45.85,precio:1008.70});
+    this.cargas.push({fecha:"07-10-18",placa:"979-WEDE",lts:45.85,precio:1008.70});
+    this.cargas.push({fecha:"06-10-18",placa:"979-WEDE",lts:45.85,precio:1008.70});
+    this.cargas.push({fecha:"05-10-18",placa:"979-WEDE",lts:45.85,precio:1008.70});
+    this.cargas.push({fecha:"04-10-18",placa:"979-WEDE",lts:45.85,precio:1008.70});
+    this.cargas.push({fecha:"03-10-18",placa:"979-WEDE",lts:45.85,precio:1008.70});
+    this.cargas.push({fecha:"02-10-18",placa:"979-WEDE",lts:45.85,precio:1008.70});
+    this.cargas.push({fecha:"01-10-18",placa:"979-WEDE",lts:45.85,precio:1008.70});
+    this.cargas.push({fecha:"31-09-18",placa:"979-WEDE",lts:45.85,precio:1008.70});
+    this.cargas.push({fecha:"30-09-18",placa:"979-WEDE",lts:45.85,precio:1008.70});*/
+    this.openSesion();
+  }
+
+  openSesion() {
+    this.localStorage.ready().then(() => {
+      this.localStorage.get(`@userSession`).then((data) => {
+        if (data != null) {
+          this.usuario = data;
+          this.cargarCombos();
+        } else {
+          this.alertaService.warnAlert(this.restService.headerValidacion, "Usuario sin sesión, no se cargarán sus datos", null);
+        }
+      });
+    });
+
+  }
+
+  cargarCombos() {
+    let loading = this.loadingCtrl.create();
+    loading.present();
+    this.productos = [];
+    this.productos.push(new ProductoModel());
+    this.vehiculos = [];
+    this.vehiculos.push(new ProductoModel(0, "Vehículo"));
+    this.estaciones = [];
+    this.estaciones.push(new ProductoModel(0, "Estación"));
+    this.choferes = [];
+    this.choferes.push(new ProductoModel(0, "Chofer"));
+    this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      if (data == null) {
+        loading.dismiss();
+        this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+      } else {
+        let body = new HttpParams();
+        var a = this.usuario.IdClient;
+        //var a = 44;
+        //body.append("IdClient", a.toString());
+        var urlArmada = "stats/" + a;
+        //var urlArmada = "stats/"+this.usuario.IdClient;
+        this.restService.restServiceGETToken(urlArmada, body, data.toString()).timeout(this.restService.timeOver).subscribe(
+          dataRegistro => {
+            if (Object.keys(dataRegistro['Response']).length != 0) {
+              let productos = dataRegistro['Response'].Producto;
+              productos.forEach(producto => {
+                this.productos.push(new ProductoModel(producto.Id, producto.Nombre));
+              });
+
+              let estaciones = dataRegistro['Response'].Estacion;
+              estaciones.forEach(estacion => {
+                this.estaciones.push(new ProductoModel(estacion.Id, estacion.Nombre));
+              });
+
+              let choferes = dataRegistro['Response'].Chofer;
+              choferes.forEach(chofer => {
+                this.choferes.push(new ProductoModel(chofer.Id, chofer.Nombre));
+              });
+
+              let vehiculos = dataRegistro['Response'].Vehiculo;
+              vehiculos.forEach(vehiculo => {
+                this.vehiculos.push(new ProductoModel(vehiculo.Id, vehiculo.Nombre));
+              });
+              //this.buscar();
+            } else {
+              this.alertaService.warnAlert(this.restService.headerValidacion, "No se cargaron los filtros de búsqueda", null);
+            }
+            loading.dismiss();
+          }, error => {
+            loading.dismiss();
+            console.log(error);
+            this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+          }
+        );
+      }
+    }, error => {
+      loading.dismiss();
+      console.log(error);
+      this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+    });
+  }
+
+  buscar() {
+    if (this.usuario == null) {
+      this.alertaService.warnAlert(this.restService.headerValidacion, "Usuario no en sesión", null);
+    } else {
+      this.cargas = [];
+      var fechaDesde = this.desde.toString().split("-");
+      var fechaFormat = "";
+      var fechaHasta = this.hasta.toString().split("-");
+      var fechaFormatHasta = "";
+      if (fechaDesde.length < 3) {
+        //this.alertaService.warnAlert(this.restService.headerValidacion, "Selecciona una fecha de inicio", null);
+      } else {
+        // año/ mes/ dia
+        fechaFormat = fechaDesde[2] + "/" + fechaDesde[1] + "/" + fechaDesde[0];
+      }
+      if (fechaHasta.length < 3) {
+        //this.alertaService.warnAlert(this.restService.headerValidacion, "Selecciona una fecha de fin", null);
+      } else {
+        // año/ mes/ dia
+        fechaFormatHasta = fechaHasta[2] + "/" + fechaHasta[1] + "/" + fechaHasta[0];
+      }
+      if(this.idEstacion == 0){
+        //this.alertaService.warnAlert(this.restService.headerValidacion, "Selecciona una Estación", null);
+      }
+      
+      let loading = this.loadingCtrl.create();
+      loading.present();
+
+      this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+        if (data == null) {
+          loading.dismiss();
+          this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+        } else {
+          let body = new HttpParams();
+
+          var a = this.usuario.IdClient;
+          //var a = 44;
+          //this.idEstacion = 1;
+          var url = "despachos?Desde=" + fechaFormat+"&Hasta="+fechaFormatHasta+"&IdEstacion="+this.idEstacion+"&IdClient="+a;
+          /**
+     * String:Desde (Requerido), String:Hasta(Requerido), 
+     * Int:IdProducto, Int:IdEstacion(Requerido), Int:Chofer,
+     *  Int:IdVehiculo, Int:IdClient(Requerido)
+     */
+          if (this.idProducto != 0) {
+            url += "&IdProducto=" + this.idProducto;
+          }
+          if (this.idChofer != 0) {
+            url += "&IdChofer=" + this.idChofer;
+          }
+          if (this.idVehiculo != 0) {
+            url += "&IdVehiculo=" + this.idVehiculo;
+          }
+          //var urlArmada = "stats/"+this.usuario.IdClient;
+          this.restService.restServiceGETToken(url, body, data.toString()).timeout(this.restService.timeOver).subscribe(
+            dataRegistro => {
+              if (Object.keys(dataRegistro['Response']).length != 0) {
+                let cargas = dataRegistro['Response'];
+                cargas.forEach(carga => {
+                  this.cargas.push({fecha:carga.Fecha,placa:carga.Placas,lts:carga.Litros,precio:carga.Efectivo,id:carga.Id});
+                });
+              } else if(dataRegistro['Message']!=3){
+                this.alertaService.warnAlert(this.restService.headerValidacion, dataRegistro['Message'], null);
+              }else{
+                this.alertaService.warnAlert(this.restService.headerValidacion, "Seleccione una estación para consulta de datos", null);
+              }
+              loading.dismiss();
+            }, error => {
+              loading.dismiss();
+              console.log(error);
+              this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+            }
+          );
+        }
+      }, error => {
+        loading.dismiss();
+        console.log(error);
+        this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+      });
+    }
+  }
+
+  openCarga(carga: any) {
+    let loading = this.loadingCtrl.create();
+    loading.present();
+    this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      if (data == null) {
+        loading.dismiss();
+        this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+      } else {
+        let body = new HttpParams();
+
+        var a = this.usuario.IdClient;
+        //var a = 44;
+        //this.idEstacion = 1;
+        var url = "despachos/detail?IdDespacho="+carga.id;
+        
+        if (this.idEstacion != 0) {
+            url += "&IdEstacion="+this.idEstacion;
+        this.restService.restServiceGETToken(url, body, data.toString()).timeout(this.restService.timeOver).subscribe(
+          dataRegistro => {
+            if (Object.keys(dataRegistro['Response']).length != 0) {
+              let carga = dataRegistro['Response'];
+              //loading.dismiss();
+              this.navCtrl.push(CargasInfoCreditoPage,{carga:dataRegistro['Response']});
+            } else if(dataRegistro['Message']!=3){
+              this.alertaService.warnAlert(this.restService.headerValidacion, dataRegistro['Message'], null);
+            }else{
+              this.alertaService.warnAlert(this.restService.headerValidacion, "No se encontraron registros de cargas", null);
+            }
+            loading.dismiss();
+          }, error => {
+            loading.dismiss();
+            console.log(error);
+            this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+          }
+        );
+        } else {
+				loading.dismiss();
+				this.alertaService.warnAlert(this.restService.headerValidacion, "Selecciona una Estación y vuelva a buscar registros", null);        
+        }
+      }
+    }, error => {
+      loading.dismiss();
+      console.log(error);
+      this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+    });
+  }
+}

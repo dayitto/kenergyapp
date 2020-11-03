@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Agregar Auto</ion-title>
+    <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/miAuto/carro.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+
+  <div class="tituloHeader" style="font-size: 150%;text-align: center;margin-top: 12%;">
+    Si cuenta con tu tarjeta cliente-auto
+    escanea el código de barra ó QR directo
+    desde otro smartphone y mantén tus puntos
+  </div>
+  <div style="text-align: center;margin-top: 6%;">
+    <img src="assets/imgs/miAuto/foto.png" style="width: 35%;" (click)="escaner()">
+  </div>
+  <div style="width:100%;margin-top: 5%;">
+    <div style="width:47%;display:inline-block">
+      <div style="width: 100%;text-align: center;margin: 1px;">
+        <img src="assets/imgs/miAuto/kanz.png" style="width: 70%;">
+      </div>
+      <div style="width: 100%;text-align: center;margin: 1px;">
+        <img src="assets/imgs/miAuto/tarjeta2.png" style="width: 70%;">
+      </div>
+    </div>
+    <div style="width:2%;display:inline-block;">
+      Ó
+    </div>
+    <div style="width:47%;display:inline-block;vertical-align: super;">
+      <div style="width: 100%;text-align: center;margin: 1px;">
+        <img src="assets/imgs/miAuto/qr.png" style="width: 70%;">
+      </div>
+    </div>
+  </div>
+  <div style="margin-top: 5%;font-size: 119%;text-align: center" class="tituloHeader" (click)="agregarAuto()">
+    <u>Omite este paso y continua un nuevo registro de auto</u>
+  </div>
+</ion-content>

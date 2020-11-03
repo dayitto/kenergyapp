@@ -1,0 +1,156 @@
+page-vehiculos-credito {
+    .fab-ios-light {
+        color: #fff;
+        background-color: #011432;
+    }
+    .fab-md-light {
+        color: #fff;
+        background-color: #011432;
+    }
+    .area{
+        border-radius: 5px;
+        background-color: #d4d4d4;
+        vertical-align: middle;
+        width: 100%;
+        border: none;
+        margin-bottom: 8px;
+    }
+    .centro{
+        text-align: right;
+    }
+    .botonGuardar{
+        width: 30%;
+        margin-top: 1%;
+        background-color: #009245;
+        vertical-align: top;
+        border-radius: 7px;
+    }
+
+    .clm{
+        display: inline-block;
+    }
+
+    .widthFull{
+        width: 100%;
+    }
+
+    .widthMedium{
+        width: 49.4% !important;
+    }
+
+    input{
+        text-indent: 20px;
+    }
+
+    textarea{
+        text-indent: 20px;
+    }
+
+    ::placeholder {
+        color: #5b4f5f;
+        opacity: 1; /* Firefox */
+        margin-left: 12px;
+    }
+    
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+       color: #5b4f5f;
+       margin-left: 12px;
+    }
+    
+    ::-ms-input-placeholder { /* Microsoft Edge */
+       color: #5b4f5f;
+       margin-left: 12px;
+    }
+
+    .inputText{
+        border-radius: 5px;
+        background-color: #d4d4d4;
+        vertical-align: middle;
+        height: 28px;
+        width: 100%;
+        border: none;
+        margin-bottom: 8px;
+        padding-left: 14px;
+        font-size: 120%;
+    }
+    .button-clear-md {
+        border-color: transparent;
+        color: #000000;
+        background-color: transparent;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        opacity: 1;
+    }
+    .button-clear-ios {
+        border-color: transparent;
+        color: #000000;
+        background-color: transparent;
+    }
+
+    .tituloDiv{
+        font-size: 123%;
+        font-weight: 700;
+        font-style: italic;
+        margin-bottom: 8px;
+    }
+    .divAlign{
+        width:32%;
+        display: inline-block;
+        text-align: center;
+        color: #001432;
+        font-weight: 600;
+    }
+
+    .divAlignTotal{
+        width:32%;
+        display: inline-block;
+        text-align: center;
+        color: #fff;
+        font-weight: 600;
+        vertical-align: -webkit-baseline-middle;
+    }
+
+    ion-label {
+        min-width: 40%;
+        font-size: medium;
+        margin: 2% 2% !important;
+        padding: 0% 0% !important;
+    }
+
+    ion-select {
+        min-width: 55%;
+        font-size: medium;
+        margin: 2% 2% !important;
+        padding: 0% 0% !important;
+    }
+
+    .miniBoton{
+        background-color: #c1272d !important;
+        width: 20px !important;
+        height: 20px !important;
+        margin-top: -60px !important;
+        margin-left: 40px !important;
+    }
+
+    .text-input{
+        color: #000;
+        border-bottom: solid 2px !important;
+        border-color: #1b155c !important;
+        margin-bottom: 0px;
+        margin-top: 0px;
+    }
+
+    .iconoo{
+       color: rgb(255,255,255) !important;
+    }
+
+    .divorder{
+        width: 20%;
+        margin-left: 5%;
+        display: inline-block;
+    }
+
+    .item-inner {
+        box-shadow: none !important;
+        }
+}

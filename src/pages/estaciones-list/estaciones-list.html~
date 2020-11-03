@@ -1,0 +1,12 @@
+<ion-list>
+  <ion-list-header style="color: #fff;
+  background-color: #e77423;
+  text-align: center; margin-bottom: 0px;">Estaciones</ion-list-header>
+  <div style="    color: #000;
+    font-size: 130%;
+    border-bottom: 1px solid #e3e5e6;
+    padding-left: 15px;
+    padding-bottom: 8px;    padding-top: 8px;" *ngFor="let estacion of estaciones">
+    {{estacion.nombre}}
+  </div>
+</ion-list>

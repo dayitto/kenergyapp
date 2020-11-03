@@ -1,0 +1,117 @@
+import { Component, ɵConsole } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import { AlertaServiceProvider } from '../../providers/alerta-service';
+import { RestServiceProvider } from '../../providers/rest-service';
+import { HttpParams } from '@angular/common/http';
+import { AvisoPrivacidadPage } from '../aviso-privacidad/aviso-privacidad';
+
+@IonicPage()
+@Component({
+  selector: 'page-mis-datos-credito',
+  templateUrl: 'mis-datos-credito.html',
+})
+export class MisDatosCreditoPage {
+  public usuario: String = "";
+  public email: String = "";
+  public user: any = null;
+
+  public nombre: string = null;
+  public alias: string = null;
+  public celular: string = null;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public localStorage: Storage,
+    public alertaService: AlertaServiceProvider, public restService: RestServiceProvider,
+    public loadingCtrl: LoadingController) {
+    this.openSesion();
+  }
+
+  openSesion() {
+    this.localStorage.ready().then(() => {
+      this.localStorage.get(`@userSession`).then((data) => {
+        if (data != null) {
+          this.user = data;
+          this.usuario = this.user.Nombre;
+          this.email = this.user.Email;
+          this.nombre = this.user.Nombre;
+          this.alias = this.user.Alias;
+          if (this.user.Celular != undefined) {
+            this.celular = this.user.Celular;
+          }
+          //this.cargarEdosCuenta();
+        } else {
+          this.alertaService.warnAlert(this.restService.headerValidacion, "Usuario sin sesión, no se cargarán sus datos", null);
+        }
+      });
+    });
+
+  }
+
+  editarUsuario() {
+    let loading = this.loadingCtrl.create();
+    loading.present();
+    this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      if (data == null) {
+        loading.dismiss();
+        this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+      } else {
+        if (this.user != null) {
+          if (this.nombre == undefined || this.celular == undefined || this.alias == undefined ||
+            this.nombre == null || this.celular == null || this.alias == null ||
+            this.nombre.length == 0 || this.celular.length == 0 || this.alias.length == 0) {
+            loading.dismiss();
+            this.alertaService.warnAlert(this.restService.headerValidacion, "Favor de capturar todos los datos", null);
+            return;
+          } else {
+            let body = new HttpParams();
+            var a = 1666;
+            var urlArmada = "user/update/" + this.user.Id;
+            //var urlArmada = "user/" + 1666;
+            body.append("Nombre", this.nombre.toString());
+            body.append("Alias", this.alias.toString());
+            body.append("Celular", this.celular.toString());
+            let bodyObj = {
+              Nombre: this.nombre,
+              Alias: this.alias,
+              Celular: this.celular
+            };
+            this.restService.restServicePUTToken(urlArmada, bodyObj, data.toString()).timeout(this.restService.timeOver).subscribe(
+              dataRegistro => {
+                if (Object.keys(dataRegistro['Response']).length != 0) {
+                  //this.combustibles.push(new CombustibleModel("Ixtaczoquitlan", 88.88, 88.88, 88.88, true));
+                } else if (dataRegistro['Status'] == 0) {
+                  this.alertaService.warnAlert(this.restService.headerValidacion, dataRegistro['Message'], null);
+                } else if (dataRegistro['Response'] == true) {
+                  this.user.Nombre = this.nombre;
+						let element: HTMLElement = (document.getElementsByClassName("nombreUsuario")[0] as HTMLFormElement);
+                  element.innerText = this.user.Nombre;
+                  this.user.Alias = this.alias;
+                  this.user.Celular = this.celular;
+                  this.localStorage.set("@userSession",this.user);
+                  this.alertaService.alertaBasica(this.restService.headerExito, "Sus datos se han actualizado", null);
+                } else {
+                  this.alertaService.warnAlert(this.restService.headerValidacion, "Verifique los datos ingresados", null);
+                }
+                loading.dismiss();
+              }, error => {
+                loading.dismiss();
+                console.log(error);
+                this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+              }
+            );
+          }
+        } else {
+          loading.dismiss();
+        }
+      }
+    }, error => {
+      loading.dismiss();
+      console.log(error);
+      this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+    });
+  }
+  
+  openAvisoPrivacidad() {
+    this.navCtrl.push(AvisoPrivacidadPage, { usuario: this.usuario });
+  }
+
+}

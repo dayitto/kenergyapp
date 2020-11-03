@@ -1,0 +1,315 @@
+page-home {
+    .fab-md-light.activated {
+        background-color: #011432;
+    }
+    .tipoGas{
+        position: absolute;
+        margin-left: -72px;
+        margin-top: 28px;
+    }
+    .imagenEnd{
+        width: 25px;
+        display: block
+    }
+    .middle{
+        vertical-align: initial;
+    }
+    .widthFull{
+        width: 107%;
+    }
+    .miniBoton{
+        background-color: #c1272d !important;
+        width: 20px !important;
+        height: 20px !important;
+        margin-top: -72px !important;
+        margin-left: 51px !important;
+    }
+    p{
+        color: #fff;
+    }
+    .fab-ios-light {
+        color: #fff;
+        background-color: #011432;
+    }
+    .imageGas{
+        margin-top: 1px;
+    }
+    .fab {
+        text-align: center;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 50%;
+        position: relative;
+        z-index: 0;
+        display: block;
+        overflow: hidden;
+        width: 71px;
+        height: 71px;
+        font-size: 14px;
+        line-height: 56px;
+        text-overflow: ellipsis;
+        text-transform: none;
+        white-space: nowrap;
+        cursor: pointer;
+        -webkit-transition: background-color, opacity 100ms linear;
+        transition: background-color, opacity 100ms linear;
+        background-clip: padding-box;
+        -webkit-font-kerning: none;
+        font-kerning: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        contain: strict;
+    }
+    .fab-ios-light {
+        color: #fff;
+        background-color: #011432;
+    }
+    .iconoVehiculo{
+        color: #fff;
+        zoom: 1.5;
+    }
+    .itemVehiculo{
+        margin-bottom: 2px;
+        min-height: 5em !important;
+    }
+    .nombreEstacion{
+      display: inline-block;
+      margin-left: 10px;
+      margin-top: 4%;
+      color: #fff;
+      width: 70%;
+      font-size: 150%;
+    }
+    .iconoGasolina{
+        margin-top: 12px;
+    }
+    .expandible{
+        background-color: #001432;
+        border-radius: 1px 16px 1px 1px;
+        height: 50px;
+    }
+    .divGasoline{
+      text-align: center;
+      width: 100%; 
+      padding: 2%;
+      margin-top: 9%;
+    }
+    .divPresentacionAutos{
+        width: 90% !important;
+    }
+    .clm{
+        display: inline-block;
+    }
+    .accordion {
+        background-color: #001432;
+        color: #fff;
+        cursor: pointer;
+        padding: 18px;
+        width: 97%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+        transition: 0.4s;
+        height: 35px;
+      }
+    
+      .active, .accordion:hover {
+          background-color: #ccc; 
+      }
+    
+      .panel {
+          padding: 0 18px;
+          display: none;
+          background-color: white;
+          overflow: hidden;
+      }
+    
+      .accordion-list {
+          background: color($colors, light);
+          height: 100%;
+      }
+      .section {
+          background: #fff;
+          color: #000;
+          margin-bottom: 4px;
+      }
+      .section-active {
+          background: #ffc400;
+          color: #fff;
+      }
+    
+      .child {
+          background: #e8e7e6;
+          color: #000;
+          margin-bottom: 4px;
+      }
+      .child-item {
+          background: #f3f2f1;
+          padding: 10px;
+      }
+      .label {
+          margin: 0px;
+      }
+      .list {
+          margin-bottom: 4px;
+      }
+    
+      .content-md {
+        color: #000;
+        background-color: #020f32;
+      }
+    
+      .alertCustomCss2 {
+        width: 100%;
+        color: black !important;
+        background-color: #11b6e4 !important;
+        text-align: center !important;
+        width: 45%;
+        display: inline-block;
+      }
+    
+      .alertCustomCss2 .alert-message {
+        color: #000;
+      }
+    
+      .alert-md .alert-button-group {
+        -webkit-flex-wrap: wrap-reverse;
+        -ms-flex-wrap: wrap-reverse;
+        flex-wrap: wrap-reverse;
+        -webkit-box-pack: end;
+        -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+        justify-content: center;
+        padding: 8px 8px 8px 24px;
+      }
+    
+      .contentHome{
+      }
+
+      .gasStation{
+        position: absolute;
+        margin-left: 11px;
+    
+        img{
+          width: 75%;
+          border-radius: 45px;
+        }
+      }
+      .tituloKenergy{
+        margin-top: 34%;
+        margin-left: 15px;
+        .titulo1{
+          border-style: none;
+          border-bottom: none;
+          color:#020f32;
+          font-size: 149%;
+          background-color: #fff0;
+        }
+        .titulo2{
+          font-size: 68%;
+          border-style: none;
+          border-bottom: none;
+          color:#020f32;
+          font-size: 94%;
+          background-color: #fff0;
+        }
+      }
+    
+      .tituloAutos{
+        //text-align: center;
+        color: #020f32;
+        font-size: 127%;
+        margin-bottom: 11px;
+        margin-top: 2%;
+        background-color: #c1272d;
+        /* height: 7%; */
+        color: #fff;
+        padding: 3%;
+        border-radius: 7px;    
+      }
+    
+      .lista{
+        ion-item{
+          background-color: #001432;
+          border-radius: 8px;
+          color: #fff;
+    
+          ion-avatar{
+            //background-color: #ffffff6b;
+              border-radius: 20px;
+          }
+          p{
+            color:#fff;
+          }
+        }
+      }
+    
+      .precioGas{
+        text-align: center;
+        background-color: #b3b3b3;
+        font-size: 150%;
+        margin-top: -4px;
+        font-family: digital-7regular;
+      }
+    
+      .containerGas{
+        display: inline-block;
+        width: 33%;
+        margin: -1px;
+      }
+      .fab-md-light {
+        color: #fff;
+        background-color: #011432;
+      }
+      ion-icon {
+        display: inline-block;
+        margin-bottom: -4px;
+        font-size: 1.8em;
+        color: #fff;
+      }
+      .more{
+        display: inline-block;
+        margin-bottom: -8px;
+        font-size: 30px;
+        color: #fff;
+      }
+      .toolbar-title-md {
+        font-size: 1.4em !important;
+      }
+      .add{
+        font-size: 1.2em;
+      }
+
+      .algo{
+        filter: brightness(100%);
+      }
+
+      .puntosveh{
+        text-align: right;
+        margin-top: -1.2em;
+        margin-right: 0.8em;
+      }
+
+      .imgclic{
+        margin-top: -20%;
+        width: 50%;
+        margin-left: 62%;
+        position:absolute;
+      }
+      
+      ion-content.has-refresher > .scroll-content {
+        background-color: transparent;
+        margin-top: 55px;
+    }
+
+    .swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets {
+      left: 0;
+      bottom: 20px;
+      width: 100%;
+  }
+}

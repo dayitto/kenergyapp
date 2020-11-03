@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar color="titulo">
+    <ion-title class="tituloHeader">
+    	<span class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+          <img src="assets/imgs/miAuto/carro.png" style="width: 65%; margin-left: -9px;">
+        </span>
+        <span style="margin-top: 9px;position: fixed;">Mi Auto</span>
+    </ion-title>
+    
+    <ion-buttons start>
+      <button ion-button (click)="cancelar()" style="color:#fff">
+        <span color="secundary" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+  <div style="text-align:center;font-weight: 700;
+  font-size: 220%;" class="tituloHeader">
+    {{vehiculo.modelo}}
+  </div>
+  <div style="border-bottom: 1px solid #d8d9da;">
+    <div style="text-align:center;font-weight: 500;
+  font-size: 200%;margin-bottom: 19%;" class="tituloHeader">
+    {{vehiculo.placa}}
+  </div>
+  </div>
+  <div style="margin-top: 16px;">
+    <qrcode [qrdata]="qr" [size]="256" [level]="'M'" class="animated flipInX"></qrcode>
+  </div>
+  <div class="tituloHeader" style="    text-align: center;font-size: 161%;font-weight: 700;margin-top: 10%;border-bottom: 1px solid #cacaca;">
+    N° Auto {{vehiculo.id}}
+  </div>
+</ion-content>
+<ion-fab top right class="animated swing" style="margin-top: 8%">
+  <button ion-fab color="light">
+    <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+</ion-fab>

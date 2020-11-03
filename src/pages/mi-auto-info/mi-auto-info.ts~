@@ -1,0 +1,471 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, PopoverController, LoadingController } from 'ionic-angular';
+import { VehiculoModel } from '../../models/vehiculoModel';
+import { MisAutosPage } from '../mis-autos/mis-autos';
+import { HttpParams } from '@angular/common/http';
+import { Storage } from '@ionic/storage';
+import { AlertaServiceProvider } from '../../providers/alerta-service';
+import { RestServiceProvider } from '../../providers/rest-service';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
+import { ImagePicker } from '@ionic-native/image-picker';
+
+@IonicPage()
+@Component({
+  selector: 'page-mi-auto-info',
+  templateUrl: 'mi-auto-info.html',
+})
+export class MiAutoInfoPage {
+  public vehiculos: VehiculoModel[] = [];
+  public hoy: Date = new Date();
+  public dia: string = "Domingo";
+  public dia2: string = "Domingo";
+  public diaMes: number = 0;
+  public tipoCombustibles: any[] = [];
+  public tipoCombustible: number = 0; 
+  public vehiculo:VehiculoModel = new VehiculoModel();
+  public usuario: any = null;
+  public esta: number = 0;
+
+  public rangosMantenimiento: any[] = [];
+  public rango:any=1;
+  imageResponse: any;
+  options: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public popoverCtrl: PopoverController, public localStorage: Storage,
+    private alertaService: AlertaServiceProvider,
+    private restService: RestServiceProvider,
+    private sqlite: SQLite,
+    public loadingCtrl: LoadingController,
+    public imagePicker: ImagePicker) {
+    	
+    	this.localStorage.ready().then(() => {
+      this.localStorage.get(`@userSession`).then((data) => {
+        if (data != null) {
+          this.usuario = data;
+			 this.cargarDatosAuto();
+        } else {
+          this.alertaService.warnAlert(this.restService.headerValidacion, "Usuario sin sesión, no se cargarán sus datos", null);
+        }
+      });
+    });
+    this.vehiculos.push(new VehiculoModel(false,"021 TC", 0, "KIA SPORTAGE", 1));
+    this.vehiculos.push(new VehiculoModel(false,"021 TC", 1, "KIA SPORTAGE", 2));
+    this.diaMes = this.hoy.getUTCDate();
+    var n = this.hoy.getDay();
+    this.dia = this.getDay(n);
+    this.dia2 = this.getDay(n + 2);
+    this.tipoCombustibles.push({ id: 0, nombre: "Combustible" });
+    this.tipoCombustibles.push({ id: 1, nombre: "Premium" });
+    this.tipoCombustibles.push({ id: 2, nombre: "Magna" });
+    this.tipoCombustibles.push({ id: 3, nombre: "Diesel" });
+
+    this.rangosMantenimiento.push({ id: 1, valor: "10000 Km" });
+    this.rangosMantenimiento.push({ id: 2, valor: "20000 Km" });
+    this.rangosMantenimiento.push({ id: 3, valor: "30000 Km" });
+    this.rangosMantenimiento.push({ id: 4, valor: "40000 Km" });
+    
+    
+  }
+  
+	
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad MiAutoInfoPage');
+  }
+
+  getDay(dia: any) {
+    var diaEs = "";
+    switch (dia) {
+      case 0:
+        diaEs = "Domingo"
+        break;
+      case 1:
+        diaEs = "Lunes"
+        break;
+      case 2:
+        diaEs = "Martes"
+        break;
+      case 3:
+        diaEs = "Miércoles"
+        break;
+      case 4:
+        diaEs = "Jueves"
+        break;
+      case 5:
+        diaEs = "Viernes"
+        break;
+      case 6:
+        diaEs = "Sábado"
+        break;
+    }
+    return diaEs;
+  }
+
+  presentPopover(myEvent) {
+    let popover = this.popoverCtrl.create(MisAutosPage, { vehiculos: this.vehiculos });
+    popover.present({
+      ev: myEvent
+    });
+  }
+
+  cargarDatosAuto(){
+  	let loading = this.loadingCtrl.create();
+    loading.present();
+  		var armaUrl = "vehicle/regular/" + this.usuario.Id;
+      this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      this.restService.restServiceGETToken(armaUrl, new HttpParams(), data.toString()).timeout(this.restService.timeOver).subscribe(
+        dataAutos => {
+          if(dataAutos['Response']!=null && dataAutos['Response'] instanceof Array){
+            let array = dataAutos['Response'];
+            let idVehiculo = 0;
+            array.forEach(auto => {
+            	this.vehiculos.push(new VehiculoModel(
+                false,
+					 auto.Placa,
+					 1,	
+					 auto.Modelo,
+					 1,				 
+					 auto.Oct == 92 ? 1 : auto.Oct == 87 ? 2 : 3,
+					 1,
+					 auto.Id,
+					 auto.Id,
+					 1,
+					 "",
+					 auto.Marca
+                
+              ));
+              if(auto.Id > idVehiculo) {
+              	   idVehiculo = auto.Id; 
+						this.vehiculo = auto;              
+              }
+            });
+            
+            this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      if (data == null) {
+        loading.dismiss();
+        this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+      } else {
+        
+        this.restService.restServiceGETToken("vehicle/regular/detail/" + this.vehiculo.Id, new HttpParams(), data.toString()).timeout(this.restService.timeOver).subscribe(
+          dataRegistro => {
+            this.vehiculo = dataRegistro['Response'];
+				this.cargaDatosDeBaseDeDatos(this.vehiculo.Id);
+				loading.dismiss();
+          }, error => {
+            loading.dismiss();
+            console.log(error);
+            this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+          }
+        );
+      }
+    }, error => {
+      loading.dismiss();
+      console.log(error);
+      this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+    });
+    
+    
+          } else loading.dismiss(); 
+        }, error => {
+			loading.dismiss();
+          console.log(error);
+          this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+        }
+      );
+      }, error => {
+      loading.dismiss();
+        console.log(error);
+        this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+      });
+    
+  }
+  
+ actualizaAuto() {
+	 let loading = this.loadingCtrl.create();
+    loading.present();
+    this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+    	  
+    	  
+    	  
+    	  let km1 = (document.getElementById("km1") as HTMLFormElement).value;
+        let puntos1 = (document.getElementById("puntos1") as HTMLFormElement).value;
+        let idVehiculo = (document.getElementById("idVehiculo") as HTMLFormElement).value;
+        let alias = (document.getElementById("alias") as HTMLFormElement).value;
+        let marca = (document.getElementById("marca") as HTMLFormElement).value;
+        let modelo = (document.getElementById("modelo") as HTMLFormElement).value;
+        let anio = (document.getElementById("anio") as HTMLFormElement).value;
+        let placa = (document.getElementById("placa") as HTMLFormElement).value;
+        let rendimiento = (document.getElementById("rendimiento") as HTMLFormElement).value;
+        let km2 = (document.getElementById("km2") as HTMLFormElement).value;
+            
+        //vehicle/regular/{id vehiculo)
+        //String:Alias, String:Marca, String:Modelo, double:Kilometraje (Requeridos)
+        
+        let urlArmada = "vehicle/regular/" + idVehiculo;
+        let bodyObj = {
+        	Alias: alias,
+        	Marca: marca,
+			Modelo: modelo,
+        	Kilometraje: km1
+        };
+        
+        this.restService.restServicePUTToken(urlArmada, bodyObj, data.toString()).timeout(this.restService.timeOver).subscribe(
+        	dataRegistro => {
+          	if (dataRegistro['Status'] == 1) {
+            	this.alertaService.alertaBasica(this.restService.headerExito, "Sus datos se han actualizado correctamente", null);
+            	this.insertaOActulizaVehiculoEnBD(idVehiculo);
+          	} else {
+            	this.alertaService.warnAlert(this.restService.headerValidacion, dataRegistro['Message'], null);
+          	}
+          	loading.dismiss();
+        	}, error => {
+          	loading.dismiss();
+          	console.log(error);
+          	this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+        	});
+        
+        
+            
+            
+    }, error => {
+        loading.dismiss();
+        console.log(error);
+        this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+      });
+ }
+  
+  cargaDatosDeBaseDeDatos(id: Number) {
+  		let sql = 'SELECT * FROM mis_autos where id_vehiculo = ?';
+  		
+  		
+  		this.sqlite.create({
+      	name: 'kenergy.db',
+      	location: 'default'
+    	}).then((db: SQLiteObject) => {
+    		db.executeSql(sql, [id])
+  				.then(response => {
+    				let tasks = [];
+    				if(response.rows.length != 0) {
+						(document.getElementById("vehiculo.circula") as HTMLFormElement).value = response.rows.item(0).no_circula;
+						(document.getElementById("vehiculo.periodo") as HTMLFormElement).value = response.rows.item(0).periodo;
+						(document.getElementById("vehiculo.tipoCombustible") as HTMLFormElement).value = response.rows.item(0).tipo_combustible;
+						(document.getElementById("vehiculo.estado") as HTMLFormElement).value = response.rows.item(0).estado;
+						(document.getElementById("vehiculo.ultimaFechaVerificacion") as HTMLFormElement).value = response.rows.item(0).ultima_fecha_verificacion;		
+						(document.getElementById("vehiculo.proximaFechaVerificacion") as HTMLFormElement).value = response.rows.item(0).proxima_fecha_verificacion;		
+						(document.getElementById("vehiculo.agencia") as HTMLFormElement).value = response.rows.item(0).agencia;
+						(document.getElementById("vehiculo.telefono") as HTMLFormElement).value = response.rows.item(0).telefono;		
+						(document.getElementById("vehiculo.companiaSeguro") as HTMLFormElement).value = response.rows.item(0).compania_Seguro;		
+						(document.getElementById("vehiculo.poliza") as HTMLFormElement).value = response.rows.item(0).poliza;
+						(document.getElementById("vehiculo.fechaVencimiento") as HTMLFormElement).value = response.rows.item(0).fecha_vencimiento;		
+						(document.getElementById("vehiculo.montoPoliza") as HTMLFormElement).value = response.rows.item(0).monto_poliza;
+						(document.getElementById("vehiculo.telefonoSeguro") as HTMLFormElement).value = response.rows.item(0).telefono_seguro;
+						if(response.rows.item(0).verificacion == 1) (document.getElementById("vehiculo.verificacion") as HTMLFormElement).checked = true;
+						else (document.getElementById("vehiculo.verificacion") as HTMLFormElement).checked = false;
+						if(response.rows.item(0).vencimiento == 1) (document.getElementById("vehiculo.vencimiento") as HTMLFormElement).checked = true;
+						else (document.getElementById("vehiculo.vencimiento") as HTMLFormElement).checked = false;
+						if(response.rows.item(0).mantenimiento_cada == 1) (document.getElementById("vehiculo.mantenimiento") as HTMLFormElement).checked = true;
+						else (document.getElementById("vehiculo.mantenimiento") as HTMLFormElement).checked = false;		
+						(document.getElementById("vehiculo.mantenimientoRango") as HTMLFormElement).value = response.rows.item(0).mantenimiento_cada_rango;
+						if(response.rows.item(0).pago_de_tenencia == 1) (document.getElementById("vehiculo.pagoTenencia") as HTMLFormElement).checked = true;
+						else (document.getElementById("vehiculo.pagoTenencia") as HTMLFormElement).checked = false;
+						if(response.rows.item(0).hoy_no_circula == 1) (document.getElementById("vehiculo.hoyNoCircula") as HTMLFormElement).checked = true;
+						else (document.getElementById("vehiculo.hoyNoCircula") as HTMLFormElement).checked = false;
+						(document.getElementById("esta") as HTMLFormElement).value = 1;
+    				} else {
+						(document.getElementById("esta") as HTMLFormElement).value = 0;
+    				}
+  				})
+  			.catch(error => this.alertaService.errorAlert("Info Error", error, null));
+  		
+  		})
+  		.catch(error =>{
+    		this.alertaService.errorAlert("Info", "Excepcion al crear BD " + error, null);
+  		});
+	}
+	
+	
+	
+	insertaOActulizaVehiculoEnBD(id: Number) {
+		let circula = '';
+		if(null != (document.getElementById("vehiculo.circula") as HTMLFormElement)) {
+			circula = (document.getElementById("vehiculo.circula") as HTMLFormElement).value;
+		} 
+		let periodo = '';
+		if(null != (document.getElementById("vehiculo.periodo") as HTMLFormElement)) {
+			periodo = (document.getElementById("vehiculo.periodo") as HTMLFormElement).value;		
+		}
+		let tipoCombustible = '';
+		if(null != (document.getElementById("vehiculo.tipoCombustible") as HTMLFormElement)) {
+			tipoCombustible = (document.getElementById("vehiculo.tipoCombustible") as HTMLFormElement).value;	
+		}
+		let estado = '';
+		if(null != (document.getElementById("vehiculo.estado") as HTMLFormElement)) {
+			estado = (document.getElementById("vehiculo.estado") as HTMLFormElement).value;		
+		}
+		let ultimaFechaVerificacion = '';
+		if(null != (document.getElementById("vehiculo.ultimaFechaVerificacion") as HTMLFormElement)) {
+			ultimaFechaVerificacion = (document.getElementById("vehiculo.ultimaFechaVerificacion") as HTMLFormElement).value;		
+		}
+		let proximaFechaVerificacion = '';
+		if(null != (document.getElementById("vehiculo.proximaFechaVerificacion") as HTMLFormElement)) {
+			proximaFechaVerificacion = (document.getElementById("vehiculo.proximaFechaVerificacion") as HTMLFormElement).value;		
+		}
+		let agencia = '';
+		if(null != (document.getElementById("vehiculo.agencia") as HTMLFormElement)) {
+			agencia = (document.getElementById("vehiculo.agencia") as HTMLFormElement).value;
+		}
+		let telefono = '';
+		if(null != (document.getElementById("vehiculo.telefono") as HTMLFormElement)) {
+			telefono = (document.getElementById("vehiculo.telefono") as HTMLFormElement).value;
+		}
+		let companiaSeguro = '';
+		if(null != (document.getElementById("vehiculo.companiaSeguro") as HTMLFormElement)) {
+			companiaSeguro = (document.getElementById("vehiculo.companiaSeguro") as HTMLFormElement).value;
+		}
+		let poliza = '';
+		if(null != (document.getElementById("vehiculo.poliza") as HTMLFormElement)) {
+			poliza = (document.getElementById("vehiculo.poliza") as HTMLFormElement).value;
+		}
+		let fechaVencimiento = '';
+		if(null != (document.getElementById("vehiculo.fechaVencimiento") as HTMLFormElement)) {
+			fechaVencimiento = (document.getElementById("vehiculo.fechaVencimiento") as HTMLFormElement).value;
+		}
+		let montoPoliza = '';
+		if(null != (document.getElementById("vehiculo.montoPoliza") as HTMLFormElement)) {
+			montoPoliza = (document.getElementById("vehiculo.montoPoliza") as HTMLFormElement).value;
+		}
+		let telefonoSeguro = '';
+		if(null != (document.getElementById("vehiculo.telefonoSeguro") as HTMLFormElement)) {
+			telefonoSeguro = (document.getElementById("vehiculo.telefonoSeguro") as HTMLFormElement).value;
+		}
+		let verificacion = 0;
+		if(null != (document.getElementById("vehiculo.verificacion") as HTMLFormElement)) {
+			if((document.getElementById("vehiculo.verificacion") as HTMLFormElement).checked == true) verificacion = 1;
+			else verificacion = 0;		
+		}
+		let vencimiento = 0;
+		if(null != (document.getElementById("vehiculo.vencimiento") as HTMLFormElement)) {
+			if((document.getElementById("vehiculo.vencimiento") as HTMLFormElement).checked == true) vencimiento = 1;
+			else vencimiento = 0;		
+		}
+		let mantenimiento = 0;
+		if(null != (document.getElementById("vehiculo.mantenimiento") as HTMLFormElement)) {
+			if((document.getElementById("vehiculo.mantenimiento") as HTMLFormElement).checked == true) mantenimiento = 1;
+			else mantenimiento = 0;		
+		}
+		let mantenimientoRango = 1;
+		if(null != (document.getElementById("vehiculo.mantenimientoRango") as HTMLFormElement)) {
+			mantenimientoRango = (document.getElementById("vehiculo.mantenimientoRango") as HTMLFormElement).value;		
+		}
+		let pagoTenencia = 0;
+		if(null != (document.getElementById("vehiculo.pagoTenencia") as HTMLFormElement)) {
+			if((document.getElementById("vehiculo.pagoTenencia") as HTMLFormElement).checked == true) pagoTenencia = 1;
+			else pagoTenencia = 0;		
+		}
+		let hoyNoCircula = 0;
+		if(null != (document.getElementById("vehiculo.hoyNoCircula") as HTMLFormElement)) {
+			if((document.getElementById("vehiculo.hoyNoCircula") as HTMLFormElement).checked == true) hoyNoCircula = 1;
+			else hoyNoCircula = 0;
+		}
+					
+		let sql = "";
+		//this.alertaService.errorAlert("esta", ''+this.esta, null);
+		if((document.getElementById("esta") as HTMLFormElement).value == 0) {
+			//No se encuentra hay que insertar	
+			sql = 'INSERT INTO mis_autos VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'; 
+			this.sqlite.create({
+      		name: 'kenergy.db',
+      		location: 'default'
+    		}).then((db: SQLiteObject) => {
+				db.executeSql(sql, [id, 
+					circula,periodo,tipoCombustible,estado,ultimaFechaVerificacion,
+					proximaFechaVerificacion,agencia,telefono,companiaSeguro,poliza,
+					fechaVencimiento,montoPoliza,telefonoSeguro,verificacion,vencimiento,
+					mantenimiento,mantenimientoRango,pagoTenencia,hoyNoCircula])
+  				.then(response => {
+    				console.log("Se ha actualizado correctamente")
+  				})
+  			.catch(error => this.alertaService.errorAlert("Info", JSON.stringify(error), null));
+  			})
+  			.catch(error =>{
+    			this.alertaService.errorAlert("Info", "Excepcion al actualizar insertar BD " + error, null);
+  			});
+		} else {
+			//Si está, vamos a actualizar		
+			sql = 'UPDATE mis_autos SET ' +
+    				'no_circula=?, ' +
+    				'periodo=?, ' +
+    				'tipo_combustible=?, ' +
+    				'estado=?, ' +
+    				'ultima_fecha_verificacion=?, ' +
+					'proxima_fecha_verificacion=?, ' +
+					'agencia=?, ' +
+					'telefono=?, ' +
+					'compania_Seguro=?, ' +
+					'poliza=?, ' +
+					'fecha_vencimiento=?, ' +
+					'monto_poliza=?, ' +
+					'telefono_seguro=?, ' +
+					'verificacion=?, ' +
+					'vencimiento=?, ' +
+					'mantenimiento_cada=?, ' +
+					'mantenimiento_cada_rango=?, ' +
+					'pago_de_tenencia=?, ' +
+					'hoy_no_circula=? WHERE id_vehiculo=?';	
+					
+			this.sqlite.create({
+      		name: 'kenergy.db',
+      		location: 'default'
+    		}).then((db: SQLiteObject) => {
+				db.executeSql(sql, [circula,periodo,tipoCombustible,estado,ultimaFechaVerificacion,
+					proximaFechaVerificacion,agencia,telefono,companiaSeguro,poliza,
+					fechaVencimiento,montoPoliza,telefonoSeguro,verificacion,vencimiento,
+					mantenimiento,mantenimientoRango,pagoTenencia,hoyNoCircula,id])
+  				.then(response => {
+    				console.log("Se ha actualizado correctamente")
+  				})
+  			.catch(error => this.alertaService.errorAlert("Info", JSON.stringify(error), null));
+  			})
+  			.catch(error =>{
+    			this.alertaService.errorAlert("Info", "Excepcion al actualizar insertar BD " + error, null);
+  			});
+		}
+		
+		
+		
+	}
+	
+	takePhoto() {
+		this.options = {
+      // Android only. Max images to be selected, defaults to 15. If this is set to 1, upon
+      // selection of a single image, the plugin will return it.
+      //maximumImagesCount: 3,
+ 
+      // max width and height to allow the images to be.  Will keep aspect
+      // ratio no matter what.  So if both are 800, the returned image
+      // will be at most 800 pixels wide and 800 pixels tall.  If the width is
+      // 800 and height 0 the image will be 800 pixels wide if the source
+      // is at least that wide.
+      width: 200,
+      //height: 200,
+ 
+      // quality of resized image, defaults to 100
+      quality: 25,
+ 
+      // output type, defaults to FILE_URIs.
+      // available options are 
+      // window.imagePicker.OutputType.FILE_URI (0) or 
+      // window.imagePicker.OutputType.BASE64_STRING (1)
+      outputType: 1
+    };
+    this.imageResponse = [];
+    this.imagePicker.getPictures(this.options).then((results) => {
+      for (var i = 0; i < results.length; i++) {
+        this.imageResponse.push('data:image/jpeg;base64,' + results[i]);
+      }
+    }, (err) => {
+      alert(err);
+    });
+  }
+  
+}

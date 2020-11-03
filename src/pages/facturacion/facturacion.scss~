@@ -1,0 +1,19 @@
+page-facturacion {
+    .itemList{
+        border-bottom: solid 0.7px;
+        border-bottom-color: #b9b6b6;
+        background-color: #001432;
+        opacity: 0.9;
+        color: #fff;
+        border-radius: 1px 23px 1px 1px;
+        margin-top: 2px;
+    }
+
+    p{
+        color:#fff;
+    }
+    .fab-ios-light {
+        color: #fff;
+        background-color: #001333;
+    }
+}

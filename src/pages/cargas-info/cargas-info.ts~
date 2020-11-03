@@ -1,0 +1,78 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, PopoverController, LoadingController } from 'ionic-angular';
+import { CargasModel } from '../../models/cargasModel';
+import { CargasListPage } from '../cargas-list/cargas-list';
+import { RestServiceProvider } from '../../providers/rest-service';
+import { AlertaServiceProvider } from '../../providers/alerta-service';
+import { HttpParams } from '@angular/common/http';
+
+@IonicPage()
+@Component({
+  selector: 'page-cargas-info',
+  templateUrl: 'cargas-info.html',
+})
+export class CargasInfoPage {
+  public carga: any = null;
+  public cargas: any = null;
+  constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, 
+  	public navParams: NavParams, public popoverCtrl: PopoverController, public alertaService: AlertaServiceProvider,
+  	public restService: RestServiceProvider) {
+    this.carga = navParams.get("carga");
+    this.cargas = navParams.get('cargas');
+  }
+
+  ionViewDidLoad() {
+    
+  }
+
+  presentPopover(myEvent) {
+    let popover = this.popoverCtrl.create(CargasListPage, { cargas: this.cargas });
+    popover.present({
+      ev: myEvent
+    });
+  }
+  
+  reenviar() {
+
+		let loading = this.loadingCtrl.create();
+    loading.present();
+    this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      if (data == null) {
+        loading.dismiss();
+        this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+      } else {
+        
+        var url = "invoice/email?IdFactura=" + this.carga.IdFactura + "&IdEstacion=" + this.carga.IdEstacion + "&Email=" + this.carga.Email;
+        
+        this.restService.restServiceGETToken(url, new HttpParams(), data.toString()).timeout(this.restService.timeOver).subscribe(
+          dataRegistro => {
+            if(dataRegistro['Message']==0){
+              this.alertaService.alertaBasica(this.restService.headerValidacion, "Se ha reenviado correctamente", null);
+            }else{
+            	let msg = "";
+            	if (dataRegistro['Message']==1) msg = "Error interno del servidor";
+            	if (dataRegistro['Message']==2) msg = "No se encontraron parámetros";
+					if (dataRegistro['Message']==3) msg = "No existen resultados";
+					if (dataRegistro['Message']==4) msg = dataRegistro['Message'];
+              this.alertaService.warnAlert(this.restService.headerValidacion, msg, null);
+            }
+            loading.dismiss();
+          }, error => {
+            loading.dismiss();
+            console.log(error);
+            this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+          }
+        );
+      }
+    }, error => {
+      loading.dismiss();
+      console.log(error);
+      this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+    });
+		  
+  }
+  
+  enviar() {
+  
+  }
+}

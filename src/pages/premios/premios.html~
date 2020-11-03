@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="tituloHeader">Catálogo de Premios</ion-title>
+
+
+    <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/premios/promo.png" style="width: 46%;margin-left: -32px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding style="
+    background-image: url(assets/imgs/fondo.jpg); 
+    background-size: 100%;
+    background-position: center center;" class="animated fadeIn">
+  <div style="color: #333a98;text-align: center;font-size: 120%;font-weight: 500;margin-bottom: 10px" (click)="canjear()"><u>Canjear
+      Puntos</u></div>
+  <div style="width:100%;text-align: center">
+    <div *ngFor="let premio of premios" style="display:inline-block;width: 46%;margin: 3px;">
+      <div style="border: 1px solid #c3c3c3;">
+        <div>
+          <img src="{{premio.img}}" style="width: 100%;">
+        </div>
+      </div>
+      <div style="border: 1px solid #c3c3c3;">
+        <div style="font-size: 70%;">
+          <strong>{{premio.descripcion}}</strong>
+        </div>
+        <div style="font-size: 100%;color: #432f7f">
+          <strong>{{premio.canje}} PUNTOS</strong>
+        </div>
+        <div style="font-size: 80%;">
+          ó llévatelo por
+        </div>
+        <div style="font-size: 100%;color: #a81f58;font-style: italic;">
+          <strong>{{premio.canjeOpcional}} PUNTOS + ${{premio.monto}}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

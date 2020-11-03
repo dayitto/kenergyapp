@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Cargas</ion-title>
+
+    <ion-buttons left class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/cargas/fuel-station.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+<div (click)="buscar()" style="margin-bottom: 10px;">
+  <img src="assets/imgs/estadisticas/recargar.png" style="width: 6%;">
+</div>
+<div style="width:100%;text-align: center" class="animated fadeIn">
+	
+  
+  <div style="display: inline-block;margin: 3px;">De:</div>
+  <input placeholder="Última Fecha de Verificación" type="date" class="mySelect" [(ngModel)]="desde" style="text-align: center; text-indent: 2px;font-weight: 700;display: inline-block;height: 26px;vertical-align: middle;width: 36%" />
+
+  <div style="display: inline-block;margin: 3px;">Hasta:</div>
+
+  <input placeholder="Última Fecha de Verificación" type="date" class="mySelect" [(ngModel)]="hasta" style="text-align: center; text-indent: 2px;font-weight: 700;display: inline-block;height: 26px;vertical-align: middle;width: 36%" />
+</div>
+
+<div style="width:100%">
+	<div style="display: inline-block;width: 1%;">De:</div>
+  <select class="mySelect" [(ngModel)]="idEstacion" style="width: 47%;display: inline-block;height: 31px;
+  vertical-align: middle;">
+    <option *ngFor="let estacion of estaciones" [ngValue]="estacion.id">
+      {{estacion.descripcion}}
+    </option>
+  </select>
+  <select class="mySelect" [(ngModel)]="idProducto" style="width: 47%;display: inline-block;height: 31px;
+  vertical-align: middle;">
+    <option *ngFor="let producto of productos" [ngValue]="producto.id">
+      {{producto.descripcion}}
+    </option>
+  </select>
+</div>
+
+<div style="width:100%">
+  <select class="mySelect" [(ngModel)]="idVehiculo" style="width: 48%;display: inline-block;height: 31px;
+  vertical-align: middle;">
+    <option *ngFor="let vehiculo of vehiculos" [ngValue]="vehiculo.id">
+      {{vehiculo.descripcion}}
+    </option>
+  </select>
+  <select class="mySelect" [(ngModel)]="idChofer" style="width: 48%;display: inline-block;height: 31px;
+  vertical-align: middle;">
+    <option *ngFor="let chofer of choferes" [ngValue]="chofer.id">
+      {{chofer.descripcion}}
+    </option>
+  </select>
+</div>
+
+<div style="width:100%;background-color: #192b46;
+font-size: 110%;
+font-weight: 400;">
+  <div class="tituloHeader divAlign">
+    Fecha
+  </div>
+  <div class="tituloHeader divAlign">
+    Placa
+  </div>
+  <div class="tituloHeader divAlign">
+    Lts.
+  </div>
+  <div class="tituloHeader divAlign">
+    $
+  </div>
+  <div style="display: inline-block;
+  width: 4%;">
+    <img src="assets/imgs/cargas/ojo.png" style="width: 100%;">
+  </div>
+</div>
+<div *ngFor="let carga of cargas" style="border-bottom: 1px solid #192b46; padding-top: 12px; display: flex;
+    align-items: center;">
+  <div class="tituloHeader divAlign" style="color: #000;">
+    {{carga.fecha}}
+  </div>
+  <div class="tituloHeader divAlign" style="color: #000;">
+    {{carga.placa}}
+  </div>
+  <div class="tituloHeader divAlign" style="color: #000;">
+    {{carga.lts | number: 0}}
+  </div>
+  <div class="tituloHeader divAlign" style="color: #000;">
+    {{carga.precio | currency}}
+  </div>
+  <div style="display: inline-block;
+  width: 4%;" (click)="openCarga(carga)">
+    <img src="assets/imgs/cargas/ojo.png" style="width: 100%;">
+  </div>
+</div>
+
+</ion-content>
+
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light">
+    <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+</ion-fab>
+
+  

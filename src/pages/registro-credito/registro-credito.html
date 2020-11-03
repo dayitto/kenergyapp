@@ -1,0 +1,31 @@
+<ion-content class="animated fadeIn" padding style="
+    background-image: url(assets/imgs/fondo.jpg); 
+    background-size: 100%;
+    background-position: center center;">
+  <div style="text-align:center" class="animated fadeInDown">
+    <img src="assets/imgs/registro/logoLetra2.png" alt="logo" class="logo logoMargen" style="" />
+  </div>
+  <div style="text-align: center;font-size: 150%;margin-bottom: 2%;" class="tituloHeader">
+    <strong>Kanz Combustibles S.A. de C.V</strong>
+  </div>
+  <div style="text-align: center;font-size: 150%;margin-bottom: 2%;" class="tituloHeader">
+    <strong>¡Bienvenido!</strong>
+  </div>
+  <div style="font-size: 150%;margin-bottom: 5%;margin-bottom: 2%;" class="tituloHeader">
+      Personaliza tu perfil
+  </div>
+  <input placeholder="Ingresar clave recibida por correo* " class="inputText" [(ngModel)]="clave"/>
+  <input placeholder="Nueva contraseña*" class="inputText" [(ngModel)]="nuevaContrasenia"/>
+  <input placeholder="Confirma tu contraseña*" class="inputText" [(ngModel)]="nuevaContraseniaConfirm"/>
+  <input placeholder="Nombre completo*" class="inputText" [(ngModel)]="nombre"/>
+  <input placeholder="Alias*" class="inputText" [(ngModel)]="alias"/>
+  <input placeholder="Celular" type="number" class="inputText" style="margin-bottom:5%" [(ngModel)]="celular"/>
+  <div style="text-align: -webkit-center;">
+    <div style="background-color: #009245;
+    width: 29%;
+    color: #fff;
+    padding: 6px;
+    font-size: 135%;
+    border-radius: 5px;" (click)="irHomeCredito()">Ingresar</div>
+  </div>
+</ion-content>

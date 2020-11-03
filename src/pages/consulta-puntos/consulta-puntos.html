@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-navbar color="titulo">
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Consulta tus puntos</ion-title>
+
+
+    <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/estaciones/ubication.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+
+<div style="width:100%;margin-top: 13px;">
+  <ion-item style="width:100%">
+    <ion-label position="floating" style="color:#1b155c;">Vehiculo</ion-label>
+    <ion-select [(ngModel)]="idVehiculo" style="color:#000" okText="Aceptar" cancelText="Cancelar">
+      <ion-option *ngFor="let vehiculo of vehiculos" value="{{vehiculo.id}}">{{vehiculo.descripcion}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <div style="display: inline-block;width: 56%;
+  text-align: center;">
+    <div style="font-size: 115%;
+    font-weight: 500;">
+      Total Puntos
+    </div>
+    <div style="font-size: 130%;
+    font-weight: 500;color: #001432;">
+      {{totalPuntos}}
+    </div>
+  </div>
+</div>
+
+<div *ngFor="let consulta of infoPuntos">
+  <div style="width:100%"  style="background-color: #001432;height: 30px;margin-top: 15px;">
+    <div class="tituloHeader divAlignTotal">
+      {{consulta.modelo}}
+    </div>
+    <div class="tituloHeader divAlignTotal">
+      
+    </div>
+    <div class="tituloHeader divAlignTotal">
+      Puntos {{consulta.puntos}} 
+    </div>
+  </div>
+  <div *ngFor="let info of consulta.informacion" >
+    <div class="tituloHeader divAlign">
+      {{info.fecha}}
+    </div>
+    <div class="tituloHeader divAlign">
+      {{info.litros}} Lts
+    </div>
+    <div class="tituloHeader divAlign">
+      ${{info.precio}}
+    </div>
+    <div class="tituloHeader divAlign">
+      {{info.puntos}}
+    </div>
+  </div>
+</div>
+  
+</ion-content>

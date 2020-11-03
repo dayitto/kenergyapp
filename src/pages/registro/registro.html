@@ -1,0 +1,26 @@
+<ion-content class="animated fadeIn" padding style="
+    background-image: url(assets/imgs/fondo.jpg); 
+    background-size: 100%;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-color: white;">
+  <div style="text-align:center" class="animated fadeInDown">
+    <img src="assets/imgs/registro/logoLetra2.png" alt="logo" class="logo logoMargen" style="margin-bottom: 13%;" />
+  </div>
+  <div style="font-size: 150%;margin-bottom: 5%;" class="tituloHeader">
+      Ingresa la clave y completa tu registro
+  </div>
+  <input placeholder="Ingresar clave recibida por correo* " class="inputText" [(ngModel)]="clave"/>
+  <input placeholder="Crea tu contraseña*" class="inputText" [(ngModel)]="contrasenia" />
+  <input placeholder="Confirma tu contraseña*" class="inputText" [(ngModel)]="nuevaContrasenia"/>
+  <input placeholder="Nombre completo*" class="inputText" [(ngModel)]="nombreCompleto"/>
+  <input placeholder="Alias*" class="inputText" style="margin-bottom:5%" [(ngModel)]="alias"/>
+  <div style="text-align: -webkit-center;">
+    <div style="background-color: #009245;
+    width: 29%;
+    color: #fff;
+    padding: 6px;
+    font-size: 135%;
+    border-radius: 5px;" (click)="ingresar()">Ingresar</div>
+  </div>
+</ion-content>

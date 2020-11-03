@@ -1,0 +1,23 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { VehiculoModel } from '../../models/vehiculoModel';
+
+@IonicPage()
+@Component({
+  selector: 'page-mi-auto',
+  templateUrl: 'mi-auto.html',
+})
+export class MiAutoPage {
+  public vehiculo: any = null;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
+    this.vehiculo = navParams.get("vehiculo");
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad MiAutoPage');
+  }
+
+  cancelar(){
+    this.viewCtrl.dismiss();
+  }
+}

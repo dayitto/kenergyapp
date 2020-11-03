@@ -1,0 +1,275 @@
+<ion-header>
+  <ion-toolbar color="titulo">
+    <ion-title class="tituloHeader">Vehículos/ detalle</ion-title>
+    <ion-buttons left class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/miAuto/carro.png" style="width: 42%;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+      <button ion-button (click)="cancelar()" style="color:#fff; top: -13px;" >
+        <span color="secundary" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android, windows" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+  <ion-item style="    padding-top: 15px;">
+    <ion-label style="color:#000; text-align: right;">Bloquear</ion-label>
+    <ion-toggle [(ngModel)]="bloc" (ngModelChange)="updateItem()"></ion-toggle>
+  </ion-item>
+  <div style="width:100%;margin-bottom: 3px;">
+    <div style="display:inline-block;color:#1b155c;font-weight: 600;
+    font-size: 120%;">Número: </div>
+    <div style="display:inline-block;font-size: 120%;">{{vehiculo.Id}}</div>
+  </div>
+  <div style="width:100%;margin-bottom: 3px;">
+    <div style="display:inline-block;color:#1b155c;font-weight: 600;
+    font-size: 120%;">Placas: </div>
+    <div style="display:inline-block;font-size: 120%;">{{vehiculo.Placas}}</div>
+  </div>
+  <div style="width:100%;margin-bottom: 3px;">
+    <div style="display:inline-block;color:#1b155c;font-weight: 600;
+    font-size: 120%;">Descripción: </div>
+    <div style="display:inline-block;font-size: 120%;">{{vehiculo.Descripcion}}</div>
+  </div>
+  <div style="width:100%;margin-bottom: 3px;">
+    <div style="display:inline-block;color:#1b155c;font-weight: 600;
+    font-size: 120%;">Estado: </div>
+    <div style="display:inline-block;font-size: 120%;">{{vehiculo.Estado}}</div>
+  </div>
+  <div style="width:100%;margin-bottom: 3px;">
+    <div style="display:inline-block;color:#1b155c;font-weight: 600;
+    font-size: 120%;">Responsable: </div>
+    <div style="display:inline-block;font-size: 120%;">{{vehiculo.Responsable}}</div>
+  </div>
+  <div style="width:100%;margin-bottom: 5%;border-top: 1px solid;
+  margin-top: 4%;" class="animated fadeInDown">
+    <div style="width:70%;display:inline-block;font-size: 150%;margin-top: 6px;color: #1b155c;
+    font-weight: 600;">Días de Carga</div>
+    <div class="tituloHeader" style="width:28%;display:inline-block;text-align: right;" (click)="editarDias()">
+      <ion-icon name="save"></ion-icon>
+    </div>
+  </div>
+  <div style="width:100%">
+    <div style="width:32%;display:inline-block">
+      <input (click)="diasEnableDisable()" type="checkbox" id="cbox2" value="second_checkbox" [(ngModel)]="diasCarga.lunes">
+      <label for="cbox2" style="font-size: 120%;color: #000;">Lunes</label>
+    </div>
+    <div style="width:32%;display:inline-block">
+      <input (click)="diasEnableDisable()" type="checkbox" id="cbox2" value="second_checkbox" [(ngModel)]="diasCarga.jueves">
+      <label for="cbox2" style="font-size: 120%;color: #000;">Jueves</label>
+    </div>
+    <div style="width:32%;display:inline-block">
+      <input (click)="diasEnableDisable()" type="checkbox" id="cbox2" value="second_checkbox" [(ngModel)]="diasCarga.domingo">
+      <label for="cbox2" style="font-size: 120%;color: #000;">Domingo</label>
+    </div>
+
+    <div style="width:32%;display:inline-block">
+      <input (click)="diasEnableDisable()" type="checkbox" id="cbox2" value="second_checkbox" [(ngModel)]="diasCarga.martes">
+      <label for="cbox2" style="font-size: 120%;color: #000;">Martes</label>
+    </div>
+    <div style="width:32%;display:inline-block">
+      <input (click)="diasEnableDisable()" type="checkbox" id="cbox2" value="second_checkbox" [(ngModel)]="diasCarga.viernes">
+      <label for="cbox2" style="font-size: 120%;color: #000;">Viernes</label>
+    </div>
+    <div style="width:32%;display:inline-block">
+      <input (click)="todosDiasEnableDisable()" type="checkbox" id="cbox2" value="second_checkbox" [(ngModel)]="diasCarga.todos">
+      <label for="cbox2" style="font-size: 120%;color: #000;">Todos</label>
+    </div>
+
+    <div style="width:32%;display:inline-block">
+      <input (click)="diasEnableDisable()" type="checkbox" id="cbox2" value="second_checkbox" [(ngModel)]="diasCarga.miercoles">
+      <label for="cbox2" style="font-size: 120%;color: #000;">Miércoles</label>
+    </div>
+    <div style="width:32%;display:inline-block">
+      <input (click)="diasEnableDisable()" type="checkbox" id="cbox2" value="second_checkbox" [(ngModel)]="diasCarga.sabado">
+      <label for="cbox2" style="font-size: 120%;color: #000;">Sábado</label>
+    </div>
+  </div>
+
+
+  <div style="width:100%;" class="animated fadeInDown">
+    <div style="width:70%;display:inline-block;font-size: 150%;margin-top: 6px;color: #1b155c;
+    font-weight: 600;">Horario 1</div>
+    <div class="tituloHeader" style="width:28%;display:inline-block;text-align: right;" (click)="editarHoras()">
+      <ion-icon name="save"></ion-icon>
+    </div>
+  </div>
+  <div style="width:100%; display:inline-block">
+  <ion-row>
+<ion-col col-5>
+    <ion-item>
+    <ion-datetime displayFormat="HH:mm a" [(ngModel)]="idHorarioMatutinoIni"></ion-datetime>
+    </ion-item>
+</ion-col>
+<ion-col col-2 style="top: 14px;">Hasta</ion-col>
+<ion-col col-5>
+    <ion-item>
+    <ion-datetime displayFormat="HH:mm a" [(ngModel)]="idHorarioMatutinoFin"></ion-datetime>
+    </ion-item>
+</ion-col>
+</ion-row>
+  
+    <!--<select class="mySelect" [(ngModel)]="idHorarioMatutinoIni" style="width: 42%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let horaInicio of listaMatutinos" [ngValue]="horaInicio.hora">
+        {{horaInicio.hora}} Hrs
+      </option>
+    </select>-->
+    <!--<ion-item>
+    	<ion-label style="width:40%;display:inline-block"><ion-icon ios="ios-alarm" md="md-alarm"></ion-icon>  {{idHorarioMatutinoIni}} Hrs</ion-label>
+  		<ion-datetime style="width:5%;display:inline-block" displayFormat="HH:mm a" [(ngModel)]="idHorarioMatutinoIni"></ion-datetime>
+  		<ion-label style="width:10%;display:inline-block">Hasta</ion-label>
+	   <ion-label style="width:40%;display:inline-block"><ion-icon ios="ios-alarm" md="md-alarm"></ion-icon>  {{idHorarioMatutinoFin}} Hrs</ion-label>
+  		<ion-datetime style="width:5%;display:inline-block" displayFormat="HH:mm a" [(ngModel)]="idHorarioMatutinoFin"></ion-datetime>
+  	 </ion-item>-->
+    
+    <!--<select class="mySelect" [(ngModel)]="idHorarioMatutinoFin" style="width: 42%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let horaFin of listaMatutinos" [ngValue]="horaFin.hora">
+        {{horaFin.hora}} Hrs
+      </option>
+    </select>-->
+  </div>
+
+  <div style="width:100%;" class="animated fadeInDown">
+    <div style="width:100%;display:inline-block;font-size: 150%;color: #1b155c;
+    font-weight: 600;">Horario 2</div>
+  </div>
+  <div style="width:100%">
+    <!--<select class="mySelect" [(ngModel)]="idHorarioVespertinoIni" style="width: 42%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let horaInicio of listaVespertinos" [ngValue]="horaInicio.hora">
+        {{horaInicio.hora}} Hrs
+      </option>
+    </select>
+    <div style="width:13%;display:inline-block">
+      Hasta
+    </div>
+    <select class="mySelect" [(ngModel)]="idHorarioVespertinoFin" style="width: 42%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let horaFin of listaVespertinos" [ngValue]="horaFin.hora">
+        {{horaFin.hora}} Hrs
+      </option>
+    </select>-->
+    <ion-row>
+<ion-col col-5>
+    <ion-item>
+    <ion-datetime displayFormat="HH:mm a" [(ngModel)]="idHorarioVespertinoIni"></ion-datetime>
+    </ion-item>
+</ion-col>
+<ion-col col-2 style="top: 14px;">Hasta</ion-col>
+<ion-col col-5>
+    <ion-item>
+    <ion-datetime displayFormat="HH:mm a" [(ngModel)]="idHorarioVespertinoFin"></ion-datetime>
+    </ion-item>
+</ion-col>
+</ion-row>
+  </div>
+
+  <div style="width:100%;" class="animated fadeInDown">
+    <div style="width:100%;display:inline-block;font-size: 150%;color: #1b155c;
+    font-weight: 600;">Horario 3</div>
+  </div>
+  <div style="width:100%">
+    <!--<select class="mySelect" [(ngModel)]="idHorarioNocturnoIni" style="width: 42%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let horaInicio of listaNocturnos" [ngValue]="horaInicio.hora">
+        {{horaInicio.hora}} Hrs
+      </option>
+    </select>
+    <div style="width:13%;display:inline-block">
+      Hasta
+    </div>
+    <select class="mySelect" [(ngModel)]="idHorarioNocturnoFin" style="width: 42%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let horaFin of listaNocturnos" [ngValue]="horaFin.hora">
+        {{horaFin.hora}} Hrs
+      </option>
+    </select>-->
+    <ion-row>
+<ion-col col-5>
+    <ion-item>
+    <ion-datetime displayFormat="HH:mm a" [(ngModel)]="idHorarioNocturnoIni"></ion-datetime>
+    </ion-item>
+</ion-col>
+<ion-col col-2 style="top: 14px;">Hasta</ion-col>
+<ion-col col-5>
+    <ion-item>
+    <ion-datetime displayFormat="HH:mm a" [(ngModel)]="idHorarioNocturnoFin"></ion-datetime>
+    </ion-item>
+</ion-col>
+</ion-row>
+  </div>
+
+
+  <div style="width:100%;" class="animated fadeInDown">
+    <div style="width:70%;display:inline-block;font-size: 150%;margin-top: 6px;color: #1b155c;
+    font-weight: 600;">Límites</div>
+    <div class="tituloHeader" style="width:28%;display:inline-block;text-align: right;" (click)="editarLimites()">
+      <ion-icon name="save"></ion-icon>
+    </div>
+  </div>
+  <div style="width:100%">
+    <div style="width:48%;display: inline-block;vertical-align: middle;
+    font-size: 120%;">Estación:</div>
+    <select class="mySelect" [(ngModel)]="idEstacion"
+    style="margin-top: 14px;width: 48%;display: inline-block;height: 31px;
+    vertical-align: middle;" (change)="cargaPrecios1()">
+      <option *ngFor="let estacion of estaciones" [ngValue]="estacion.id">
+        {{estacion.descripcion}}
+      </option>
+    </select>
+  </div>
+
+  <div style="width:100%">
+    <div style="width:48%;display: inline-block;vertical-align: middle;
+    font-size: 120%;">Combustible:</div>
+    <select class="mySelect" [(ngModel)]="idCombustible"
+    style="margin-top: 14px;width: 48%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let combustible of combustibles" [ngValue]="combustible.id">
+        {{combustible.descripcion}}
+      </option>
+    </select>
+  </div>
+
+  <div style="width:100%">
+    <div style="width:48%;display: inline-block;vertical-align: middle;
+    font-size: 120%;">Carga:</div>
+    <input placeholder="0.00 Lts" class="inputText clm widthMedium" [(ngModel)]="carga"/> Lts
+  </div>
+  <div style="width:100%">
+    <div style="width:48%;display: inline-block;vertical-align: middle;
+    font-size: 120%;">Día:</div>
+    <input placeholder="0.00 Lts" class="inputText clm widthMedium" [(ngModel)]="dia"/> Lts
+  </div>
+
+  <div style="width:100%">
+    <div style="width:48%;display: inline-block;vertical-align: middle;
+    font-size: 120%;">Semana:</div>
+    $ <input placeholder="$ 0.00" class="inputText clm widthMedium" [(ngModel)]="semana"/>
+  </div>
+  <div style="width:100%">
+    <div style="width:48%;display: inline-block;vertical-align: middle;
+    font-size: 120%;">Mes:</div>
+    $ <input placeholder="$ 0.00" class="inputText clm widthMedium" [(ngModel)]="mes"/>
+  </div>
+</ion-content>
+<ion-fab top right class="animated swing" style="margin-top: 5%">
+  <button ion-fab color="light">
+    <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+</ion-fab>

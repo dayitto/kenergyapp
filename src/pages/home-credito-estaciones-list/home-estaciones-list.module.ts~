@@ -1,0 +1,13 @@
+import { NgModule } from '@angular/core';
+import { IonicPageModule } from 'ionic-angular';
+import { EstacionesListPage } from './estaciones-list';
+
+@NgModule({
+  declarations: [
+    HomeEstacionesListPage,
+  ],
+  imports: [
+    IonicPageModule.forChild(HomeEstacionesListPage),
+  ],
+})
+export class HomeEstacionesListPageModule {}

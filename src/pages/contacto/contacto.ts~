@@ -1,0 +1,27 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ContactoModel } from '../../models/contactoModel';
+
+@IonicPage()
+@Component({
+  selector: 'page-contacto',
+  templateUrl: 'contacto.html',
+})
+export class ContactoPage {
+
+  public telefonos: ContactoModel[] = [];
+
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.telefonos.push(new ContactoModel("tomas-clandestinas.png", "0180022289660", "Tomas Clandestinas"));
+    this.telefonos.push(new ContactoModel("911.png", "911", "Emergencias"));
+    this.telefonos.push(new ContactoModel("ambulancia.png", "065", "Cruz Roja"));
+    this.telefonos.push(new ContactoModel("soporte-vial.png", "076", "Auxilio Vial"));
+    this.telefonos.push(new ContactoModel("angeles-verdes.png", "078", "Ángeles Verdes"));
+    this.telefonos.push(new ContactoModel("bpmberos.png", "2727240885", "Bomberos"));
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ContactoPage');
+  }
+
+}

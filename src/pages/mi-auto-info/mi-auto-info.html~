@@ -1,0 +1,178 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Mi Auto</ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="presentPopover($event)" style="color:#fff">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+
+
+    <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/miAuto/carro.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="animated fadeIn" padding style="
+  background-image: url(assets/imgs/fondo.jpg); 
+  background-size: 100%;
+  background-position: center center;">
+  <div style="width:100%">
+    <div style="display:inline-block;width:48%;vertical-align: top;">
+      <img src="assets/imgs/miAuto/coche.png" style="width: 100%;" >
+    </div>
+    <div style="display:inline-block;width:48%">
+      <div style="font-size: 150%;" class="tituloHeader">
+          <select class="mySelect" id="vehiculo.circula" style="border: none;">
+	          <option value="0">
+   	         No Circula
+      	    </option>
+      	    <option value="1">
+   	         Lunes
+      	    </option>
+				 <option value="2">
+   	         Martes
+      	    </option>
+      	    <option value="3">
+   	         Miércoles
+      	    </option>
+      	    <option value="4">
+   	         Jueves
+      	    </option>
+      	    <option value="5">
+   	         Viernes
+      	    </option>
+        	 </select>
+      </div>
+      <div style="font-size: 150%;" class="tituloHeader">
+          <select class="mySelect" id="vehiculo.periodo" style="border: none;">
+	          <option value="0">
+   	         Periodo
+      	    </option>
+      	    <option value="1">
+   	         1er y 3er sab.
+      	    </option>
+				 <option value="2">
+   	         2o y 4o sab
+      	    </option>
+        	 </select>
+      </div>
+      <div style="font-size: 150%;" class="tituloHeader">
+        	 <select class="mySelect" id="vehiculo.tipoCombustible" style="border: none;">
+	          <option *ngFor="let tipo of tipoCombustibles" [ngValue]="tipo.id">
+   	         {{tipo.nombre}}
+      	    </option>
+        	 </select>
+      </div>
+
+    </div>
+    <div style="width:100%">
+      <div style="width:49%;display: inline-block">
+        <div style="display:inline-block;width:67%">
+          <input [(ngModel)]="vehiculo.Kilometraje" class="inputText" id="km1" />
+        </div>
+        <div style="display:inline-block;width:30%;font-size: 130%;">
+          Km
+        </div>
+      </div>
+      <div style="width:49%;display: inline-block">
+        <div style="display:inline-block;width:67%">
+          <input [(ngModel)]="vehiculo.Puntos" class="inputText" id="puntos1" readonly="true"/>
+        </div>
+        <div style="display:inline-block;width:30%;font-size: 88%;">
+          Puntos
+        </div>
+      </div>
+    </div>
+    <div style="width:100%">
+      <button ion-button clear item-end style="padding: 2px 5px;" (click)="actualizaAuto()">
+        <ion-icon name="save"></ion-icon>
+      </button>
+    </div>
+    <input type="hidden" [(ngModel)]="vehiculo.Id" id="idVehiculo"/>
+    <input type="hidden" id="esta"/>
+    <input placeholder="Alias" class="inputText" [(ngModel)]="vehiculo.Alias" id="alias"/>
+    <input placeholder="Marca" class="inputText" [(ngModel)]="vehiculo.Marca" id="marca" />
+    <div class="widthFull">
+      <input placeholder="Modelo" class="inputText clm widthMedium" [(ngModel)]="vehiculo.Modelo" id="modelo"/>
+      <input placeholder="Año" type="number" class="inputText clm widthMedium" [(ngModel)]="vehiculo.Anio" id="anio" />
+    </div>
+    <div class="widthFull">
+      <input placeholder="Placa" class="inputText clm widthMedium" [(ngModel)]="vehiculo.Placa" id="placa"/>
+      <input placeholder="Estado" class="inputText clm widthMedium" id="vehiculo.estado"/>
+    </div>
+    <input placeholder="Rendimiento Estimado" type="number" class="inputText" [(ngModel)]="vehiculo.Rendimiento" id="rendimiento"/>
+    <input placeholder="Último Kilometraje" type="number" class="inputText" [(ngModel)]="vehiculo.Kilometraje"  id="km2"/>
+    <input placeholder="Última Fecha de Verificación" type="date" class="inputText" id="vehiculo.ultimaFechaVerificacion" />
+    <input placeholder="Próx. Fecha de Verificación" type="date" class="inputText" id="vehiculo.proximaFechaVerificacion" />
+
+    <div class="widthFull">
+      <input placeholder="Agencia" class="inputText clm widthMedium" id="vehiculo.agencia" />
+      <input placeholder="Teléfono" class="inputText clm widthMedium" id="vehiculo.telefono" />
+    </div>
+    <div class="tituloDiv tituloHeader">Datos del Seguro</div>
+
+    <input placeholder="Compañía del Seguro" class="inputText" id="vehiculo.companiaSeguro" />
+
+    <div class="widthFull">
+      <input placeholder="Num. Póliza" class="inputText clm widthMedium" id="vehiculo.poliza" />
+      <input placeholder="Fecha Vencimiento" type="date" class="inputText clm widthMedium" id="vehiculo.fechaVencimiento"
+        style="padding-left: 0px;" />
+    </div>
+    <div class="widthFull">
+      <input placeholder="Monto de póliza" class="inputText clm widthMedium" id="vehiculo.montoPoliza" />
+      <input placeholder="Teléfono" class="inputText clm widthMedium" id="vehiculo.telefonoSeguro" />
+    </div>
+    <div class="tituloDiv tituloHeader">Programar Alertas y Recordatorios</div>
+
+    <div style="margin-top: 25px">
+      <input type="checkbox" id="vehiculo.verificacion" style="width: 20px;
+          height: 20px;">
+      <label for="cbox2" style="font-size: 100%;vertical-align: super;">Verificación (15 días)</label>
+    </div>
+    <div style="margin-top: 25px">
+      <input type="checkbox" id="vehiculo.vencimiento" style="width: 20px;
+            height: 20px;">
+      <label for="cbox2" style="font-size: 100%;vertical-align: super;">Vencimiento Seguro (15 días)</label>
+    </div>
+    <div style="width:100%">
+      <div style="width:54%;display: inline-block">
+        <div style="margin-top: 25px">
+          <input type="checkbox" id="vehiculo.mantenimiento" style="width: 20px;
+                    height: 20px;">
+          <label for="cbox2" style="font-size: 100%;vertical-align: super;">Mantenimiento cada</label>
+        </div>
+      </div>
+      <div style="width:44%;display: inline-block">
+        <select class="mySelect" id="vehiculo.mantenimientoRango" style="font-weight: 700;display: inline-block;height: 26px;vertical-align: middle;">
+          <option *ngFor="let rango of rangosMantenimiento" [ngValue]="rango.id">
+            {{rango.valor}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top: 25px">
+      <input type="checkbox" id="vehiculo.pagoTenencia" style="width: 20px;
+                height: 20px;">
+      <label for="cbox2" style="font-size: 100%;vertical-align: super;">Pago de Tenencia (de Enero a Marzo)</label>
+    </div>
+    <div style="margin-top: 25px">
+      <input type="checkbox" id="vehiculo.hoyNoCircula" style="width: 20px;
+                  height: 20px;">
+      <label for="cbox2" style="font-size: 100%;vertical-align: super;">Hoy no circula</label>
+    </div>
+  </div>
+</ion-content>

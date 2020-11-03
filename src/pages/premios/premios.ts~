@@ -1,0 +1,106 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
+import { PremioModel } from '../../models/premioModel';
+import { PremiosSolicitudPage } from '../premios-solicitud/premios-solicitud';
+import { AlertaServiceProvider } from '../../providers/alerta-service';
+import { RestServiceProvider } from '../../providers/rest-service';
+import { Storage } from '@ionic/storage';
+import { HttpParams } from '@angular/common/http';
+
+@IonicPage()
+@Component({
+  selector: 'page-premios',
+  templateUrl: 'premios.html',
+})
+export class PremiosPage {
+  public usuario: any = null;
+  public premios: PremioModel[] = [];
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalController: ModalController,
+    public localStorage: Storage,
+    public alertaService: AlertaServiceProvider, public restService: RestServiceProvider,
+    public loadingCtrl: LoadingController) {
+    this.openSesion();
+  }
+
+  openSesion() {
+    this.localStorage.ready().then(() => {
+      this.localStorage.get(`@userSession`).then((data) => {
+        if (data != null) {
+          this.usuario = data;
+          this.cargarPremios();
+        } else {
+          this.alertaService.warnAlert(this.restService.headerValidacion, "Usuario sin sesión, no se cargarán sus datos", null);
+        }
+      });
+    });
+  }
+
+  cargarPremios() {
+    if (this.usuario == null) {
+      this.alertaService.warnAlert(this.restService.headerValidacion, "Usuario no en sesión", null);
+    } else {
+      
+      let loading = this.loadingCtrl.create();
+      loading.present();
+
+      this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+        if (data == null) {
+          loading.dismiss();
+          this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+        } else {
+          let body = new HttpParams();
+
+          var a = this.usuario.Id;
+          var url = "prize/";
+          //var urlArmada = "stats/"+this.usuario.IdClient;
+          this.restService.restServiceGETToken(url, body, data.toString()).timeout(this.restService.timeOver).subscribe(
+            (dataRegistro:any) => {
+              if (dataRegistro.length != 0) {
+                let premiosRes = dataRegistro;
+                premiosRes.forEach(premio => {
+                  this.premios.push(new PremioModel(
+                    premio.DescriptionShort,
+                    premio.Money,
+                    premio.Points,
+                    premio.Money,
+                    premio.UrlImage,
+                    premio.Name,
+                    premio.DescriptionLong,
+                    premio.Id,
+                    premio.Clave
+                  ));
+                });
+              } else if(dataRegistro['Message']!=3){
+                this.alertaService.warnAlert(this.restService.headerValidacion, dataRegistro['Message'], null);
+              }else{
+                this.alertaService.warnAlert(this.restService.headerValidacion, "No se encontraron registros de facturación", null);
+              }
+              loading.dismiss();
+            }, error => {
+              loading.dismiss();
+              console.log(error);
+              this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+            }
+          );
+        }
+      }, error => {
+        loading.dismiss();
+        console.log(error);
+        this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+      });
+    }
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad PremiosPage');
+  }
+
+  canjear() {
+    let modal = this.modalController.create(PremiosSolicitudPage, { premios: this.premios });
+    modal.present();
+    modal.onDidDismiss((data) => {
+
+    });
+  }
+}

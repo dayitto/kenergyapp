@@ -1,0 +1,82 @@
+page-recuperar-contra {
+    .titulo{
+        //text-align: center;
+        color: #020f32;
+        font-size: 127%;
+        margin-bottom: 11px;margin-top: 29px;
+        background-color: #c1272d;
+        /* height: 7%; */
+        color: #fff;
+        padding: 3%;
+        border-radius: 7px;    
+      }
+
+.centro{
+    width: 100%;
+}
+
+.botonGuardar {
+    width: 51%;
+    margin-top: 20%;
+    background-color: #009245;
+    vertical-align: top;
+    border-radius: 7px;
+    margin-left: 80%;
+    height: 36px;
+}
+
+.inputText{
+    border-radius: 5px;
+    background-color: #d4d4d4;
+    vertical-align: middle;
+    height: 28px;
+    width: 100%;
+    border: none;
+    margin-bottom: 8px;
+}
+
+input{
+    text-indent: 20px;
+}
+
+.clm{
+    display: inline-block;
+}
+
+.widthFull{
+    width: 100%;
+}
+
+.widthMedium{
+    width: 49.4% !important;
+}
+
+ion-label {
+    font-size: medium;
+    min-width: 30%;
+    margin: 2% 2% !important;
+    padding: 0% 0% !important;
+    }
+    
+    .itemD{
+    min-height: 5% !important;
+    padding-left: 0;
+    }
+    
+    .text-input{
+    color: #000;
+    border-bottom: solid 2px !important;
+    border-color: #1b155c !important;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    min-width: 60%;
+    }
+    
+    ion-item{
+    padding-right: 0px !important;
+    }
+    
+    .item-inner {
+    box-shadow: none !important;
+    }
+}

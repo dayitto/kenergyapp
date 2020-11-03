@@ -1,0 +1,32 @@
+page-contacto {
+    .miniBoton{
+        background-color: #c1272d !important;
+        width: 20px !important;
+        height: 20px !important;
+        margin-top: -60px !important;
+        margin-left: 40px !important;
+    }
+
+    .fab-ios-light {
+        color: #fff;
+        background-color: #011432;
+    }
+    .fab-md-light {
+        color: #fff;
+        background-color: #011432;
+    }
+   
+    .button-clear-md {
+        border-color: transparent;
+        color: #000000;
+        background-color: transparent;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        opacity: 1;
+    }
+    .button-clear-ios {
+        border-color: transparent;
+        color: #000000;
+        background-color: transparent;
+    }
+}

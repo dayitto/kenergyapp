@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Facturación</ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="presentPopover($event)" style="color:#fff">
+        <!--<ion-icon name="more"></ion-icon>-->
+      </button>
+    </ion-buttons>
+
+
+    <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/facturacion/factura.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding style="
+    background-image: url(assets/imgs/fondo.jpg); 
+    background-size: 100%;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-color: white;">
+  <div style="width:100%;text-align: left">
+    <ion-row>
+      <ion-col>
+        <ion-item style="width:100%">
+          <ion-label style="color:#1b155c;">Desde:</ion-label>
+          <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="desde" style="color: #000;" 
+          doneText="Aceptar" cancelText="Cancelar" (ionChange)="buscar()"></ion-datetime>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item style="width:100%">
+          <ion-label style="color:#1b155c;">Hasta:</ion-label>
+          <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="hasta" style="color: #000;" 
+          doneText="Aceptar" cancelText="Cancelar" (ionChange)="buscar()"></ion-datetime>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <ion-item style="width:100%">
+    <ion-label position="floating" style="color:#1b155c;">Estación:</ion-label>
+    <ion-select [(ngModel)]="idEstacion" style="color:#000" okText="Aceptar" 
+    cancelText="Cancelar" (ionChange)="buscar()">
+      <ion-option *ngFor="let estacion of estaciones" value="{{estacion.id}}">{{estacion.descripcion}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <div (click)="ordenar()" class="divorder"><ion-icon *ngIf="ordenFecha == 1" name="chevron-down-outline" class="iconoo"></ion-icon><ion-icon *ngIf="ordenFecha == 2" name="chevron-up-outline" class="iconoo"></ion-icon> {{ordenFecha == 1 ? "Ordenada de la más antigua a la más reciente" : "Ordenada de la más reciente a la más antigua" }}</div>
+
+  <ion-list class="animated fadeIn" style="margin-top: 5%;">
+    <ion-item *ngFor="let factura of facturas" class="itemList">
+      <div style="width:100%; display: flex; align-items: center;">
+        <div style="display:inline-block; width:10%;vertical-align: top;" (click)="downloadFactura(factura.id,factura.idSuc,factura.folio)">
+          <img src="assets/imgs/facturacion/invoice2.png" style="width: 100%;">
+        </div>
+        <div style="display:inline-block; width:10%;vertical-align: top; margin-left: 10px;" (click)="downloadFactura(factura.id,factura.idSuc,factura.folio,2)">
+          <img src="assets/imgs/facturacion/xml.png" style="width: 100%;">
+        </div>
+        <div style="display:inline-block;width:68%;vertical-align: top; margin-left: 5px;">
+          <div style="width:100%">
+            <div style="width:48%;display: inline-block;font-weight: lighter;" class="tituloHeader">Folio {{factura.folio}}</div>
+            <div style="width:48%;display: inline-block;font-weight: lighter; text-align: end; margin-left: 10px;" class="tituloHeader">{{factura.fecha}}</div>
+          </div>
+          <div style="width:100%">
+            <div style="width:48%; display: inline-block; font-weight: lighter; font-size: 70%;" class="tituloHeader">{{factura.estacion}}</div>
+            <div style="width:48%; display: inline-block; font-weight: lighter; text-align: end; margin-left: 10px;" class="tituloHeader">Monto:
+              {{factura.monto | currency}}</div>
+          </div>
+        </div>
+        <!--<div style="width:10%;display: inline-block;">
+          <div style="text-align: center;margin-top: -6px;">
+            <ion-icon name="download"></ion-icon>
+          </div>
+          <div style="text-align: center;margin-top: -6px;">
+            <ion-icon name="mail"></ion-icon>
+          </div>
+          <div style="text-align: center;margin-top: -6px;">
+            <ion-icon name="search"></ion-icon>
+          </div>
+        </div>-->
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()">
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+  <button *ngIf="notificacion.num > 0" ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()" class="miniBoton">
+    {{notificacion.num}}
+</button>
+</ion-fab>

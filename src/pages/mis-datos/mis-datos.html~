@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Mis Datos</ion-title>
+
+    <ion-buttons left  class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/misDatos/usuario.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+
+<ion-content *ngIf="usuario != null"  padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+  <div style="width:100%;margin-bottom: 10px; margin-top: 70px;" class="animated fadeIn">
+    <div style="display:inline-block;width:25%;text-align: center"><!--<img src="assets/imgs/misDatos/edit.png" style="width: 16px">--></div>
+    <div style="display:inline-block;width:29%;font-size: 108%;text-align: center" (click)="openEstadistica()"><strong><a style="color:darkblue;" >Estadísticas</a></strong></div>
+    <div style="display:inline-block;width:35%;text-align: center" (click)="openAvisoPrivacidad()"><a style="color:#aaaaab;font-size: 94%;">Aviso
+        de Privacidad</a></div>
+  </div>
+
+  <input placeholder="Nombre*" class="inputText" [(ngModel)]="usuario.Nombre"/>
+  <div class="widthFull animated fadeIn">
+    <input placeholder="Alias* (12 carac)" class="inputText clm widthMedium" [(ngModel)]="usuario.Alias"/>
+    <input placeholder="Teléfono*" class="inputText clm widthMedium" [(ngModel)]="usuario.Tel"/>
+  </div>
+  <div class="widthFull animated fadeIn">
+    <input placeholder="Edad* (años)" class="inputText clm widthMedium" [(ngModel)]="usuario.edad"/>
+    <input id="pts" placeholder="25,440 puntos*" readonly="true" class="inputText clm widthMedium" style="background-color:#8b8b8b" [(ngModel)]="usuario.puntos"/>
+  </div>
+
+  <div class="widthFull animated fadeIn">
+    <div class="clm tituloHeader" style="width: 20%;">Usuario: </div>
+    <input placeholder="E-mail*" class="inputText clm widthMedium" style="width:78% !important;" [(ngModel)]="usuario.Email"/>
+  </div>
+
+  <div class="widthFull animated fadeIn">
+    <div class="clm tituloHeader" style="width: 26%;">Contraseña: </div>
+    <input placeholder="" class="inputText clm widthMedium" type="password" style="width:72% !important;" [(ngModel)]="usuario.Password"/>
+  </div>
+
+  <div class="centro animated fadeIn">
+    <div style="display: inline-block;width: 52%" class="animated fadeIn">
+      <button ion-button color="naranja" class="tituloHeader botonPass" (click)="cambiarContrasenia()">Cambiar Contraseña</button>
+    </div>
+    <div style="display: inline-block;width: 44%" class="animated fadeIn">
+      <button ion-button color="naranja" class="tituloHeader botonGuardar" (click)="guardarUsuario()">Guardar</button>
+    </div>
+  </div>
+
+  <div class="titulo animated rubberBand" (click)="facturarA()">
+    <div class="clm divPresentacionAutos tituloHeader">Facturar A:</div>
+    <ion-icon name="add" class="clm"></ion-icon>
+  </div>
+
+  <div *ngFor="let factura of facturas" class="animated fadeIn">
+      <div style="box-shadow: 0px 0px 6px 1px #b0b2b3;background-color: #001432;
+                  border-radius: 5px;margin-bottom: 9px;padding: 9px;">
+        <strong><div style="font-size:120%;margin-left: 10px;color:#fff">{{factura.rfc}}</div></strong>
+        <div style="font-size:80%;margin-left: 10px;color:#fff">{{factura.razonSocial}}</div>
+        <div style="font-size:80%;margin-left: 10px;color:#fff">{{factura.municipio}},{{factura.estado}}</div>
+        <div style="font-size:80%;margin-left: 10px;font-weight: 500;color:#fff">{{factura.correoElectronico}}</div>
+        <button ion-button clear item-end style="float: right;
+        display: inline-block;
+        padding: 2px 5px;
+        margin-top: -63px;" (click)="editarFacturarA(factura)"><img src="assets/imgs/misDatos/edit1.png" style="width: 16px; color:white;"></button>
+      </div>
+    </div>
+</ion-content>
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light" style="">
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+</ion-fab>

@@ -1,0 +1,243 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { ProductoModel } from '../../models/productoModel';
+import { FacturaModel } from '../../models/facturaModel';
+import { FacturaCreditoModel } from '../../models/facturaCreditoModel';
+import { AlertaServiceProvider } from '../../providers/alerta-service';
+import { RestServiceProvider } from '../../providers/rest-service';
+import { Storage } from '@ionic/storage';
+import { HttpParams } from '@angular/common/http';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/';
+import { File } from '@ionic-native/file';
+import { FileOpener } from '@ionic-native/file-opener/';
+
+@IonicPage()
+@Component({
+  selector: 'page-facturacion-credito',
+  templateUrl: 'facturacion-credito.html',
+})
+export class FacturacionCreditoPage {
+  public desde: Date = new Date();
+  public hasta: Date = new Date();
+  public estaciones: ProductoModel[] = [];
+  public idEstacion: number = 0;
+  public estacion: string;
+  public facturas: FacturaCreditoModel[] = [];
+  
+  
+
+  public usuario: any = null;
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public localStorage: Storage,
+    public alertaService: AlertaServiceProvider, public restService: RestServiceProvider,
+    public loadingCtrl: LoadingController, public transfer: FileTransfer, public file: File, public fileOpener: FileOpener) {
+    /*this.facturas.push(new FacturaCreditoModel("C-210775", "Estación", "02-Sept-18", 1850));
+    this.facturas.push(new FacturaCreditoModel("C-210775", "Estación", "02-Sept-18", 1850));
+    this.facturas.push(new FacturaCreditoModel("C-210775", "Estación", "02-Sept-18", 1850));
+*/
+    this.estaciones.push(new ProductoModel(0, "Estaciones"));
+    this.hasta.setDate(this.desde.getDate() + 1);
+
+    //this.usuario=1;
+    //this.cargarCombos();
+    this.openSesion();
+  }
+  
+
+  openSesion() {
+    this.localStorage.ready().then(() => {
+      this.localStorage.get(`@userSession`).then((data) => {
+        if (data != null) {
+          this.usuario = data;
+          this.cargarCombos();
+        } else {
+          this.alertaService.warnAlert(this.restService.headerValidacion, "Usuario sin sesión, no se cargarán sus datos", null);
+        }
+      });
+    });
+
+  }
+
+  cargarCombos() {
+    let loading = this.loadingCtrl.create();
+    loading.present();
+    this.estaciones = [];
+    this.estaciones.push(new ProductoModel(0, "Estación"));
+    this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      if (data == null) {
+        loading.dismiss();
+        this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+      } else {
+        let body = new HttpParams();
+        var a = this.usuario.IdClient;
+        //var a = 44;
+        //body.append("IdClient", a.toString());
+        var urlArmada = "stats/" + a;
+        //var urlArmada = "stats/"+this.usuario.IdClient;
+        this.restService.restServiceGETToken(urlArmada, body, data.toString()).timeout(this.restService.timeOver).subscribe(
+          dataRegistro => {
+            if (Object.keys(dataRegistro['Response']).length != 0) {
+              let estaciones = dataRegistro['Response'].Estacion;
+              estaciones.forEach(estacion => {
+                this.estaciones.push(new ProductoModel(estacion.Id, estacion.Nombre));
+              });
+              //this.buscar();
+            } else {
+              this.alertaService.warnAlert(this.restService.headerValidacion, "No se cargaron los filtros de búsqueda", null);
+            }
+            loading.dismiss();
+          }, error => {
+            loading.dismiss();
+            console.log(error);
+            this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+          }
+        );
+      }
+    }, error => {
+      loading.dismiss();
+      console.log(error);
+      this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+    });
+  }
+
+  buscar() {
+    if (this.usuario == null) {
+      this.alertaService.warnAlert(this.restService.headerValidacion, "Usuario no en sesión", null);
+    } else {
+      this.facturas = [];
+      var fechaDesde = this.desde.toString().split("-");
+      var fechaFormat = "";
+      var fechaHasta = this.hasta.toString().split("-");
+      var fechaFormatHasta = "";
+      if (fechaDesde.length < 3) {
+        //this.alertaService.warnAlert(this.restService.headerValidacion, "Selecciona una fecha de inicio", null);
+      } else {
+        // año/ mes/ dia
+        fechaFormat = fechaDesde[2] + "/" + fechaDesde[1] + "/" + fechaDesde[0];
+      }
+      if (fechaHasta.length < 3) {
+        //this.alertaService.warnAlert(this.restService.headerValidacion, "Selecciona una fecha de fin", null);
+      } else {
+        // año/ mes/ dia
+        fechaFormatHasta = fechaHasta[2] + "/" + fechaHasta[1] + "/" + fechaHasta[0];
+      }
+      if (this.idEstacion == 0) {
+        this.alertaService.warnAlert(this.restService.headerValidacion, "Selecciona una Estación", null);
+        return;
+      }
+
+      let loading = this.loadingCtrl.create();
+      loading.present();
+
+      this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+        if (data == null) {
+          loading.dismiss();
+          this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+        } else {
+          let body = new HttpParams();
+
+          var a = this.usuario.IdClient;
+          //var a = 44;
+          //this.idEstacion = 1;
+          var url = "invoice?Desde=" + fechaFormat + "&Hasta=" + fechaFormatHasta + "&IdEstacion=" + this.idEstacion + "&IdClient=" + a;
+          /**
+     * String:Desde (Requerido), String:Hasta(Requerido), 
+     * Int:IdProducto, Int:IdEstacion(Requerido), Int:Chofer,
+     *  Int:IdVehiculo, Int:IdClient(Requerido)
+     */
+          //var urlArmada = "stats/"+this.usuario.IdClient;
+          this.restService.restServiceGETToken(url, body, data.toString()).timeout(this.restService.timeOver).subscribe(
+            dataRegistro => {
+              if (Object.keys(dataRegistro['Response']).length != 0) {
+                let facturas = dataRegistro['Response'];
+                facturas.forEach(factura => {
+                  this.facturas.push(
+                    
+                    new FacturaCreditoModel(factura.Folio,factura.Estacion,factura.Fecha,factura.Efectivo,factura.Id)
+                  );
+                });
+              } else if (dataRegistro['Message'] != 3) {
+                this.alertaService.warnAlert(this.restService.headerValidacion, dataRegistro['Message'], null);
+              } else {
+                this.alertaService.warnAlert(this.restService.headerValidacion, "No se encontraron registros de cargas", null);
+              }
+              loading.dismiss();
+            }, error => {
+              loading.dismiss();
+              console.log(error);
+              this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+            }
+          );
+        }
+      }, error => {
+        loading.dismiss();
+        console.log(error);
+        this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+      });
+    }
+  }
+  
+  downloadFactura(factura) {
+		    	
+  	/*
+  	/api/invoice/pdf/ Int:IdFactura, int:IdEstacion,  IdClient =  */
+	
+	let fileTransfer: FileTransferObject = this.transfer.create();
+	let loading = this.loadingCtrl.create();
+      loading.present();
+
+      this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+        if (data == null) {
+          loading.dismiss();
+          this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+        } else {
+          let body = new HttpParams();
+
+          var a = this.usuario.IdClient;
+          var url = "invoice/pdf?IdFactura=" + factura.id + "&IdEstacion=" + this.idEstacion + "&IdClient=" + this.usuario.IdClient;
+			 this.restService.restServiceGETToken(url, body, data.toString()).timeout(this.restService.timeOver).subscribe(
+            dataRegistro => {
+              fileTransfer.download(dataRegistro['Response'], this.file.externalDataDirectory + 'file.pdf').then((entry) => {
+               //this.alertaService.alertaBasica(this.restService.headerExito, "Se ha descargado correctamente en: " + entry.toURL(), null);
+				    	
+
+						this.fileOpener.open(this.file.externalDataDirectory + 'file.pdf', 'application/pdf')
+					  	.then(() => console.log("Abrio correctament")/*this.alertaService.alertaBasica(this.restService.headerExito, "Se abrio correctamente", null)*/)
+  						.catch(e => this.alertaService.errorAlert(this.restService.headerError, "No se pudo abrir, no existe aplicación compatible " + e, null));				    	
+				    	
+  					}, (error) => {
+    					this.alertaService.errorAlert(this.restService.headerError, "ERROR descarga = " + error, null);
+  					});
+  					
+  					
+  					////////////XML
+  					
+  					/*fileTransfer.download("http://anuncia-te.com/src/1.xml", this.file.externalDataDirectory + 'file.xml').then((entry) => {
+				    	
+
+						this.fileOpener.open(this.file.externalDataDirectory + 'file.xml', 'application/xml')
+					  	.then(() => console.log("Abrio correctament"))
+  						.catch(e => this.alertaService.errorAlert(this.restService.headerError, "No se pudo abrir, no existe aplicación compatible " + e, null));				    	
+				    	
+  					}, (error) => {
+    					this.alertaService.errorAlert(this.restService.headerError, "ERROR descarga = " + error, null);
+  					});*/
+  					
+  					////////////XML
+              loading.dismiss();
+            }, error => {
+              loading.dismiss();
+              console.log(error);
+              this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+            }
+          );
+        }
+      }, error => {
+        loading.dismiss();
+        console.log(error);
+        this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+      });	
+	
+  }
+
+}

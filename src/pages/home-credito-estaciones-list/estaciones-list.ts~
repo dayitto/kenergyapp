@@ -1,0 +1,121 @@
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { CombustibleModel } from '../../models/CombustibleModel';
+import { AlertaServiceProvider } from '../../providers/alerta-service';
+import { RestServiceProvider } from '../../providers/rest-service';
+
+/**
+ * Generated class for the EstacionesListPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+ 
+import leaflet from 'leaflet';
+import leafletKnn from 'leaflet-knn';
+
+@IonicPage()
+@Component({
+  selector: 'page-estaciones-list',
+  templateUrl: 'estaciones-list.html',
+})
+export class EstacionesListPage {
+  public estaciones: CombustibleModel[] = [];
+  @ViewChild('map') mapContainer: ElementRef;
+  map: any;
+  public latOrigen: number = 0;
+  public longOrigen: number = 0;
+  
+  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, 
+  				public alertaService: AlertaServiceProvider, public restService: RestServiceProvider) {
+    this.estaciones = navParams.get("estaciones");
+    this.map = navParams.get("map");
+    this.latOrigen = navParams.get("latOrigen");
+    this.longOrigen = navParams.get("longOrigen");
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad EstacionesListPage');
+  }
+  
+  geolocalizarGasolinera(estacionees) {
+    let loading = this.loadingCtrl.create();
+    loading.present();
+    let options = {timeout: 15000, enableHighAccuracy: true, maximumAge: 3600};
+    
+        console.log("Se obtienen coordenadas de la gasolinera");
+        //resp.coords.latitude;
+        //resp.coords.longitude;
+        console.log(estacionees.lat);
+        console.log(estacionees.long);
+
+        //////////////
+        //this.map = leaflet.map('map').setView([estacionees.lat, estacionees.long], 15);
+        var geo = [];
+          geo.push({
+            "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [estacionees.lat, estacionees.long]
+          },
+          "properties": {
+            "name": estacionees.nombre,
+            "precioMagna": estacionees.precioMagna,
+            "precioPremium": estacionees.precioPremium,
+            "precioDiesel": estacionees.precioDiesel
+          }
+          });
+        var gj = leaflet.geoJson(geo);
+        var nearest = leafletKnn(gj).nearest([estacionees.lat, estacionees.long], 10, 2000);//punto de partida, estaciones máximas a encontrar, diámetro de busqueda en metros
+        console.log(nearest);//Este objeto contiene todos los lugares cercanos al punto de partida
+        // set map tiles source
+        leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: 'Mapa de Estaciones &copy; K Energy',
+          maxZoom: 20,
+        }).addTo(this.map);
+
+        this.map.locate({
+          setView: true,
+          maxZoom: 6
+        }).on('locationfound', (e) => {
+          // add marker to the map
+          this.map.eachLayer(function (layer) {
+    			Map.removeLayer(layer);
+			 });
+          let marker = leaflet.marker([estacionees.lat, estacionees.long]).addTo(this.map);
+          let marker1 = leaflet.marker([this.latOrigen, this.longOrigen]).addTo(this.map);
+
+          var greenIcon = leaflet.icon({
+            iconUrl: 'assets/css/images/marker-icon.png',
+            iconSize: [27, 41], // size of the icon
+            shadowSize: [50, 64], // size of the shadow
+            iconAnchor: [13, 44], // point of the icon which will correspond to marker's location
+            shadowAnchor: [4, 62],  // the same for the shadow
+            popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+          });
+
+          nearest.forEach(cercano => {
+            var caracteristicas = cercano.layer.feature.properties;
+            let marker = leaflet.marker([cercano.lon, cercano.lat], { icon: greenIcon, }).addTo(this.map);
+
+
+            var infoWindowContent = '<div id="content" style="width: 165px;">';
+            infoWindowContent += '<div><center><img src="/assets/imgs/estaciones/gasolina.jpg" alt="logo" style="width: 101%;box-shadow: 1px 1px 16px 1px #717171;"/></center></div>';
+            infoWindowContent += '<center><strong><h1 id="firstHeading" class="firstHeading" style="font-size: 100%;font-weight: 900;margin-top: 6px;">';
+            infoWindowContent += estacionees.nombre + '</h1></strong>';
+            infoWindowContent += '<div style="width:100%;margin: -16px;"><p style="color:#009263;margin: 0px;width:60%;display:inline-block;text-align:rigth"><strong>Precio Magna: </strong></p><p style="width: 38%;display: inline-block;text-align: center;color: #000;">' + estacionees.precioMagna + '</p></div>';
+            infoWindowContent += '<div style="width:100%;margin: -16px;"><p style="color:#d52f35;margin: 0px;width:60%;display:inline-block;text-align:rigth"><strong>Precio Premium: </strong></p><p style="width: 38%;display: inline-block;text-align: center;color: #000;">' + estacionees.precioPremium + '</p></div>';
+            infoWindowContent += '<div style="width:100%;margin: -16px;"><p style="color:#000;margin: 0px;width:60%;display:inline-block;text-align:rigth"><strong>Precio Diesel: </strong></p><p style="width: 38%;display: inline-block;text-align: center;color: #000;">' + estacionees.precioDiesel + '</p></div>';
+            marker.bindPopup(infoWindowContent);
+          });
+        }).on('locationerror', (err) => {
+          this.alertaService.errorAlert(this.restService.headerError, "Habilita los permisos de geolocalización en ajustes", null);
+        });
+        loading.dismiss();
+
+  }
+  
+  selectEstacionBuscar(estacion) {
+		this.geolocalizarGasolinera(estacion);
+  }
+}

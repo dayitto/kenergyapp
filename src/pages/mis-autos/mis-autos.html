@@ -1,0 +1,11 @@
+<ion-list>
+    <ion-list-header class="tituloHeader" style="color: #fff;
+    background-color: #e77423;
+    text-align: center;">Mis Autos</ion-list-header>
+    <div style="color: #000;
+    font-size: 133%;     margin-left: 10px;
+    border-bottom: 1px solid #e3e5e6;  
+    margin-top: 8px;" *ngFor="let vehiculo of vehiculos" [style.background-color]="vehiculo.seleccionado ? '#60B1F0 ' : 'white'" >
+      <div (click)="cargaAutoById(vehiculo)">{{vehiculo.Marca}} - {{vehiculo.Modelo}}</div>
+    </div>
+  </ion-list>

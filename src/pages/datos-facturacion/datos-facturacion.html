@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Datos de Facturación</ion-title>
+
+    <ion-buttons left  class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/misDatos/usuario.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: bottom center;
+background-repeat: no-repeat;
+background-color: white;">
+  <form [formGroup]="loginForm">
+    <ion-item>
+    <ion-label position="floating" style="color:#181560;">RFC*</ion-label>
+    <ion-input formControlName="rfc" (keyup)="numberOnlyValidation($event)" style="color: #000;" autocapitalize="off" autocomplete="off" 
+    autocorrect="off" id="rfc"></ion-input>
+  </ion-item>
+  <ion-item *ngIf="loginFormValidator.rfc.mensaje">
+    <ion-label text-wrap color="danger">
+    {{ loginFormValidator.rfc.mensaje }}
+    </ion-label>
+  </ion-item>
+    
+<ion-item>
+  <ion-label position="floating" style="color:#181560;">Razón Social*</ion-label>
+  <ion-input autocapitalize="off" formControlName="razonSocial" style="color: #000;" autocomplete="off" autocorrect="off" id="razonSocial"></ion-input>
+</ion-item>
+<ion-item *ngIf="loginFormValidator.razonSocial.mensaje">
+  <ion-label text-wrap color="danger">
+  {{ loginFormValidator.razonSocial.mensaje }}
+  </ion-label>
+</ion-item>
+
+  <ion-item>
+  <ion-label position="floating" style="color:#181560;">E-mail*</ion-label>
+  <ion-input formControlName="email" type="email" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="email"></ion-input>
+</ion-item>
+<ion-item *ngIf="loginFormValidator.email.mensaje">
+  <ion-label text-wrap color="danger">
+  {{ loginFormValidator.email.mensaje }}
+  </ion-label>
+</ion-item>
+
+<ion-item>
+  <ion-label position="floating" style="color:#181560;">Calle</ion-label>
+  <ion-input formControlName="calle" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="calle"></ion-input>
+</ion-item>
+  
+  <ion-item>
+    <ion-label position="floating" style="color:#181560;">Núm. Exterior</ion-label>
+    <ion-input formControlName="ne" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="ne"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" style="color:#181560;">Núm. Interior</ion-label>
+    <ion-input formControlName="ni" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="ni"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" style="color:#181560;">Código Postal</ion-label>
+    <ion-input formControlName="cp" style="color: #000;" type="number" autocapitalize="off" autocomplete="off" autocorrect="off" id="cp"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" style="color:#181560;">Colonia</ion-label>
+    <ion-input formControlName="colonia" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="colonia"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" style="color:#181560;">Municipio</ion-label>
+    <ion-input formControlName="municipio" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="municipio"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" style="color:#181560;">Estado</ion-label>
+    <ion-input formControlName="estado" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="estado"></ion-input>
+  </ion-item>
+
+  <div class="centro">
+      <button ion-button color="aceptar" class="tituloHeader botonGuardar"
+      (click)="registrar()">Guardar</button>
+  </div>
+</form>
+</ion-content>
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()">
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+  <button *ngIf="notificacion.num > 0" ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()" class="miniBoton">
+    {{notificacion.num}}
+</button>
+</ion-fab>

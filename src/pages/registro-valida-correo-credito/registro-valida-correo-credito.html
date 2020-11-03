@@ -1,0 +1,33 @@
+<ion-content class="animated fadeIn" padding style="
+    background-image: url(assets/imgs/fondo.jpg); 
+    background-size: 100%;
+    background-position: center center;">
+  <div style="text-align:center" class="animated fadeInDown">
+    <img src="assets/imgs/registro/logoLetra2.png" alt="logo" class="logo logoMargen" style="margin-bottom: 13%;" />
+  </div>
+  <div style="text-align: center;font-size: 150%;margin-bottom: 2%;" class="tituloHeader">
+    <strong>Kanz Combustibles S.A. de C.V</strong>
+  </div>
+  <div style="width:100%;margin-bottom: 5%" class="animated fadeInDown">
+    <div class="tituloHeader" style="width:70%;display:inline-block;font-size: 150%">Ingresa tu Correo Electrónico</div>
+    <div class="tituloHeader" style="width:28%;display:inline-block;text-align: right;" (click)="ingresarClave()">
+      <ion-icon name="save"></ion-icon>
+    </div>
+  </div>
+  <input placeholder="Correo electrónico*" class="inputText" [(ngModel)]="email"/>
+  <input placeholder="Confirma tu correo*" type="password" class="inputText" style="margin-bottom:5%" [(ngModel)]="emailConfirm"/>
+  <div style="text-align:center;margin: 16px;font-size: 90%;font-style: italic;">
+    Al validar tus datos, enviaremos una clave
+    a tu correo electrónico para registrarte
+  </div>
+  <div style="text-align: -webkit-center;" (click)="validar()">
+    <div style="background-color: #009245;
+    width: 29%;
+    color: #fff;
+    padding: 6px;
+    font-size: 135%;
+    border-radius: 5px;">Validar</div>
+  </div>
+  <div style="color: #4882d2;
+  font-style: italic;text-align: center;" (click)="postClave()"><p><u >Cuento con una clave</u></p></div>
+</ion-content>

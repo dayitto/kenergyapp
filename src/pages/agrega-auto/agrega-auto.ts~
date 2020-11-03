@@ -1,0 +1,137 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
+import { RestServiceProvider } from '../../providers/rest-service';
+import { AlertaServiceProvider } from '../../providers/alerta-service';
+import { HttpParams } from '@angular/common/http';
+import { Storage } from '@ionic/storage';
+import { HomePage } from '../home/home';
+import { VehiculoModel } from '../../models/vehiculoModel';
+import { AlertController } from 'ionic-angular';
+
+
+@IonicPage()
+@Component({
+  selector: 'page-agrega-auto',
+  templateUrl: 'agrega-auto.html',
+})
+export class AgregaAutoPage {
+  public alias: string = "";
+  public marca: string = "";
+  public modelo: string = "";
+  public anio: string = "";
+  public placas: string = "";
+  public km: string = "";
+  public usuario: any = null;
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController,
+    private restService: RestServiceProvider,
+    private alertaService: AlertaServiceProvider,
+    public modalController: ModalController,
+    public localStorage: Storage,
+    public alertCtrl: AlertController) {
+      this.usuario = navParams.get("usuario");
+      if (this.usuario == null) {
+        this.openSesion();
+      }
+  }
+
+  openSesion() {
+    this.localStorage.ready().then(() => {
+      this.localStorage.get(`@userSession`).then((data) => {
+        if (data != null) {
+          this.usuario = data;
+        } else {
+          this.alertaService.warnAlert(this.restService.headerValidacion, "Usuario sin sesión, no se cargarán sus datos", null);
+        }
+      });
+    });
+
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad AgregaAutoPage');
+  }
+
+  cancelar() {
+    this.viewCtrl.dismiss();
+  }
+
+  validarFaltantes() {
+    return this.alias.length != 0 &&
+      this.marca.length != 0 &&
+      this.modelo.length != 0 &&
+      this.anio.length != 0 &&
+      this.placas.length != 0 &&
+      this.km.length != 0;
+  }
+
+  registrar() {
+    if (this.validarFaltantes()) {
+      this.agregar();
+    } else {
+      this.alertaService.warnAlert(this.restService.headerValidacion, "Todos los datos son requeridos", null);
+    }
+  }
+
+  agregar() {
+    this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      const bodys = new HttpParams()
+        .set('Alias', this.alias)
+        .set('Marca', this.marca)
+        .set('Modelo', this.modelo)
+        .set('Anio', this.anio)
+        .set('Placa', this.placas)
+        .set('Kilometraje', this.km)
+        .set('IdUser', this.usuario.Id);
+      this.restService.restServicePOSTTokenXForm("vehicle/regular", bodys, data.toString()).timeout(this.restService.timeOver).subscribe(
+        dataRegistro => {
+          let dato = dataRegistro['Response'];
+          if (dato.Id != undefined && dato.Id != null) {
+          	let vehiculo = new VehiculoModel();
+            vehiculo.modelo = this.modelo;
+            vehiculo.placa = this.placas;
+            vehiculo.id = dato.Id;
+            let use = this.usuario;
+           
+           
+            const alert = this.alertCtrl.create({
+      title: "Bien!",
+      subTitle: "Tu auto ha sido agregado",
+      cssClass: 'alertCustomCss',
+      buttons: [
+        {
+          text: 'Aceptar',
+          handler: () => {
+          	this.navCtrl.pop();
+          	let modal = this.modalController.create(MiAutoPage, { vehiculo });
+    				modal.present();
+    				modal.onDidDismiss((data) => {
+      					if (data) {
+
+      					}
+    				});
+            //this.navCtrl.setRoot(HomePage, { usuario:  use, vehiculo: vehiculo});
+            //this.navCtrl.popToRoot();
+          }
+        }
+      ]
+    });
+    alert.present();
+    
+            
+          } else {
+            this.alertaService.warnAlert("Atención!", "Posiblemente ya has agregado tu auto, si no, contacta al administrador", null);
+          }
+        }, error => {
+          console.log(error);
+          this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+        }
+      );
+    }, error => {
+      console.log(error);
+      this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+    });
+  }
+}

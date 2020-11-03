@@ -1,0 +1,55 @@
+<ion-content class="animated fadeIn auth-page" 
+style="background-color: #d4ddec;
+background-image: url(assets/imgs/login/loginFondo.png); 
+background-size: 100%;
+background-position: center center;">
+
+
+  <!-- Logo -->
+  <div padding-horizontal text-center class="animated fadeInDown login-content" style="margin-top: 30%;">
+    <h4 id="idBienvenida">BIENVENIDO</h4>
+
+    <div style="width:100%;">
+
+      <!-- <select id="barra"  class="mySelect animated fadeIn" [(ngModel)]="idGrupo"
+      style="margin-top: 6px;
+      height: 32px;
+      color: #020f32;
+      background-color: #fffefe;
+      width: 283px;">
+        <option *ngFor="let grupo of grupos" [ngValue]="grupo.Id">
+          {{grupo.Corporativo}}
+        </option>
+      </select> -->
+      
+    </div>
+
+    <input placeholder="Usuario" type="text" class="myInput3" [(ngModel)]="user" style="width: 283px;height: 34px;
+      background-color: #fff;">
+
+    <div>
+      <input placeholder="Contraseña" type="{{verPassword}}" class="myInput2" [(ngModel)]="password" style="display: inline-block;width: 247px;height: 34px;
+          background-color: #fff;">
+      <img src="assets/imgs/login/eye.png" alt="logo" style="display: inline-block" class="ojo" (touchstart)="verPasswordMethod($event)"
+        (touchend)="verPasswordMethod($event)" />
+      <div (click)="oContra()" style="color: white; margin-top: 5px;">
+        Olvidé mi contraseña
+      </div>
+    </div>
+
+    <div style="width: 100%">
+      <button ion-button color="naranja" class="tituloHeader" style="width: 55%;margin-top: 3%;
+      background-color: #e97523;vertical-align: top;border-radius: 7px;"
+        (click)="login()">Ingresar</button>
+      <button ion-button color="naranja" class="tituloHeader" style="width: 55%;margin-top: 1%;
+      background-color: #c1272d;vertical-align: top;border-radius: 7px;"
+        (click)="registrar()">Regístrate</button>
+    </div>
+
+    <div>
+      <img src="assets/imgs/login/twitter.png" alt="logo" class="logo" 
+      style="display: inline-block;width: 10%;margin-top: 3%;margin: 3%;" />
+      <img src="assets/imgs/login/facebook.png" alt="logo" class="logo" 
+      style="display: inline-block;width: 10%;margin-top: 3%;margin: 3%;" />
+    </div></div>
+</ion-content>

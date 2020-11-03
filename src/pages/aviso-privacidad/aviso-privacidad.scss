@@ -1,0 +1,123 @@
+page-aviso-privacidad {
+    .button-clear-md {
+        border-color: transparent;
+        color: #ffffff;
+        background-color: transparent;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        opacity: 1;
+    }
+    .fab-md-light {
+        color: #fff;
+        background-color: #011432;
+    }
+    .fab-ios-light {
+        color: #fff;
+        background-color: #011432;
+    }
+    .divPresentacionAutos{
+        width: 90%;
+    }
+    
+    .titulo{
+        //text-align: center;
+        color: #020f32;
+        font-size: 127%;
+        margin-bottom: 11px;margin-top: 29px;
+        background-color: #c1272d;
+        /* height: 7%; */
+        color: #fff;
+        padding: 3%;
+        border-radius: 7px;    
+      }
+
+    .centro{
+        width: 100%;
+    }
+
+    .botonGuardar {
+        width: 51%;
+        margin-top: 1%;
+        background-color: #009245;
+        vertical-align: top;
+        border-radius: 7px;
+        margin-left: 52%;
+        height: 36px;
+    }
+    .botonPass{
+        width: 100%;
+        margin-top: 1%;
+        background-color: #001432;
+        vertical-align: top;
+        border-radius: 7px;
+        height: 36px;
+    }
+
+    ::placeholder {
+        color: #5b4f5f;
+        opacity: 1; /* Firefox */
+        margin-left: 12px;
+    }
+    
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+       color: #5b4f5f;
+       margin-left: 12px;
+    }
+    
+    ::-ms-input-placeholder { /* Microsoft Edge */
+       color: #5b4f5f;
+       margin-left: 12px;
+    }
+
+    .inputText{
+        border-radius: 5px;
+        background-color: #d4d4d4;
+        vertical-align: middle;
+        height: 28px;
+        width: 100%;
+        border: none;
+        margin-bottom: 8px;
+    }
+
+    input{
+        text-indent: 20px;
+    }
+
+    .clm{
+        display: inline-block;
+    }
+
+    .widthFull{
+        width: 100%;
+    }
+
+    .widthMedium{
+        width: 49.4% !important;
+    }
+
+    #pts{
+        ::placeholder {
+            color: #000;
+            opacity: 1; /* Firefox */
+            margin-left: 12px;
+        }
+        
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+           color: #000;
+           margin-left: 12px;
+        }
+        
+        ::-ms-input-placeholder { /* Microsoft Edge */
+           color: #000;
+           margin-left: 12px;
+        }
+    }
+    
+    .miniBoton{
+        background-color: #c1272d !important;
+        width: 20px !important;
+        height: 20px !important;
+        margin-top: -60px !important;
+        margin-left: 40px !important;
+    }
+}

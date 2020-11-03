@@ -1,0 +1,120 @@
+page-cargas-info {
+    .area{
+        border-radius: 5px;
+        background-color: #d4d4d4;
+        vertical-align: middle;
+        width: 100%;
+        border: none;
+        margin-bottom: 8px;
+    }
+    .centro{
+        text-align: right;
+    }
+    .botonGuardar{
+        width: 30%;
+        margin-top: 1%;
+        background-color: #009245;
+        vertical-align: top;
+        border-radius: 7px;
+    }
+
+    .clm{
+        display: inline-block;
+    }
+
+    .noedit{
+        pointer-events:none;
+    }
+
+    .widthFull{
+        width: 100%;
+    }
+
+    .widthMedium{
+        width: 49.4% !important;
+    }
+
+    input{
+        text-indent: 20px;
+    }
+
+    textarea{
+        text-indent: 20px;
+    }
+
+    ::placeholder {
+        color: #5b4f5f;
+        opacity: 1; /* Firefox */
+        margin-left: 12px;
+    }
+    
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+       color: #5b4f5f;
+       margin-left: 12px;
+    }
+    
+    ::-ms-input-placeholder { /* Microsoft Edge */
+       color: #5b4f5f;
+       margin-left: 12px;
+    }
+
+    .inputText{
+        border-radius: 5px;
+        background-color: #d4d4d4;
+        vertical-align: middle;
+        height: 28px;
+        width: 100%;
+        border: none;
+        margin-bottom: 8px;
+    }
+
+    .col1{
+        min-width: 90%;
+    }
+
+    .col2{
+        min-width: 8%;
+    }
+
+    .add{
+        margin-top: 0.6em;
+        font-size: 1.4em;
+    }
+
+    .selector{
+        color:#000; 
+        min-width: 65%;
+    }
+
+    .fab-md-light {
+        color: #fff;
+        background-color: #011432;
+    }
+    .fab-ios-light {
+        color: #fff;
+        background-color: #011432;
+    }
+    
+    .miniBoton{
+        background-color: #c1272d !important;
+        width: 20px !important;
+        height: 20px !important;
+        margin-top: -60px !important;
+        margin-left: 40px !important;
+    }
+
+    .tituloAutos{
+        //text-align: center;
+        color: #020f32;
+        font-size: 25px;
+        margin-bottom: 11px;
+        margin-top: 2%;
+        background-color: rgb(1, 32, 96);
+        /* height: 7%; */
+        color: #fff;
+        padding: 3%;
+        border-radius: 7px;
+        text-align: center;    
+      }
+
+}

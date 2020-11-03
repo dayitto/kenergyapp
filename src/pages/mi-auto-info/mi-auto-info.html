@@ -1,0 +1,325 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Mi Auto</ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="presentPopover($event)" style="color:#fff">
+        <ion-icon name="search" style="font-size: 2.2em;"></ion-icon>
+      </button>
+    </ion-buttons>
+
+
+    <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/miAuto/carro.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: bottom center;
+background-repeat: no-repeat;
+background-color: white;">
+  <input type="hidden" id="numvehiculo"/>
+  <input type="hidden" id="esta"/>
+  <input type="hidden" id="editado"/>
+  <ng-container *ngIf="vehiculos.length > 0">
+  <form [formGroup]="vehiculoService.loginForm">
+  <div style="width:100%;">
+    <div style="display:inline-block;width:100%;vertical-align: top;">
+      <div id="aImagen" (click)="mostrar()"></div>
+    </div>
+    <input type="hidden" id="idVehiculo"/>
+    <input type="hidden" id="esta"/>
+    <div style="width:100%;display: inline-block; margin-top: 15px;">
+        <input formControlName="puntos" class="inputText" id="puntos1" readonly="true" style="background-color: rgb(16,53,138); height: 60px; text-align: center; text-indent: 0px; color: white; font-size: 18px;"/>
+    </div>
+    
+    <div class="tituloDiv tituloHeader">Datos del vehículo</div>
+    <!-- <ion-label position="floating" style="color:#181560;">Alias</ion-label>
+    <ion-input formControlName="alias" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="alias"></ion-input>-->
+    <div style="width:100%; margin-top: 0.6em;">
+      <!-- <ion-item style="width:100%">
+        <ion-label position="floating" style="color:#181560;">Marca</ion-label>
+        <ion-input formControlName="marca" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="marca"></ion-input>
+      </ion-item>
+      <ion-item style="width:100%">
+        <ion-label position="floating" style="color:#181560;">Modelo</ion-label>
+        <ion-input formControlName="modelo" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="modelo"></ion-input>
+      </ion-item>
+      <ion-item style="width:100%">
+        <ion-label position="floating" style="color:#1b155c;">Año:</ion-label>
+        <ion-input formControlName="anio" type="number" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="anio"></ion-input>
+      </ion-item>-->
+      <ion-item style="width:100%" class="itemD">
+        <ion-label style="color:#1b155c;" class="labelD">Marca:</ion-label>
+        <ion-input formControlName="marca" style="color: #000;" class="textD" autocapitalize="off" autocomplete="off" autocorrect="off" id="marca"></ion-input>
+      </ion-item>
+      <ion-item style="width:100%" class="itemD">
+        <ion-label style="color:#1b155c;" class="labelD">Modelo:</ion-label>
+        <ion-input formControlName="modelo" style="color: #000;" class="textD" autocapitalize="off" autocomplete="off" autocorrect="off" id="modelo"></ion-input>
+      </ion-item>
+      <ion-item style="width:100%" class="itemD">
+        <ion-label style="color:#1b155c;" class="labelD">Año:</ion-label>
+        <ion-input formControlName="anio" type="number" style="color: #000;" class="textD" autocapitalize="off" autocomplete="off" autocorrect="off" id="anio"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="vehiculoService.loginFormValidator.principales.mensaje">
+        <ion-label text-wrap color="danger">
+        {{ vehiculoService.loginFormValidator.principales.mensaje }}
+        </ion-label>
+      </ion-item>
+      <ion-item style="width:100%" class="itemD">
+        <ion-label style="color:#1b155c;" class="labelD">Placa:</ion-label>
+        <ion-input formControlName="placa" style="color: #000;" class="textD" autocapitalize="off" autocomplete="off" autocorrect="off" id="placa"></ion-input>
+      </ion-item>
+      <ion-item style="width:100%" class="itemD">
+        <ion-label style="color:#1b155c;" class="labelD">Estado:</ion-label>
+        <ion-input formControlName="estado" style="color: #000;" class="textD" autocapitalize="off" autocomplete="off" autocorrect="off" id="estado"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="vehiculoService.loginFormValidator.placa.mensaje">
+        <ion-label text-wrap color="danger">
+        {{ vehiculoService.loginFormValidator.placa.mensaje }}
+        </ion-label>
+      </ion-item>
+      <ion-item style="width:100%" class="itemD">
+        <ion-label style="color:#1b155c;" class="labelD">Tipo:</ion-label>
+        <ion-select formControlName="tipo" style="color:#000" okText="Aceptar" 
+          cancelText="Cancelar" id="tipo">
+            <ion-option value="0">
+              Seleccionar
+            </ion-option>
+            <ion-option value="1">
+              Carro
+            </ion-option>
+            <ion-option value="2">
+              Moto
+            </ion-option>
+            <ion-option value="3">
+              SUV
+            </ion-option>
+            <ion-option value="4">
+              Camioneta
+            </ion-option>
+          </ion-select>
+      </ion-item>
+      <ion-item *ngIf="vehiculoService.loginFormValidator.tipo.mensaje">
+        <ion-label text-wrap color="danger">
+        {{ vehiculoService.loginFormValidator.tipo.mensaje }}
+        </ion-label>
+      </ion-item>
+      <!--<div class="tituloDiv tituloHeader">Tipo de vehículo</div>
+    <ion-row>
+      <ion-col id="tipo1" style="background-color: #001432;" (click)="seleccionarTipo(1)">
+        <img src="assets/imgs/miAuto/vehiculo1.png" style="border-radius: 0%;">
+      </ion-col>
+      <ion-col id="tipo2" style="background-color: #001432;" (click)="seleccionarTipo(2)">
+        <img src="assets/imgs/miAuto/vehiculo2.png" style="border-radius: 0%;">
+      </ion-col>
+      <ion-col id="tipo3" style="background-color: #001432;" (click)="seleccionarTipo(3)">
+        <img src="assets/imgs/miAuto/vehiculo3.png" style="border-radius: 0%;">
+      </ion-col>
+      <ion-col id="tipo4" style="background-color: #001432;" (click)="seleccionarTipo(4)">
+        <img src="assets/imgs/miAuto/vehiculo4.png" style="border-radius: 0%;">
+      </ion-col>
+    </ion-row>-->
+
+      <!-- <ion-item style="width:100%">
+        <ion-label style="color:#1b155c;" >Circula</ion-label>
+        <ion-select id="vehiculo.circula" style="color:#000" okText="Aceptar" 
+        cancelText="Cancelar" formControlName="circula">
+          <ion-option value="0">No circula</ion-option>
+          <ion-option value="1">Lunes</ion-option>
+          <ion-option value="2">Martes</ion-option>
+          <ion-option value="3">Miercoles</ion-option>
+          <ion-option value="4">Jueves</ion-option>
+          <ion-option value="5">Viernes</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item style="width:100%">
+        <ion-label style="color:#1b155c;" >Periodo</ion-label>
+        <ion-select formControlName="periodo" style="color:#000" okText="Aceptar" 
+        cancelText="Cancelar">
+          <ion-option value="0">
+            Periodo
+          </ion-option>
+          <ion-option value="1">
+            1er y 3er sab.
+          </ion-option>
+       <ion-option value="2">
+            2o y 4o sab
+          </ion-option>
+         </ion-select>
+      </ion-item> -->
+
+    </div>
+
+    <!--<div class="tituloDiv tituloHeader" (click)="mostrarRendimiento()">Rendimiento
+      <ion-icon name="chevron-down-outline" [style.display]="rendimientoVisible ? 'none' : 'block'" class="flecha"></ion-icon>
+      <ion-icon name="chevron-up-outline" [style.display]="rendimientoVisible ? 'block' : 'none'" class="flecha"></ion-icon>
+    </div>
+
+    <div id="datosRendimiento" [style.display]="rendimientoVisible ? 'block' : 'none'">
+      
+        <ion-item style="width:100%">
+          <ion-label style="color:#1b155c;">Último Km:</ion-label>
+          <ion-input formControlName="km" type="number" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="km1"></ion-input>
+        </ion-item>
+        <ion-item style="width:100%">
+          <ion-label style="color:#1b155c;" class="labelD">Rendimiento actual:</ion-label>
+          <ion-input formControlName="rendimiento" style="color: #000;" readonly="true" id="rendimiento"></ion-input>
+        </ion-item>
+      <ion-item style="width:100%">
+        <ion-label style="color:#1b155c;">Combustible</ion-label>
+        <ion-select formControlName="combustible" id="tipoCombustible" style="color:#000" okText="Aceptar" 
+        cancelText="Cancelar">
+          <ion-option *ngFor="let tipo of tipoCombustibles" value="{{tipo.id}}">
+            {{tipo.nombre}}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+
+    </div>-->
+
+    <div class="tituloDiv tituloHeader" (click)="mostrarVerificacion()">Verificación vehicular
+      <ion-icon name="chevron-down-outline" [style.display]="verificacionVisible ? 'none' : 'block'" class="flecha"></ion-icon>
+      <ion-icon name="chevron-up-outline" [style.display]="verificacionVisible ? 'block' : 'none'" class="flecha"></ion-icon>
+    </div>
+
+    <div id="datosVerificacion" [style.display]="verificacionVisible ? 'block' : 'none'">
+      <img src="assets/imgs/miAuto/verificacion.jpg" style="width: 100%;">
+      <!-- <ion-item style="width:100%">
+        <ion-label style="color:#1b155c;">Ultima fecha</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" style="color: #000;" 
+        formControlName="uverif" doneText="Aceptar" cancelText="Cancelar" ></ion-datetime>
+      </ion-item>
+      <ion-item style="width:100%">
+        <ion-label style="color:#1b155c;">Proxima fecha</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" style="color: #000;" 
+        formControlName="pverif" (ionChange)="cambioFecha()"
+        doneText="Aceptar" cancelText="Cancelar" ></ion-datetime>
+      </ion-item>
+      <ion-item style="width:100%">
+          <ion-label style="color:#1b155c;" >Agencia:</ion-label>
+          <ion-input formControlName="agencia" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="anio"></ion-input>
+      </ion-item>
+      <ion-item style="width:100%">
+          <ion-label style="color:#1b155c;">Teléfono:</ion-label>
+          <ion-input formControlName="telAgencia" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="anio"></ion-input>
+        </ion-item> -->
+    </div>
+
+    <div class="tituloDiv tituloHeader" (click)="mostrarSeguro()">Datos del Seguro
+      <ion-icon name="chevron-down-outline" [style.display]="seguroVisible ? 'none' : 'block'" class="flecha"></ion-icon>
+      <ion-icon name="chevron-up-outline" [style.display]="seguroVisible ? 'block' : 'none'" class="flecha"></ion-icon>
+    </div>
+
+    <div id="datosSeguro" [style.display]="seguroVisible ? 'block' : 'none'">
+      <ion-item style="width:100%" class="itemD">
+        <ion-label style="color:#1b155c;" >Compañía del Seguro</ion-label>
+        <ion-input formControlName="cSeguro" style="color: #000;" class="comp" autocapitalize="off" autocomplete="off" autocorrect="off" id="anio"></ion-input>
+      </ion-item>
+      <ion-item style="width:100%" class="itemD">
+        <ion-label style="color:#1b155c;" >Num. Póliza</ion-label>
+        <ion-input formControlName="nPoliza" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="anio"></ion-input>
+      </ion-item>
+      <ion-item style="width:100%" class="itemD">
+        <ion-label style="color:#1b155c;">Vencimiento</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" style="color: #000;" 
+        formControlName="fPoliza" doneText="Aceptar" cancelText="Cancelar" ></ion-datetime>
+      </ion-item>
+      <!-- <ion-item style="width:100%">
+        <ion-label style="color:#1b155c;" >Monto de póliza</ion-label>
+        <ion-input formControlName="mPoliza" style="color: #000;" class="mont" autocapitalize="off" autocomplete="off" autocorrect="off" id="anio"></ion-input>
+      </ion-item> -->
+      <ion-item style="width:100%" class="itemD">
+        <ion-label style="color:#1b155c;" >Teléfono</ion-label>
+        <ion-input formControlName="telefono" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="anio"></ion-input>
+      </ion-item>
+    </div>
+
+    <!--<div class="tituloDiv tituloHeader" (click)="mostrarTenencia()">Datos de tenencia
+      <ion-icon name="chevron-down-outline" [style.display]="tenenciaVisible ? 'none' : 'block'" class="flecha"></ion-icon>
+      <ion-icon name="chevron-up-outline" [style.display]="tenenciaVisible ? 'block' : 'none'" class="flecha"></ion-icon>
+    </div>
+
+    <div id="datosTenencia" [style.display]="tenenciaVisible ? 'block' : 'none'">
+      <ion-item style="width:100%">
+        <ion-label style="color:#1b155c;">Fecha</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" style="color: #000;" 
+        formControlName="fTenencia" doneText="Aceptar" cancelText="Cancelar" ></ion-datetime>
+      </ion-item>
+    </div>-->
+
+    <div class="tituloDiv tituloHeader" (click)="mostrarAlertas()">Programar Alertas y Recordatorios
+      <ion-icon name="chevron-down-outline" [style.display]="alertasVisible ? 'none' : 'block'" class="flecha"></ion-icon>
+      <ion-icon name="chevron-up-outline" [style.display]="alertasVisible ? 'block' : 'none'" class="flecha"></ion-icon>
+    </div>
+    <div id="datosAlertas" [style.display]="alertasVisible ? 'block' : 'none'">
+      
+      <!--<ion-item *ngIf="vehiculoService.loginForm.value.pverif">
+        <ion-checkbox formControlName="checkSeguro" color="primary"></ion-checkbox>
+        <ion-label class="label2">Verificación (15 días)</ion-label>
+      </ion-item>-->
+      <div class="tituloDiv">Verificación</div>
+      <ion-item>
+        <ion-checkbox formControlName="checkMantenimiento" color="primary"></ion-checkbox>
+        <ion-label class="label3">Inicio del més que te corresponde</ion-label>
+      </ion-item>
+      <div class="tituloDiv">Seguro de auto</div>
+      <ion-item *ngIf="vehiculoService.loginForm.value.cSeguro != ''">
+        <ion-checkbox formControlName="checkSeguro" color="primary"></ion-checkbox>
+        <ion-label class="label2">30 días antes del vencimiento<br> de la póliza</ion-label>
+      </ion-item>
+      <!-- <ion-row>
+        <ion-col class="clase1"> -->
+        <!-- </ion-col> -->
+        <!-- <ion-col class="clase2">
+          <ion-select formControlName="mantenimiento" *ngIf="loginForm.value.checkMantenimiento" class="selectmant" id="vehiculo.mantenimientoRango" 
+          style="">
+            <ion-option *ngFor="let rango of rangosMantenimiento" value="rango.id">
+              {{rango.valor}}
+            </ion-option>
+          </ion-select>
+        </ion-col>
+      </ion-row> -->
+      
+      <!-- <ion-item *ngIf="loginForm.value.tenencia">
+        <ion-checkbox formControlName="mantenimiento" color="primary"></ion-checkbox>
+        <ion-label class="label2">Pago de Tenencia</ion-label>
+      </ion-item>
+      <ion-item *ngIf="loginForm.value.circula > 0">
+        <ion-checkbox color="primary"></ion-checkbox>
+        <ion-label class="label2">Hoy no circula</ion-label>
+      </ion-item> -->
+  </div>
+</div>
+</form>
+</ng-container>
+<ng-container *ngIf="vehiculos.length == 0">
+  <h1>Sin autos registrados.</h1>
+</ng-container>
+</ion-content>
+
+<ion-fab bottom right *ngIf="vehiculos.length > 0">
+  <ion-row>
+    <ion-col>
+      <button ion-button color="aceptar" class="tituloHeader botonGuardar" (click)="actualizaAuto()">Guardar</button>
+    </ion-col>
+    <ion-col>
+      <button ion-button color="cancelar" class="tituloHeader botonGuardar" (click)="eliminarVehiculoAlerta(0)">Eliminar</button>
+    </ion-col>
+  </ion-row>
+</ion-fab>

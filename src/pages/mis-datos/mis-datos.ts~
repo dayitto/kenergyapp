@@ -1,0 +1,267 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { FacturaModel } from '../../models/facturaModel';
+import { DatosFacturacionPage } from '../datos-facturacion/datos-facturacion';
+import { EstadisticasPage } from '../estadisticas/estadisticas';
+import { AvisoPrivacidadPage } from '../aviso-privacidad/aviso-privacidad';
+import { Storage } from '@ionic/storage';
+import { AlertaServiceProvider } from '../../providers/alerta-service';
+import { RestServiceProvider } from '../../providers/rest-service';
+import { HttpParams } from '@angular/common/http';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
+
+@IonicPage()
+@Component({
+  selector: 'page-mis-datos',
+  templateUrl: 'mis-datos.html',
+})
+export class MisDatosPage {
+  public facturas: FacturaModel[] = [];
+
+  public usuario: any = null;
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public localStorage: Storage, private alertaService: AlertaServiceProvider,
+    private restService: RestServiceProvider, public loadingCtrl: LoadingController,
+    private sqlite: SQLite) {
+    //this.usuario = navParams.get("usuario");
+    if (this.usuario == null) {
+      this.openSesion();
+    }
+  }
+
+  cargarUsuario() {
+    let loading = this.loadingCtrl.create();
+    loading.present();
+    this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      if (data == null) {
+        loading.dismiss();
+        this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+      } else {
+        if (this.usuario != null) {
+          let body = new HttpParams();
+          //var a = 44;
+          var a = this.usuario.Id;
+          var url = "user/regular/" + a.toString();
+          this.restService.restServiceGETToken(url, new HttpParams(), data.toString()).timeout(this.restService.timeOver).subscribe(
+            dataRegistro => {
+              if (dataRegistro['Response'].Id != undefined && dataRegistro['Response'].Id != null) {
+                let usuarioTemp = dataRegistro['Response'];
+                this.usuario.Tel = usuarioTemp.Tel;
+                this.usuario.puntos = usuarioTemp.Puntos;
+                
+                
+                
+                let sql = "SELECT * FROM mis_datos where id_usuario = ?";
+  		
+  		
+  					this.sqlite.create({
+      				name: 'kenergy.db',
+      				location: 'default'
+    				}).then((db: SQLiteObject) => {
+    					db.executeSql(sql, [1])
+  							.then(response => {
+    							if(response.rows.length != 0) {
+    								this.usuario.edad = response.rows.item(0).edad;
+    							} else {
+									this.usuario.edad = "";    							
+    							}
+    				
+  							})
+  							.catch(error =>  {
+  								this.alertaService.errorAlert("Error al obtener datos", error, null)
+  							});
+  			
+  		
+  		
+  					})
+  					.catch(error =>{
+    					this.alertaService.errorAlert("Info", "Excepcion al crear BD " + error, null);
+  					});  
+
+
+
+
+
+              } else {
+                this.alertaService.warnAlert(this.restService.headerValidacion, "No se encontraron sus datos", null);
+              }
+              loading.dismiss();
+            }, error => {
+              loading.dismiss();
+              console.log(error);
+              this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+            }
+          );
+        } else {
+          loading.dismiss();
+        }
+      }
+    }, error => {
+      loading.dismiss();
+      console.log(error);
+      this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+    });
+  }
+
+	cambiarContraseña() {
+			let loading = this.loadingCtrl.create();
+    loading.present();
+    this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      let urlArmada = "user/regular/" + this.usuario.Id;
+      let bodyObj = {
+        Alias: this.usuario.Alias,
+        Password: this.usuario.Password,
+        Tel: this.usuario.Tel
+      };
+      this.restService.restServicePUTToken(urlArmada, bodyObj, data.toString()).timeout(this.restService.timeOver).subscribe(
+        dataRegistro => {
+          if (dataRegistro['Status'] == 1) {
+          	this.alertaService.alertaBasica(this.restService.headerExito, "Su dato se ha guardado correctamente", null);
+          } else {
+            this.alertaService.warnAlert(this.restService.headerValidacion, dataRegistro['Message'], null);
+          }
+          loading.dismiss();
+        }, error => {
+          loading.dismiss();
+          console.log(error);
+          this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+        });
+    }, error => {
+      loading.dismiss();
+      console.log(error);
+      this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+    });
+	}	
+   
+   guardarUsuario() {
+    let loading = this.loadingCtrl.create();
+    loading.present();
+    this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      let urlArmada = "user/regular/" + this.usuario.Id;
+      let bodyObj = {
+        Alias: this.usuario.Alias,
+        Password: '-',
+        Tel: this.usuario.Tel
+      };
+      this.restService.restServicePUTToken(urlArmada, bodyObj, data.toString()).timeout(this.restService.timeOver).subscribe(
+        dataRegistro => {
+          if (dataRegistro['Status'] == 1) {
+          	let sqlDelete = "DELETE FROM mis_datos";
+          	let sql = "INSERT INTO mis_datos VALUES (?,?)";
+  		
+  		
+  				this.sqlite.create({
+      			name: 'kenergy.db',
+      			location: 'default'
+    			}).then((db: SQLiteObject) => {
+    				db.executeSql(sqlDelete, [])
+  					.then(response => {
+    				
+    				
+  					})
+  					.catch(error => this.alertaService.errorAlert("Error al borrar datos", error, null));
+    				db.executeSql(sql, [1, this.usuario.edad])
+  						.then(response => {
+    						this.alertaService.alertaBasica(this.restService.headerExito, "Sus datos se han guardado correctamente", null);
+  						})
+  						.catch(error => this.alertaService.errorAlert("Error al insertar datos", error, null));
+  				})
+  				.catch(error =>{
+    				this.alertaService.errorAlert("Info", "Excepcion al crear BD " + error, null);
+  				});  
+          } else {
+            this.alertaService.warnAlert(this.restService.headerValidacion, dataRegistro['Message'], null);
+          }
+          loading.dismiss();
+        }, error => {
+          loading.dismiss();
+          console.log(error);
+          this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+        });
+    }, error => {
+      loading.dismiss();
+      console.log(error);
+      this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+    });
+  }
+
+  openSesion() {
+    this.localStorage.ready().then(() => {
+      this.localStorage.get(`@userSession`).then((data) => {
+        if (data != null) {
+          this.usuario = data;
+          this.cargarUsuario();
+          this.cargaFacturarA();
+        } else {
+          this.alertaService.warnAlert(this.restService.headerValidacion, "Usuario sin sesión, no se cargarán sus datos", null);
+        }
+      });
+    });
+
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad MisDatosPage');
+  }
+
+  facturarA() {
+    this.navCtrl.push(DatosFacturacionPage, { usuario: this.usuario });
+  }
+  
+	editarFacturarA(factura: FacturaModel) {
+		this.navCtrl.push(DatosFacturacionPage, { usuario: this.usuario, editar: 1, factura: factura });
+	}
+
+  openEstadistica() {
+    this.navCtrl.push(EstadisticasPage, { usuario: this.usuario });
+  }
+  
+  openAvisoPrivacidad() {
+    this.navCtrl.push(AvisoPrivacidadPage, { usuario: this.usuario });
+  }
+  
+	cargaFacturarA() {
+		//invoiceto/regular/{id usuario}
+		let loading = this.loadingCtrl.create();
+    loading.present();
+    this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      if (data == null) {
+        loading.dismiss();
+        this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+      } else {
+        if (this.usuario != null) {
+          //let body = new HttpParams();
+          //var a = 44;
+          var a = this.usuario.Id;
+          var url = "invoiceto/regular/" + a.toString();
+          this.restService.restServiceGETToken(url, new HttpParams(), data.toString()).timeout(this.restService.timeOver).subscribe(
+            dataRegistro => {
+              if(dataRegistro['Response']!=null && dataRegistro['Response'] instanceof Array){
+              		let array = dataRegistro['Response'];
+              		array.forEach(factura => {
+              			this.facturas.push(new FacturaModel
+              				(factura.RFC, factura.RFC, factura.RazonSocial, 
+              				factura.Email, "", "", "", "", factura.Dir, "", ""))
+            		});
+            	}
+              //this.facturas.push(new FacturaModel("APR9609194H4", "APR9609194H4", "AB PRO SC.", "felectronica@grupotabar.com", "", "", "", "", "Ver.", "Ixtaczoquitlán", ""));
+      		//	this.facturas.push(new FacturaModel("APR9609194H4", "APR9609194H4", "AB PRO SC.", "felectronica@grupotabar.com", "", "", "", "", "Ver.", "Ixtaczoquitlán", ""));
+      
+              loading.dismiss();
+            }, error => {
+              loading.dismiss();
+              console.log(error);
+              this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+            }
+          );
+        } else {
+          loading.dismiss();
+        }
+      }
+    }, error => {
+      loading.dismiss();
+      console.log(error);
+      this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+    });
+	}
+}

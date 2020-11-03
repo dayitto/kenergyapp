@@ -1,0 +1,321 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Vehículos/ detalle</ion-title>
+
+    <ion-buttons left  class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/miAuto/carro.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: bottom center;
+background-repeat: no-repeat;
+background-color: white;">
+<input type="hidden" id="editado"/>
+  <ion-item style="    padding-top: 15px;">
+    <ion-label style="color:#000 !important; text-align: right;">Bloquear</ion-label>
+    <ion-toggle [(ngModel)]="bloc" (ngModelChange)="updateItem()"></ion-toggle>
+  </ion-item>
+  <div style="width:100%;margin-bottom: 3px;">
+    <div style="display:inline-block;color:#1b155c;font-weight: 600;
+    font-size: 120%;">Número: </div>
+    <div style="display:inline-block;font-size: 120%;">{{vehiculo.Id}}</div>
+  </div>
+  <div style="width:100%;margin-bottom: 3px;">
+    <div style="display:inline-block;color:#1b155c;font-weight: 600;
+    font-size: 120%;">Placas: </div>
+    <div style="display:inline-block;font-size: 120%;">{{vehiculo.Placas}}</div>
+  </div>
+  <div style="width:100%;margin-bottom: 3px;">
+    <div style="display:inline-block;color:#1b155c;font-weight: 600;
+    font-size: 120%;">Descripción: </div>
+    <div style="display:inline-block;font-size: 120%;">{{vehiculo.Descripcion}}</div>
+  </div>
+  <div style="width:100%;margin-bottom: 3px;">
+    <div style="display:inline-block;color:#1b155c;font-weight: 600;
+    font-size: 120%;">Estado: </div>
+    <div style="display:inline-block;font-size: 120%;">{{vehiculo.Estado}}</div>
+  </div>
+  <div style="width:100%;margin-bottom: 3px;">
+    <div style="display:inline-block;color:#1b155c;font-weight: 600;
+    font-size: 120%;">Responsable: </div>
+    <div style="display:inline-block;font-size: 120%;">{{vehiculo.Responsable}}</div>
+  </div>
+  <div style="width:100%;margin-bottom: 5%;border-top: 1px solid;
+  margin-top: 4%;" class="animated fadeInDown">
+    <div style="width:70%;display:inline-block;font-size: 150%;margin-top: 6px;color: #1b155c;
+    font-weight: 600;">Días de Carga</div>
+    <div class="tituloHeader" style="width:28%;display:inline-block;text-align: right;" (click)="editarTodo()">
+      <ion-icon name="save" style="font-size: 25px;"></ion-icon>
+    </div>
+  </div>
+  <div style="width:100%">
+    <ion-row>
+      <ion-col col-6>
+        <ion-item>
+          <ion-checkbox color="primary" [(ngModel)]="diasCarga.lunes" (click)="diasEnableDisable()" (ngModelChange)="indicarCambio()"></ion-checkbox>
+          <ion-label class="label2">Lunes</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col col-6>
+        <ion-item>
+          <ion-checkbox color="primary" [(ngModel)]="diasCarga.viernes" (click)="diasEnableDisable()" (ngModelChange)="indicarCambio()"></ion-checkbox>
+          <ion-label class="label2">Viernes</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-6>
+        <ion-item>
+          <ion-checkbox color="primary" [(ngModel)]="diasCarga.martes" (click)="diasEnableDisable()" (ngModelChange)="indicarCambio()"></ion-checkbox>
+          <ion-label class="label2">Martes</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col col-6>
+        <ion-item>
+          <ion-checkbox color="primary" [(ngModel)]="diasCarga.sabado" (click)="diasEnableDisable()" (ngModelChange)="indicarCambio()"></ion-checkbox>
+          <ion-label class="label2">Sabado</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-6>
+        <ion-item>
+          <ion-checkbox color="primary" [(ngModel)]="diasCarga.miercoles" (click)="diasEnableDisable()" (ngModelChange)="indicarCambio()"></ion-checkbox>
+          <ion-label class="label2">Miercoles</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col col-6>
+        <ion-item>
+          <ion-checkbox color="primary" [(ngModel)]="diasCarga.domingo" (click)="diasEnableDisable()" (ngModelChange)="indicarCambio()"></ion-checkbox>
+          <ion-label class="label2">Domingo</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-6>
+        <ion-item>
+          <ion-checkbox color="primary" [(ngModel)]="diasCarga.jueves" (click)="diasEnableDisable()" (ngModelChange)="indicarCambio()"></ion-checkbox>
+          <ion-label class="label2">Jueves</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col col-6>
+        <ion-item>
+          <ion-checkbox color="primary" [(ngModel)]="diasCarga.todos" (click)="todosDiasEnableDisable()" (ngModelChange)="indicarCambio()"></ion-checkbox>
+          <ion-label class="label2">Todos</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>  
+  </div>
+
+  <ion-item class="pahorario" style="    padding-top: 15px;">
+    <ion-label style="color:#000 !important; text-align: right;">Horario mixto</ion-label>
+    <ion-toggle [(ngModel)]="mixto" color="primary" (ngModelChange)="cambiarHorario()"></ion-toggle>
+  </ion-item>
+
+  <div style="width:100%;" class="animated fadeInDown">
+    <div style="width:70%;display:inline-block;font-size: 150%;margin-top: 6px;color: #1b155c;
+    font-weight: 600;">{{mixto ? "Horario de Carga 1" : "Horario de Carga"}}</div>
+  </div>
+  <div style="width:100%; display:inline-block">
+  <ion-row>
+<ion-col col-5>
+    <ion-item>
+    <ion-datetime displayFormat="HH:mm a" [(ngModel)]="idHorarioMatutinoIni" (ngModelChange)="indicarCambio()"></ion-datetime>
+    </ion-item>
+</ion-col>
+<ion-col col-2 style="top: 14px;">Hasta</ion-col>
+<ion-col col-5>
+    <ion-item>
+    <ion-datetime displayFormat="HH:mm a" [(ngModel)]="idHorarioMatutinoFin" (ngModelChange)="indicarCambio()"></ion-datetime>
+    </ion-item>
+</ion-col>
+</ion-row>
+  
+    <!--<select class="mySelect" [(ngModel)]="idHorarioMatutinoIni" style="width: 42%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let horaInicio of listaMatutinos" [ngValue]="horaInicio.hora">
+        {{horaInicio.hora}} Hrs
+      </option>
+    </select>-->
+    <!--<ion-item>
+    	<ion-label style="width:40%;display:inline-block"><ion-icon ios="ios-alarm" md="md-alarm"></ion-icon>  {{idHorarioMatutinoIni}} Hrs</ion-label>
+  		<ion-datetime style="width:5%;display:inline-block" displayFormat="HH:mm a" [(ngModel)]="idHorarioMatutinoIni"></ion-datetime>
+  		<ion-label style="width:10%;display:inline-block">Hasta</ion-label>
+	   <ion-label style="width:40%;display:inline-block"><ion-icon ios="ios-alarm" md="md-alarm"></ion-icon>  {{idHorarioMatutinoFin}} Hrs</ion-label>
+  		<ion-datetime style="width:5%;display:inline-block" displayFormat="HH:mm a" [(ngModel)]="idHorarioMatutinoFin"></ion-datetime>
+  	 </ion-item>-->
+    
+    <!--<select class="mySelect" [(ngModel)]="idHorarioMatutinoFin" style="width: 42%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let horaFin of listaMatutinos" [ngValue]="horaFin.hora">
+        {{horaFin.hora}} Hrs
+      </option>
+    </select>-->
+  </div>
+
+  <div *ngIf="mixto" style="width:100%;" class="animated fadeInDown">
+    <div style="width:100%;display:inline-block;font-size: 150%;color: #1b155c;
+    font-weight: 600;">Horario de Carga 2</div>
+  </div>
+  <div *ngIf="mixto" style="width:100%">
+    <!--<select class="mySelect" [(ngModel)]="idHorarioVespertinoIni" style="width: 42%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let horaInicio of listaVespertinos" [ngValue]="horaInicio.hora">
+        {{horaInicio.hora}} Hrs
+      </option>
+    </select>
+    <div style="width:13%;display:inline-block">
+      Hasta
+    </div>
+    <select class="mySelect" [(ngModel)]="idHorarioVespertinoFin" style="width: 42%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let horaFin of listaVespertinos" [ngValue]="horaFin.hora">
+        {{horaFin.hora}} Hrs
+      </option>
+    </select>-->
+    <ion-row>
+<ion-col col-5>
+    <ion-item>
+    <ion-datetime displayFormat="HH:mm a" [(ngModel)]="idHorarioVespertinoIni" (ngModelChange)="indicarCambio()"></ion-datetime>
+    </ion-item>
+</ion-col>
+<ion-col col-2 style="top: 14px;">Hasta</ion-col>
+<ion-col col-5>
+    <ion-item>
+    <ion-datetime displayFormat="HH:mm a" [(ngModel)]="idHorarioVespertinoFin" (ngModelChange)="indicarCambio()"></ion-datetime>
+    </ion-item>
+</ion-col>
+</ion-row>
+  </div>
+
+  <div *ngIf="mixto" style="width:100%;" class="animated fadeInDown">
+    <div style="width:100%;display:inline-block;font-size: 150%;color: #1b155c;
+    font-weight: 600;">Horario de Carga 3</div>
+  </div>
+  <div *ngIf="mixto" style="width:100%">
+    <!--<select class="mySelect" [(ngModel)]="idHorarioNocturnoIni" style="width: 42%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let horaInicio of listaNocturnos" [ngValue]="horaInicio.hora">
+        {{horaInicio.hora}} Hrs
+      </option>
+    </select>
+    <div style="width:13%;display:inline-block">
+      Hasta
+    </div>
+    <select class="mySelect" [(ngModel)]="idHorarioNocturnoFin" style="width: 42%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let horaFin of listaNocturnos" [ngValue]="horaFin.hora">
+        {{horaFin.hora}} Hrs
+      </option>
+    </select>-->
+    <ion-row>
+<ion-col col-5>
+    <ion-item>
+    <ion-datetime displayFormat="HH:mm a" [(ngModel)]="idHorarioNocturnoIni" (ngModelChange)="indicarCambio()"></ion-datetime>
+    </ion-item>
+</ion-col>
+<ion-col col-2 style="top: 14px;">Hasta</ion-col>
+<ion-col col-5>
+    <ion-item>
+    <ion-datetime displayFormat="HH:mm a" [(ngModel)]="idHorarioNocturnoFin" (ngModelChange)="indicarCambio()"></ion-datetime>
+    </ion-item>
+</ion-col>
+</ion-row>
+  </div>
+
+
+  <div style="width:100%;" class="animated fadeInDown">
+    <div style="width:70%;display:inline-block;font-size: 150%;margin-top: 6px;color: #1b155c;
+    font-weight: 600;">Límites</div>
+  </div>
+
+  <ion-item style="width:100%">
+    <ion-label position="floating">Estación:</ion-label>
+    <ion-select [(ngModel)]="idEstacion" (ionChange)="cargaPrecios1()" style="color:#000" (ngModelChange)="indicarCambio()">
+      <ion-option *ngFor="let estacion of estaciones" value="{{estacion.id}}">{{estacion.descripcion}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item style="width:100%">
+    <ion-label position="floating">Combustible:</ion-label>
+    <ion-select [(ngModel)]="idCombustible" (ionChange)="changeCombustible()" style="color:#000" (ngModelChange)="indicarCambio()">
+      <ion-option *ngFor="let combustible of combustibles" value="{{combustible.id}}">{{combustible.descripcion}}</ion-option>
+    </ion-select>
+  </ion-item>
+  
+  <ion-item style="width:100%">
+    <ion-label position="floating">Unidad de medida:</ion-label>
+    <ion-select [(ngModel)]="idCatUni" [(disabled)]="deshabilitado" (ionChange)="changeMagnitud()" style="color:#000" (ngModelChange)="indicarCambio()">
+      <ion-option value="0">Seleccione tipo</ion-option>
+      <ion-option value="1">$ - Importe</ion-option>
+      <ion-option value="2">V - Volumen</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-row>
+    <ion-col >
+      <ion-item style="width:100%">
+        <ion-label position="floating">Día: {{strCatUni}}</ion-label>
+        <ion-input type="number" placeholder="0.00" [(ngModel)]="dia" (ngModelChange)="indicarCambio()"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col col-2>
+      <ion-label position="floating">{{strCatUni2}}</ion-label>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col >
+      <ion-item style="width:100%">
+        <ion-label position="floating">Semana: {{strCatUni}}</ion-label>
+        <ion-input type="number" placeholder="0.00" [(ngModel)]="semana" (ngModelChange)="indicarCambio()"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col col-2>
+      <ion-label position="floating">{{strCatUni2}}</ion-label>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col >
+      <ion-item style="width:100%">
+        <ion-label position="floating">Mes: {{strCatUni}}</ion-label>
+        <ion-input type="number" placeholder="0.00" [(ngModel)]="mes" (ngModelChange)="indicarCambio()"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col col-2>
+      <ion-label position="floating">{{strCatUni2}}</ion-label>
+    </ion-col>
+  </ion-row>
+
+</ion-content>
+
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()">
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+  <button *ngIf="notificacion.num > 0" ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()" class="miniBoton">
+    {{notificacion.num}}
+</button>
+</ion-fab>
+<!-- <ion-footer style="background-color: #e97523;
+    padding: 0% 4%;
+    height: 5%;
+    display: flex;
+    align-items: center;">
+    <p style="margin-left: 80%;">v.1.0.0.0.1</p>
+  </ion-footer> -->

@@ -1,0 +1,110 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController, ModalController } from 'ionic-angular';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { AgregaAutoPage } from '../agrega-auto/agrega-auto';
+import { AgregaAutoInfoPage } from '../agrega-auto-info/agrega-auto-info';
+import { RestServiceProvider } from '../../providers/rest-service';
+import { AlertaServiceProvider } from '../../providers/alerta-service';
+import { Storage } from '@ionic/storage';
+import { HttpParams } from '@angular/common/http';
+
+@IonicPage()
+@Component({
+  selector: 'page-agrega-auto-escaner',
+  templateUrl: 'agrega-auto-escaner.html',
+})
+export class AgregaAutoEscanerPage {
+  public usuario: any = null;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public barcodeScanner: BarcodeScanner, public modalController: ModalController,
+    public loadingCtrl: LoadingController, private restService:RestServiceProvider, private alertaService: AlertaServiceProvider,
+    public localStorage: Storage) {
+      this.usuario = navParams.get("usuario");
+      if (this.usuario == null) {
+        this.openSesion();
+      }
+  }
+
+  openSesion() {
+    this.localStorage.ready().then(() => {
+      this.localStorage.get(`@userSession`).then((data) => {
+        if (data != null) {
+          this.usuario = data;
+        } else {
+          this.alertaService.warnAlert(this.restService.headerValidacion, "Usuario sin sesión, no se cargarán sus datos", null);
+        }
+      });
+    });
+
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad AgregaAutoEscanerPage');
+  }
+  escaner2(){
+    this.agregar(1234);
+  }
+
+  escaner() {
+    this.barcodeScanner.scan().then(barcodeData => {
+      //this.agregar(barcodeData.text);
+      this.agregar("12356127421200044102");
+      //this.navCtrl.push(AgregaAutoInfoPage, { Id: this.usuario.Id, Puntos: barcodeData.text });
+      //this.alertaService.alertaBasica("Bien!","Bar code:" + barcodeData.text	+ " idUser:" + this.usuario.Id,null);
+    }).catch(err => {
+      console.log('Error', err);
+      //this.navCtrl.push(AgregaAutoInfoPage);
+    });
+  }
+
+  agregar(codigo){
+        this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+          const bodys = new HttpParams()
+            .set('Code', codigo)
+            .set('Iduser', this.usuario.Id);
+        this.restService.restServicePOSTTokenXForm("user/regular/card", bodys, data.toString()).timeout(this.restService.timeOver).subscribe(
+          dataRegistro => {
+            let dato = dataRegistro['Response'];
+            //this.alertaService.alertaBasica("Bien!","dato" + JSON.stringify(dataRegistro),null);
+            if(dato.Id != undefined && dato.Id != null){
+              this.navCtrl.push(AgregaAutoInfoPage, { Id: dato.Id, Puntos: dato.Puntos });
+              this.alertaService.alertaBasica("Bien!","Tu auto ha sido añadido",null);
+              //this.navCtrl.pop();
+            }else{
+            	if(dataRegistro['Message'] == "6") {
+                   this.alertaService.warnAlert("Atención!","Posiblemente ya has agregado tu auto, si no, contacta al administrador",null);
+           		} else {
+           			 this.alertaService.warnAlert("Atención!",dataRegistro['Message'],null);
+           		}
+            }
+          }, error => {
+            console.log(error);
+				this.alertaService.warnAlert("Error!",error,null);
+            this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+          }
+        );
+        }, error => {
+          console.log(error);
+          this.alertaService.warnAlert("Error2!",error,null);
+          this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+        });
+  }
+
+  omitir(){
+    this.navCtrl.push(AgregaAutoPage);
+  }
+
+  agregarAuto() {
+    let modal = this.modalController.create(AgregaAutoPage);
+    modal.present();
+    modal.onDidDismiss((data) => {
+      let loading = this.loadingCtrl.create();
+      loading.present();
+      if (data) {
+        loading.dismiss();
+      } else {
+        loading.dismiss();
+      }
+    });
+  }
+}

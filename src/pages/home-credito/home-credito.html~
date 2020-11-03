@@ -1,0 +1,133 @@
+<ion-header>
+    <ion-navbar color="titulo">
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title class="tituloHeader">BIENVENID@ {{nombre}}</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding class="contentHome" style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+
+
+    <div class="animated fadeIn divGasoline" id="divAux">
+        <ion-list>
+            <div *ngFor="let c of combustibles">
+<!--                <div class="expandible" (click)="changeValue(c)">-->
+						<div class="expandible" (click)="presentPopover($event)">
+                    <ion-icon name="pin" class="iconoGasolina"></ion-icon>
+
+                    <div class="nombreEstacion">{{c.nombre}}</div>
+                    <ion-icon name="more" *ngIf="!c.expandible" style="background-image: url(assets/imgs/home/more.png);"></ion-icon>
+<!--                    <ion-icon name="arrow-up" *ngIf="c.expandible"></ion-icon>-->
+							<ion-icon name="more" *ngIf="c.expandible" style="background-image: url(assets/imgs/home/more.png);"></ion-icon>
+                </div>
+                <div *ngIf="c.expandible" class="animated fadeIn">
+                    <div class="containerGas">
+                        <img src="assets/imgs/home/verde.png" alt="logo" class="animated bounceInDown imageGas" />
+                        <div class="precioGas" style="font-size: 190%;">
+                            ${{c.precioMagna}}
+                        </div>
+                    </div>
+                    <div class="containerGas">
+                        <img src="assets/imgs/home/rojo.png" alt="logo" class="animated bounceInDown imageGas" />
+                        <div class="precioGas" style="font-size: 190%;">
+                            ${{c.precioPremium}}
+                        </div>
+                    </div>
+                    <div class="containerGas">
+                        <img src="assets/imgs/home/negro.png" alt="logo" class="animated bounceInDown imageGas" />
+                        <div class="precioGas" style="font-size: 190%;">
+                            ${{c.precioDiesel}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ion-list>
+    </div>
+
+    <div style="width:100%;border-top: 1px solid;margin-top: 5%;">
+        <div style="width: 50%;display:inline-block;vertical-align: text-bottom;text-align: -webkit-center;">
+            <div style="text-align: center;
+            font-size: 120%;
+            position: absolute;
+            
+            margin-left: 7px;" class="tituloHeader"><strong>Status</strong></div>
+            <div 
+            style="background-color: #c1272d;
+            color: #fff;
+            width: 33%;
+            right: 50%;
+            border: 1px solid #000;
+            border-radius: 14px;
+            margin-bottom: 0px;
+            position: absolute;
+            margin-top: 20px;"
+            [ngStyle]="{'background-color':estatusText == 'Activo' ? '#009245' : '#c1272d'}">
+                {{estatusText}}
+            </div>
+        </div>
+        <div style="width: 30%;
+    left: 57%;
+    display: inline-block;
+    background-color: #e97523;
+    /* border: 1px solid #000; */
+    border-radius: 14px;
+    padding: 5px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    position: absolute;">
+            <div style="font-size:90%;text-align: center">Límite de Crédito</div>
+            <div style="font-size:90%;text-align: center"><strong>$ {{limite | number: '2.'}}</strong></div>
+            <!--<img src="assets/imgs/home/100porcent.PNG" alt="logo" class="animated bounceInDown" style="width:100%" />-->
+            <!-- <div id="chartdiv" [style.width.%]="100" [style.height.px]="200"></div> -->
+        </div>
+        <div style="width:100%;overflow: scroll;height: 223px; 
+     margin-top: 95px;">
+     		  <div class="row">
+            <div style="text-align:center" class="col">
+                Saldo a Favor
+                <div style="text-align:center"><strong>{{saldoFavor | currency }}</strong></div>
+            </div>
+
+            <div style="text-align:center;" class="col">Saldo Consumido
+                <div style="text-align:center"><strong>{{creditoDisponible | currency}}</strong></div>
+            </div>
+            
+            <div style="text-align:center" class="col">
+                Saldo Disponible
+                <div style="text-align:center"><strong>{{saldoDisponible | currency}}</strong></div>
+            </div>
+           </div>
+            
+           <div class="row">
+            <div style="text-align:center" class="col">
+                <div align="center" id="chartdiv1" [style.height.px]="100" [style.width.vw]="28">
+
+                </div>
+            </div>
+
+            <div style="text-align:center" class="col">
+                <div id="chartdiv3" [style.height.px]="100" [style.width.vw]="28"></div>
+            </div>
+            
+				<div style="text-align:center" class="col">
+                <div id="chartdiv2" [style.height.px]="100" [style.width.vw]="28"></div>
+            </div>
+           </div>
+        </div>
+    </div>
+
+</ion-content>
+
+<ion-fab top right class="animated swing">
+    <button ion-fab color="light" (click)="abrirNotificacion()">
+        <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+    </button>
+    <button ion-fab color="light" (click)="abrirNotificacion()" class="miniBoton">
+        {{notificaciones}}
+    </button>
+</ion-fab>

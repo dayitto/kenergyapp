@@ -1,0 +1,154 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Estadísticas</ion-title>
+
+    <ion-buttons left  class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/estadisticas/graph.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding style="
+    background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: bottom center;
+background-repeat: no-repeat;
+background-color: white;">
+<ion-row>
+  <ion-col style="text-align: center;">
+    <button ion-button class="tituloHeader botonGuardar"
+    (click)="clickRendimiento()" [style.background-color]="rendimientoPressed ? '#10358a' : '#ababab'">RENDIMIENTO</button>
+  </ion-col>
+  <ion-col style="text-align: center;">
+    <button ion-button class="tituloHeader botonGuardar"
+    (click)="clickConsumo()" [style.background-color]="consumoPressed ? '#10358a' : '#ababab'">CONSUMO</button>
+  </ion-col>
+</ion-row>
+  <div style="width:100%">
+    <ion-item style="width:100%" class="itemD">
+      <ion-label position="floating" style="color:#1b155c;">Producto</ion-label>
+      <ion-select [(ngModel)]="idProducto" style="color:#000" okText="Aceptar" 
+      cancelText="Cancelar" (ionChange)="buscar()">
+        <ion-option *ngFor="let producto of productos" value="{{producto.id}}">{{producto.descripcion}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item style="width:100%" class="itemD">
+      <ion-label position="floating" style="color:#1b155c;">Vehículo</ion-label>
+      <ion-select [(ngModel)]="idVehiculo" style="color:#000" okText="Aceptar" 
+      cancelText="Cancelar" (ionChange)="buscar()">
+        <ion-option *ngFor="let vehiculo of vehiculos" value="{{vehiculo.id}}">{{vehiculo.descripcion}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item style="width:100%" class="itemD" *ngIf="consumoPressed">
+      <ion-label position="floating" style="color:#1b155c;">Estación</ion-label>
+      <ion-select [(ngModel)]="idEstacion" style="color:#000" okText="Aceptar" 
+      cancelText="Cancelar" (ionChange)="buscar()">
+        <ion-option *ngFor="let estacion of estaciones" value="{{estacion.id}}">{{estacion.descripcion}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item style="width:100%" class="itemD">
+      <ion-label position="floating" style="color:#1b155c;">Año</ion-label>
+      <ion-select [(ngModel)]="idAnio" style="color:#000" okText="Aceptar" 
+      cancelText="Cancelar" (ionChange)="buscar()">
+        <ion-option *ngFor="let anio of anios" value="{{anio.id}}">{{anio.anio}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </div>
+  <div style="width:100%" *ngIf="consumoPressed">
+
+  <div style="width:100%; margin-top: 1.2em;">
+    <div class="tituloHeader divAlign">
+      Mes
+    </div>
+    <div class="tituloHeader divAlign" (click)="ordenar(1)" style="padding-left: 4%;">
+      Lts. <div style="background-color: white;" class="divorder"><ion-icon *ngIf="ordenLitros == 1" name="chevron-down-outline" class="iconoo"></ion-icon><ion-icon *ngIf="ordenLitros == 2" name="chevron-up-outline" class="iconoo"></ion-icon><ion-icon *ngIf="ordenLitros == 0" name="chevron-forward-outline" class="iconoo"></ion-icon></div>
+    </div>
+    <div class="tituloHeader divAlign" (click)="ordenar(2)" style="padding-left: 4%;">
+      $ <div style="background-color: white;" class="divorder"><ion-icon *ngIf="ordenPrecio == 1" name="chevron-down-outline" class="iconoo"></ion-icon><ion-icon *ngIf="ordenPrecio == 2" name="chevron-up-outline" class="iconoo"></ion-icon><ion-icon *ngIf="ordenPrecio == 0" name="chevron-forward-outline" class="iconoo"></ion-icon></div>
+    </div>    
+    <div *ngIf="totales.length > 0" style="background-color: #001432;height: 30px;">
+      <div class="tituloHeader divAlign" style="color:white;    padding-top: 8px;">
+          {{totales[0].mes}}
+      </div>
+      <div class="tituloHeader divAlign" *ngIf="totales[0].lts != 0" style="color:white;     padding-top: 8px;">
+          {{totales[0].lts}}
+      </div>
+      <div class="tituloHeader divAlign" *ngIf="totales[0].precio != 0" style="color:white;     padding-top: 8px;">
+          {{totales[0].precio}}
+      </div>
+      </div>
+    <div *ngFor="let estadistica of estadisticas" style="border-top: 1px solid;padding-bottom: 5px; padding-top: 5px;">
+			<div >
+				<div class="tituloHeader divAlign" >
+        			{{estadistica.mes}}
+      		</div>
+      		<div class="tituloHeader divAlign" *ngIf="estadistica.lts != 0">
+		        {{estadistica.lts | number: 0}}
+      		</div>
+      		<div class="tituloHeader divAlign" *ngIf="estadistica.precio != 0">
+        			{{estadistica.precio | currency}}
+      		</div>
+      	</div>
+    </div>
+  </div>
+  </div>
+
+  <div style="width:100%" *ngIf="rendimientoPressed">
+    <img src="assets/imgs/iconos/info.png" style="width: 30px; margin-left: 90%; margin-top: 5%;" (click)="mostrarInfo()"/>
+    <div style="width:100%; margin-top: 1.2em;">
+      <div class="tituloHeader divAlign">
+        FECHA
+      </div>
+      <div class="tituloHeader divAlign" (click)="ordenar2(1)" style="padding-left: 4%;">
+        CARGAS(L) <div style="background-color: white; width: 5%;" class="divorder"><ion-icon *ngIf="ordenLitros2 == 1" name="chevron-down-outline" class="iconoo"></ion-icon><ion-icon *ngIf="ordenLitros2 == 2" name="chevron-up-outline" class="iconoo"></ion-icon><ion-icon *ngIf="ordenLitros2 == 0" name="chevron-forward-outline" class="iconoo"></ion-icon></div>
+      </div>
+      <div class="tituloHeader divAlign" (click)="ordenar2(2)" style="padding-left: 4%;">
+        KM/L <div style="background-color: white;" class="divorder"><ion-icon *ngIf="ordenRendimiento == 1" name="chevron-down-outline" class="iconoo"></ion-icon><ion-icon *ngIf="ordenRendimiento == 2" name="chevron-up-outline" class="iconoo"></ion-icon><ion-icon *ngIf="ordenRendimiento == 0" name="chevron-forward-outline" class="iconoo"></ion-icon></div>
+      </div>    
+      <div *ngIf="totales2.length > 0" style="background-color: #001432;height: 30px;">
+        <div class="tituloHeader divAlign" style="color:white;    padding-top: 8px;">
+            {{totales2[0].mes}}
+        </div>
+        <div class="tituloHeader divAlign" style="color:white;     padding-top: 8px;">
+            {{totales2[0].lts}}
+        </div>
+        <div class="tituloHeader divAlign" style="color:white;     padding-top: 8px;">
+            {{totales2[0].precio}}
+        </div>
+        </div>
+      <div *ngFor="let estadistica2 of estadisticas2" style="border-top: 1px solid;padding-bottom: 5px; padding-top: 5px;">
+        <div >
+          <div class="tituloHeader divAlign" >
+                {{estadistica2.mes}}
+            </div>
+            <div class="tituloHeader divAlign">
+              {{estadistica2.lts | number: 0}}
+            </div>
+            <div class="tituloHeader divAlign">
+                {{estadistica2.precio | number: 0}}
+            </div>
+          </div>
+      </div>
+    </div>
+    </div>
+</ion-content>
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()">
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+  <button *ngIf="notificacion.num > 0" ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()" class="miniBoton">
+    {{notificacion.num}}
+</button>
+</ion-fab>

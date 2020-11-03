@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar color="titulo">
+    <ion-title class="tituloHeader">Datos de Facturación</ion-title>
+    <ion-buttons left  class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/misDatos/usuario.png" style="width: 43%;margin-left: -5px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+    <ion-buttons start style="margin-right: 10px;">
+      <button ion-button (click)="cancelar()" style="color:#fff">
+        <span color="secundary" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android, windows" style="    position: absolute;
+    left: 5px;
+    padding-bottom: 11px;"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+
+  <input placeholder="RFC" class="inputText" [(ngModel)]="rfc" style="margin-top: 50px;"/>
+  <input placeholder="Nombre o Razón Social" class="inputText" [(ngModel)]="razonSocial" />
+  <input placeholder="Correo Electrónico" class="inputText" [(ngModel)]="email"/>
+  <textarea placeholder="Calle" rows="3" cols="5" class="area" [(ngModel)]="calle"></textarea>
+
+  <div class="widthFull">
+    <input placeholder="Núm. Exterior" class="inputText clm widthMedium" [(ngModel)]="ne"/>
+    <input placeholder="Núm. Interior" class="inputText clm widthMedium" [(ngModel)]="ni"/>
+  </div>
+
+  <div class="widthFull">
+    <input placeholder="Código Postal" class="inputText clm widthMedium" [(ngModel)]="cp"/>
+    <input placeholder="Estado" class="inputText clm widthMedium" [(ngModel)]="estado"/>
+  </div>
+  <input placeholder="Municipio ó Delegación" class="inputText" [(ngModel)]="municipio"/>
+  <input placeholder="Colonia" class="inputText" [(ngModel)]="colonia"x	/>
+  <div class="centro">
+      <button ion-button color="naranja" class="tituloHeader botonGuardar"
+      (click)="registrar()">Guardar</button>
+  </div>
+</ion-content>
+<ion-fab top right class="animated swing" style="margin-top: 61px">
+  <button ion-fab color="light" >
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+</ion-fab>

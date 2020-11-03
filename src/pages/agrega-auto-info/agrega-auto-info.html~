@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Agregar Auto</ion-title>
+    <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/miAuto/carro.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+  <div class="tituloHeader" style="margin-top:20%;font-size: 160%;
+  text-align: center;">
+    Cliente / Auto
+  </div>
+  <div style="font-family: arcadeclassicregular;font-size: 203%;
+  text-align: center;">
+    {{Id}}
+  </div>
+  <div class="tituloHeader" style="margin-top:20%;font-size: 160%;
+  text-align: center;">
+    Tu Saldo en Puntos es de:
+  </div>
+  <div style="font-size: 203%;
+  text-align: center;">
+    {{Puntos}}
+  </div>
+
+
+  <!--<div style="text-align: -webkit-center;margin-top: 10%;">
+    <div style="background-color: #009245;
+    width: 12%;
+    color: #fff;
+    padding: 6px;
+    font-size: 135%;
+    border-radius: 5px;" (click)="ingresar()">OK</div>
+  </div>-->
+</ion-content>

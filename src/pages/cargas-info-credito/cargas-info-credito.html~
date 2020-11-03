@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar color="titulo">
+    <ion-title class="tituloHeader" style="    padding-left: 37px;">Carga</ion-title>
+    <span class="button-inner">
+          <img src="assets/imgs/cargas/fuel-station.png" style="    width: 7%;
+    margin-left: -142px;
+    margin-top: -11px;
+    position: absolute;">
+        </span>
+    <ion-buttons start>
+      <button ion-button (click)="cancelar()" style="color:#fff; top: -13px;">
+        <span color="secundary" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+<div style="width: 100%; margin-bottom: 2px; margin-left: 20px;">Estación</div>
+<input placeholder="Estación" class="inputText clm " [(ngModel)]="carga.Estacion"/>
+<div style="width: 100%; margin-bottom: 2px; margin-left: 20px;">Vehículo</div>
+<input placeholder="Vehículo" class="inputText clm " [(ngModel)]="carga.Auto"/>
+<div style="width: 100%; margin-bottom: 2px; margin-left: 20px;">Chofer</div>
+<input placeholder="Chofer" class="inputText clm " [(ngModel)]="carga.Chofer"/>
+
+<div style="width:100%" class="row">
+	<div style="width: 50%; margin-left: 20px; margin-top: -6px;" class="col">Fecha</div>
+  <div style="width: 50%; margin-left: 20px; margin-top: -6px;" class="col">Hora</div>
+</div>
+<div style="width:100%">
+  <input placeholder="Fecha" class="inputText clm widthMedium" [(ngModel)]="carga.Fecha"/>
+  <input placeholder="Hora" class="inputText clm widthMedium" [(ngModel)]="carga.Hora"/>
+</div>
+<div style="width:100%" class="row">
+	<div style="width: 50%; margin-left: 20px; margin-top: -6px;" class="col">Despacho</div>
+  <div style="width: 50%; margin-left: 20px; margin-top: -6px;" class="col">Ticket</div>
+</div>
+<div style="width:100%">
+  <input placeholder="Despacho" class="inputText clm widthMedium" [(ngModel)]="carga.Despacho"/>
+  <input placeholder="Ticket" class="inputText clm widthMedium" [(ngModel)]="carga.Ticket"/>
+</div>
+<div style="width:100%" class="row">
+	<div style="width: 50%; margin-left: 20px; margin-top: -6px;" class="col">Placas</div>
+  <div style="width: 50%; margin-left: 20px; margin-top: -6px;" class="col">Bomba</div>
+</div>
+<div style="width:100%">
+  <input placeholder="Placas" class="inputText clm widthMedium" [(ngModel)]="carga.Placas"/>
+  <input placeholder="Bomba" class="inputText clm widthMedium" [(ngModel)]="carga.Bomba"/>
+</div>
+<div style="width:100%" class="row">
+	<div style="width: 50%; margin-left: 20px; margin-top: -6px;" class="col">Producto</div>
+  <div style="width: 50%; margin-left: 20px; margin-top: -6px;" class="col">Cantidad Lts.</div>
+</div>
+<div style="width:100%">
+  <input placeholder="Producto" class="inputText clm widthMedium" [(ngModel)]="carga.Producto"/>
+  <input placeholder="Cantidad Lts" class="inputText clm widthMedium" [(ngModel)]="carga.Litros"/>
+</div>
+<div style="width:100%" class="row">
+	<div style="width: 50%; margin-left: 20px; margin-top: -6px;" class="col">Precio $/Lt</div>
+  <div style="width: 50%; margin-left: 20px; margin-top: -6px;" class="col">$ Monto</div>
+</div>
+<div style="width:100%">
+  <input placeholder="Precio $/Lt" class="inputText clm widthMedium" [(ngModel)]="carga.PrecioLitro"/>
+  <input placeholder="$ Monto" class="inputText clm widthMedium" [(ngModel)]="carga.Efectivo"/>
+</div>
+<div style="width:100%" class="row">
+	<div style="width: 50%; margin-left: 20px; margin-top: -6px;" class="col">Kilometraje Km</div>
+  <div style="width: 50%; margin-left: 20px; margin-top: -6px;" class="col">Km recorridos</div>
+</div>
+<div style="width:100%">
+  <input placeholder="Kilometraje Km" class="inputText clm widthMedium" [(ngModel)]="carga.Kilometraje"/>
+  <input placeholder="Km recorridos" class="inputText clm widthMedium" [(ngModel)]="carga.KmRecorridos"/>
+</div>
+<div style="width: 100%; margin-bottom: 2px; margin-left: 20px;">Factura</div>
+<input placeholder="Factura" class="inputText clm " [(ngModel)]="carga.Factura"/>
+</ion-content>
+
+<ion-fab top right class="animated swing" style="margin-top:5%">
+  <button ion-fab color="light" style="">
+    <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+</ion-fab>

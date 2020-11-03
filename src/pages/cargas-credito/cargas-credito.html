@@ -1,0 +1,136 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Cargas</ion-title>
+
+    <ion-buttons left class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/cargas/fuel-station.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding style="
+    background-image: url(assets/imgs/fondo.jpg); 
+    background-size: 100%;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-color: white;">
+<!-- <div (click)="buscar()" style="margin-bottom: 10px;">
+  <img src="assets/imgs/estadisticas/recargar.png" style="width: 6%;">
+</div> -->
+<div style="width:100%;text-align: left">
+  
+  <ion-row>
+    <ion-col>
+      <ion-item style="width:100%">
+        <ion-label style="color:#1b155c;">Desde:</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="desde" style="color: #000;" 
+        doneText="Aceptar" cancelText="Cancelar" (ionChange)="buscar()"></ion-datetime>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item style="width:100%">
+        <ion-label style="color:#1b155c;">Hasta:</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="hasta" style="color: #000;" 
+        doneText="Aceptar" cancelText="Cancelar" (ionChange)="buscar()"></ion-datetime>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-item style="width:100%">
+    <ion-label position="floating" style="color:#1b155c;">Estación:</ion-label>
+    <ion-select [(ngModel)]="idEstacion" style="color:#000" okText="Aceptar" 
+    cancelText="Cancelar" (ionChange)="buscar()">
+      <ion-option *ngFor="let estacion of estaciones" value="{{estacion.id}}">{{estacion.descripcion}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item style="width:100%">
+    <ion-label position="floating" style="color:#1b155c;">Producto:</ion-label>
+    <ion-select [(ngModel)]="idProducto" style="color:#000" okText="Aceptar" 
+    cancelText="Cancelar" (ionChange)="buscar()">
+      <ion-option *ngFor="let producto of productos" value="{{producto.id}}">{{producto.descripcion}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item style="width:100%">
+    <ion-label position="floating" style="color:#1b155c;">Vehículo:</ion-label>
+    <ion-select [(ngModel)]="idVehiculo" style="color:#000" okText="Aceptar" 
+    cancelText="Cancelar" (ionChange)="buscar()">
+      <ion-option *ngFor="let vehiculo of vehiculos" value="{{vehiculo.id}}">{{vehiculo.descripcion}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item style="width:100%">
+    <ion-label position="floating" style="color:#1b155c;">Chofer:</ion-label>
+    <ion-select [(ngModel)]="idChofer" style="color:#000" okText="Aceptar" 
+    cancelText="Cancelar" (ionChange)="buscar()">
+      <ion-option *ngFor="let chofer of choferes" value="{{chofer.id}}">{{chofer.descripcion}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item style="width:100%">
+    <ion-label position="floating" style="color:#1b155c;">Filtro de fecha:</ion-label>
+    <ion-select [(ngModel)]="idFiltro" style="color:#000" okText="Aceptar" 
+    cancelText="Cancelar" (ionChange)="cambiarFiltroFecha()">
+      <ion-option *ngFor="let f of filtros" value="{{f.id}}">{{f.filtro}}</ion-option>
+    </ion-select>
+  </ion-item>
+</div>
+
+<div style="width:100%;background-color: #192b46;
+font-size: 110%;
+font-weight: 400; margin-top: 5%;">
+  <div class="tituloHeader divAlign" (click)="ordenar()">
+    Fecha <div style="background-color: white;" class="divorder"><ion-icon *ngIf="ordenFecha == 1" name="chevron-down-outline" class="iconoo"></ion-icon><ion-icon *ngIf="ordenFecha == 2" name="chevron-up-outline" class="iconoo"></ion-icon><ion-icon *ngIf="ordenFecha == 0" name="chevron-forward-outline" class="iconoo"></ion-icon></div>
+  </div>
+  <div class="tituloHeader divAlign" (click)="ordenar(1)">
+    Placa <div style="background-color: white;" class="divorder"><ion-icon *ngIf="ordenPlaca == 1" name="chevron-down-outline" class="iconoo"></ion-icon><ion-icon *ngIf="ordenPlaca == 2" name="chevron-up-outline" class="iconoo"></ion-icon><ion-icon *ngIf="ordenPlaca == 0" name="chevron-forward-outline" class="iconoo"></ion-icon></div>
+  </div>
+  <div class="tituloHeader divAlign">
+    Lts.
+  </div>
+  <div class="tituloHeader divAlign">
+    $
+  </div>
+  <div style="display: inline-block;
+  width: 4%;">
+    <img src="assets/imgs/cargas/ojo.png" style="width: 100%;">
+  </div>
+</div>
+<div *ngFor="let carga of cargas" style="border-bottom: 1px solid #192b46; padding-top: 12px; display: flex;
+    align-items: center;">
+  <div class="tituloHeader divAlign" style="color: #000;">
+    {{carga.fecha}}
+  </div>
+  <div class="tituloHeader divAlign" style="color: #000;">
+    {{carga.placa}}
+  </div>
+  <div class="tituloHeader divAlign" style="color: #000;">
+    {{carga.lts | number: 0}}
+  </div>
+  <div class="tituloHeader divAlign" style="color: #000;">
+    {{carga.precio | currency}}
+  </div>
+  <div style="display: inline-block;
+  width: 4%;" (click)="openCarga(carga)">
+    <img src="assets/imgs/cargas/ojo.png" style="width: 100%;">
+  </div>
+</div>
+
+</ion-content>
+
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()">
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+  <button *ngIf="notificacion.num > 0" ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()" class="miniBoton">
+    {{notificacion.num}}
+</button>
+</ion-fab>

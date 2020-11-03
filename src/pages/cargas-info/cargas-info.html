@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-navbar color="titulo">
+  	<button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="tituloHeader" style="position: absolute;left: 21%; top: 33%;">Detalle de carga</ion-title>
+
+    <!-- <ion-buttons end>
+      <button ion-button (click)="presentPopover($event)" style="color:#fff">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons> -->
+
+
+    <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/cargas/fuel-station.png" style="width: 70%;margin-left: -33px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content *ngIf="carga != null" padding style="
+  background-image: url(assets/imgs/fondo.jpg); 
+  background-size: 100%;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-color: white;">
+  <div class="tituloAutos animated rubberBand">Información del despacho</div>
+  <input placeholder="Estación" class="inputText noedit" [(ngModel)]="carga.Estacion"/>
+  <div class="widthFull">
+    <input class="inputText clm widthMedium noedit" value="Carga Núm. {{carga.NumCarga}}"/>
+    <input placeholder="Fecha" class="inputText clm widthMedium noedit" [(ngModel)]="carga.Fecha"/>
+  </div>
+  <input placeholder="Vehículo" class="inputText noedit" [(ngModel)]="carga.Auto"/>
+  <input placeholder="Chofer" class="inputText noedit" [(ngModel)]="carga.Chofer"/>
+  <div class="widthFull">
+    <input placeholder="Producto" class="inputText clm widthMedium noedit" [(ngModel)]="carga.Producto"/>
+    <input class="inputText clm widthMedium noedit" value="{{carga.Litros}} Lts"/>
+  </div>
+
+  <div class="widthFull">
+    <input class="inputText clm widthMedium noedit" value="${{carga.PrecioLitro}} Lt"/>
+    <input class="inputText clm widthMedium noedit" value="${{carga.Efectivo}}"/>
+  </div>
+
+  <div class="widthFull">
+    <input class="inputText clm widthMedium noedit" value="{{carga.Kilometraje}} Km"/>
+    <input class="inputText clm widthMedium noedit" value="{{carga.Rendimiento}} Km/Lt"/>
+  </div>
+
+  <div class="widthFull">
+    <input class="inputText clm widthMedium noedit" value="Pagado con {{carga.TipoPago}}"/>
+    <input class="inputText clm widthMedium noedit" value="{{carga.Puntos}} Puntos"/>
+  </div>
+  <div style="text-align:center;text-align: -webkit-center;margin-bottom: 7px; width: 100%;">
+    <ion-row>
+      <ion-col class="col1">
+        <ion-item style="width:100%">
+          <ion-label position="floating" style="color:#1b155c; min-width: 30%;">Facturar a:</ion-label>
+          <ion-select [(ngModel)]="idclifac" class="selector" *ngIf="arregloClientes.length > 1"
+          (ionChange)="cargaInfoFac()" >
+            <ion-option *ngFor="let cliente of arregloClientes" value="{{cliente.id}}">{{cliente.razon}}</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col class="col2">
+        <ion-icon name="add" class="add clm" (click)="facturarA()"></ion-icon>
+      </ion-col>
+    </ion-row>
+    
+  </div >
+  <!-- <div style="text-align:center;text-align: -webkit-center;margin-bottom: 7px; width: 25%;">
+    <div style="background-color: skyblue;padding: 2px;
+    color: #fff;
+    text-align: center;
+    width: 80%;border: 1.3px solid #8a8a8a;" (click)="facturarA()" id="botonenv">
+      Agregar nueva razón social
+    </div>
+  </div> -->
+  <input placeholder="RFC" class="inputText" [(ngModel)]="carga.RFC" readonly="true" id="rfc" />
+  <input placeholder="Razón Social" class="inputText" [(ngModel)]="carga.RazonSocial" readonly="true" id="razon" />
+  <input placeholder="Correo" class="inputText" [(ngModel)]="carga.Email" id="correo" />
+
+  <div style="text-align:center;text-align: -webkit-center;margin-bottom: 7px;">
+
+  <div style="background-color: #009232;padding: 2px;
+    color: #fff;
+    text-align: center;
+    width: 30%;border: 1.3px solid #8a8a8a;" (click)="facturar()" id="botonenv">
+      {{des}}
+    </div>
+  </div>
+</ion-content>
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()">
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+  <button *ngIf="notificacion.num > 0" ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()" class="miniBoton">
+    {{notificacion.num}}
+</button>
+</ion-fab>

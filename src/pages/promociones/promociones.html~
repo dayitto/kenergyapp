@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="tituloHeader">Promociones</ion-title>
+
+
+    <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/promociones/promocion.png" style="width: 46%;margin-left: -32px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding style="
+    background-image: url(assets/imgs/fondo.jpg); 
+    background-size: 100%;
+    background-position: center center;" class="animated fadeIn">
+
+  <div *ngFor="let promocion of promociones">
+    <div style="color: #1b1464;
+      font-weight: 700;
+      font-size: 150%;" (click)="openPromo(promocion)">
+      <u>{{promocion.titulo}}</u>
+    </div>
+    <div style="font-size: 108%;
+      margin-top: 6px;
+      margin-bottom: 3px;">
+      {{promocion.descripcion}}
+    </div>
+    <div style="margin-bottom: 10px">
+      <img src="assets/imgs/promociones/{{promocion.img}}" style="width: 100%;box-shadow: 1px 1px 1px #123;">
+    </div>
+  </div>
+</ion-content>
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light" style="">
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+</ion-fab>

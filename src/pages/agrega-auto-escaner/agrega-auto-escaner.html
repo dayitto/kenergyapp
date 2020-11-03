@@ -1,0 +1,127 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Agregar Llavero</ion-title>
+    <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/miAuto/carro.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: bottom center;
+background-repeat: no-repeat;
+background-color: white;">
+
+  <div class="tituloHeader" style="font-size: 150%;text-align: justify; margin-top: 12%;">
+    Si cuentas con tu tarjeta amigo fiel, escanea el código de barra
+    o escribe el número de llavero para mantener tus puntos.
+  </div>
+  <img src="assets/imgs/registro/llavero1.png" style="display: block; margin: auto; width: 60%; ">
+  <!--<div style="text-align: center;margin-top: 6%;">
+    <img src="assets/imgs/miAuto/foto.png" style="width: 35%;" (click)="escaner()">
+  </div>-->
+  <!--<div style="width:100%;margin-top: 5%;">
+    <div style="width:47%;display:inline-block">
+      <div style="width: 100%;text-align: center;margin: 1px;">
+        <img src="assets/imgs/miAuto/kanz.png" style="width: 70%;">
+      </div>
+    </div>
+    <div style="width:47%;display:inline-block">
+      <div style="width: 100%;text-align: center;margin: 1px;">
+        <img src="assets/imgs/miAuto/tarjeta2.png" style="width: 70%;">
+      </div>
+    </div>
+  </div>-->
+  <ion-row>
+    <ion-col style="min-width: 70%; padding: 0px;">
+      <ion-item style="width:100%">
+        <ion-label position="floating" style="color:#181560;">No. de cte:</ion-label>
+        <ion-input type="number" [(ngModel)]="llavero" style="color: #000; background-color: silver; height: 80%;"></ion-input>
+        <button item-right style="padding: 0; background-color: silver; height: 80%; margin-right: 0;"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512 512" style="enable-background:new 0 0 512 512; width: 25px;" xml:space="preserve">
+<g>
+	<g>
+		<g>
+			<circle cx="256" cy="277.333" r="106.667"/>
+			<path d="M469.333,106.667h-67.656c-8.552,0-16.583-3.333-22.635-9.375l-39-39c-10.073-10.073-23.469-15.625-37.719-15.625
+				h-92.646c-14.25,0-27.646,5.552-37.719,15.625l-39,39c-6.052,6.042-14.083,9.375-22.635,9.375H42.667
+				C19.135,106.667,0,125.802,0,149.333v277.333c0,23.531,19.135,42.667,42.667,42.667h426.667
+				c23.531,0,42.667-19.135,42.667-42.667V149.333C512,125.802,492.865,106.667,469.333,106.667z M256,405.333
+				c-70.583,0-128-57.417-128-128s57.417-128,128-128s128,57.417,128,128S326.583,405.333,256,405.333z M426.667,213.333
+				c-11.76,0-21.333-9.573-21.333-21.333s9.573-21.333,21.333-21.333S448,180.24,448,192S438.427,213.333,426.667,213.333z"/>
+		</g>
+	</g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+</button>
+      </ion-item>
+    </ion-col>
+    <ion-col style="min-width: 30%; padding: 0px;">
+      <button ion-button class="tituloHeader botonGuardar" style="background-color: #67C146;" (click)="alertaLlaveroExistente()">Aceptar</button>
+    </ion-col>
+  </ion-row>
+  <!--<div style="margin-top: 5%;font-size: 119%;text-align: center" class="tituloHeader" (click)="omitir()">
+    <u>Omite este paso y continua un nuevo registro de auto</u>
+  </div> -->
+  <div class="tituloHeader" style="font-size: 150%;text-align: justify; margin-top: 12%;">
+    De lo contrario, crea una nueva cuenta presionando el botón de abajo.
+  </div>
+  <ion-row>
+    <ion-col style="min-width: 35%; display: flex; align-items: center;">
+      <button ion-button class="tituloHeader botonGuardar" style="background-color: #2E71E7; white-space: normal; width: 100%;" (click)="llaveroNuevo()">NUEVO CLIENTE</button>
+    </ion-col>
+    <ion-col style="min-width: 65%;">
+      <img src="assets/imgs/registro/Llavero-volteado.png" style="display: block; margin: auto; width: 100%; ">
+    </ion-col>
+  </ion-row>
+</ion-content>
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()">
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+  <button *ngIf="notificacion.num > 0" ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()" class="miniBoton">
+    {{notificacion.num}}
+</button>
+</ion-fab>

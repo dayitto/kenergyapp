@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Facturación</ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="presentPopover($event)" style="color:#fff">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+
+
+    <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/facturacion/factura.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding style="
+  background-image: url(assets/imgs/fondo.jpg); 
+  background-size: 100%;
+  background-position: center center;">
+  <div (click)="buscar()">
+    <img src="assets/imgs/estadisticas/recargar.png" style="width: 6%;">
+  </div>
+  <div style="width:100%;text-align: center">
+    <input placeholder="Última Fecha de Verificación" type="date" class="mySelect" [(ngModel)]="desde" style="font-weight: 700;display: inline-block;height: 26px;vertical-align: middle;width: 38%" />
+
+    <div style="display: inline-block;margin: 10px;">Hasta:</div>
+
+    <input placeholder="Última Fecha de Verificación" type="date" class="mySelect" [(ngModel)]="hasta" style="font-weight: 700;display: inline-block;height: 26px;vertical-align: middle;width: 38%" />
+  </div>
+
+  <div style="width:100%;text-align: center">
+    <select class="mySelect" [(ngModel)]="idVehiculo" style="font-weight: 700;display: inline-block;height: 26px;vertical-align: middle;width: 38%">
+      <option *ngFor="let vehiculo of vehiculos" [ngValue]="vehiculo.id">
+        {{vehiculo.descripcion}}
+      </option>
+    </select>
+
+    <div style="display: inline-block;margin: 10px;margin-left: 50px;"></div>
+
+    <select class="mySelect" [(ngModel)]="idEstacion" style="font-weight: 700;display: inline-block;height: 26px;vertical-align: middle;width: 38%">
+      <option *ngFor="let estacion of estaciones" [ngValue]="estacion.id">
+        {{estacion.descripcion}}
+      </option>
+    </select>
+  </div>
+
+  <ion-list class="animated fadeIn">
+    <ion-item *ngFor="let factura of facturas" class="itemList">
+      <div style="width:100%" (click)="downloadFactura(factura)">
+        <div style="display:inline-block;width:20%">
+          <img src="assets/imgs/facturacion/invoice.png" style="width: 44px;">
+        </div>
+        <div style="display:inline-block;width:68%">
+          <div style="width:100%">
+            <div class="tituloHeader">{{factura.auto}}</div>
+          </div>
+          <div style="width:100%">
+            <div style="width:48%;display: inline-block;font-weight: lighter;" class="tituloHeader">{{factura.fecha}}</div>
+            <div style="width:48%;display: inline-block;font-weight: lighter;" class="tituloHeader">Monto:
+              ${{factura.precio}}</div>
+          </div>
+        </div>
+        <!--<div style="width:10%;display: inline-block;">
+          <div style="text-align: center;">
+            <ion-icon name="download"></ion-icon>
+          </div>
+          <div style="text-align: center;">
+            <ion-icon name="mail"></ion-icon>
+          </div>
+        </div>-->
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light">
+    <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+</ion-fab>

@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Contacto</ion-title>
+
+
+    <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/contacto/contacto.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding style="
+        background-image: url(assets/imgs/fondo.jpg); 
+        background-size: 100%;
+        background-position: center center;" class="animated fadeIn">
+  <div style="width:100%;border-bottom: 1px solid #6a6b6b;">
+    <div style="width:24%;display:inline-block;text-align: center;margin-bottom: 16px;">
+    	<a href="tel:272-167-2847" ><img src="assets/imgs/contacto/telefono.png" style="    width: 67%;"></a>
+    </div>
+    <div style="width:24%;display:inline-block;text-align: center;margin-bottom: 16px;">
+      <a href="tel:272-167-2847" ><img src="assets/imgs/contacto/whatsapp.png" style="    width: 67%;"></a>
+    </div>
+    <div style="width:24%;display:inline-block;text-align: center;margin-bottom: 16px;">
+      <a href="https://www.instagram.com/gasolinerakenergy/"><img src="assets/imgs/contacto/instagram.png" style="    width: 67%;"></a>
+    </div>
+    <div style="width:24%;display:inline-block;text-align: center;margin-bottom: 16px;">
+      <a href="https://www.facebook.com/gasolinerakenergy/"><img src="assets/imgs/contacto/facebook.png" style="    width: 67%;"></a>
+    </div>
+  </div>
+  <div style="width:100%">
+    <div style="width:48%;display:inline-block;text-align: center;margin-bottom: 8px;margin-top: 10px" *ngFor="let telefono of telefonos">
+      <img src="assets/imgs/contacto/{{telefono.imagen}}" style="width: 32%;box-shadow: 1px 1px 1px #123;
+      border-radius: 156px;">
+      <a href="telefono.telefono" ><div style="margin-top:5px">{{telefono.telefono}}</div></a>
+      <div style="margin-top:5px">{{telefono.descripcion}}</div>
+    </div>
+  </div>
+</ion-content>

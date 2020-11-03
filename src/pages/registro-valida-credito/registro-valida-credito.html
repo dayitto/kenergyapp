@@ -1,0 +1,31 @@
+<ion-content class="animated fadeIn" padding style="
+    background-image: url(assets/imgs/fondo.jpg); 
+    background-size: 100%;
+    background-position: center center;">
+  <div style="text-align:center" class="animated fadeInDown">
+    <img src="../assets/imgs/registro/logoLetra2.png" alt="logo" class="logo logoMargen" style="margin-bottom: 13%;" />
+  </div>
+  <div style="width:100%;margin-bottom: 5%" class="animated fadeInDown">
+    <div class="tituloHeader" style="width:70%;display:inline-block;font-size: 150%">Ingresa tus datos</div>
+    <div class="tituloHeader" style="width:28%;display:inline-block;text-align: right;" (click)="ingresarClave()">
+      <!--<ion-icon name="save"></ion-icon>-->
+    </div>
+  </div>
+  <input placeholder="RFC de Empresa" class="inputText" [(ngModel)]="rfc"/>
+  <input placeholder="Usuario dado de alta en la empresa" class="inputText" [(ngModel)]="username"/>
+  <input placeholder="Correo asociado al usuario" class="inputText" style="margin-bottom:5%" [(ngModel)]="email"/>
+  <div style="text-align: -webkit-center;" (click)="validar()">
+    <div style="background-color: #009245;
+    width: 29%;
+    color: #fff;
+    padding: 6px;
+    font-size: 135%;
+    border-radius: 5px;">Validar</div>
+  </div>
+  <div style="text-align:center;margin: 16px;font-size: 90%;font-style: italic;color: #3e5167">
+    Si no cuentas con tu usuario comunicate
+    al tel.: <a href="tel:(272) 7280 112">(272) 7280 112</a>,
+    o al correo <a href="mailto:atencioaclientes@kenergyfuel.com">atencioaclientes@kenergyfuel.com</a>
+    para proporcionartelo.
+  </div>
+</ion-content>

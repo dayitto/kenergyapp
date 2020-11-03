@@ -1,0 +1,49 @@
+<ion-header>
+    <ion-toolbar color="titulo">
+      <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Notificaciones</ion-title>
+      <ion-buttons start>
+        <button ion-button (click)="cancelar()" style="color:#fff">
+          <span color="secundary" showWhen="ios">Cancel</span>
+          <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+        <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+          <span class="button-inner">
+            <img src="assets/imgs/home/info.png" style="width: 65%;margin-left: -27px;">
+          </span>
+          <div class="button-effect">
+  
+          </div>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+  <div class="alignRight" style="margin-bottom: 9px;margin-top: 10%;">
+    <strong><a (click)="borrarTodasNotificaciones()" style="color:#c1272d">Borrar todo</a></strong>
+  </div>
+  <div *ngFor="let notificacion of notificaciones">
+    <div style="box-shadow: 0px 0px 6px 1px #b0b2b3;
+                border-radius: 18px;margin-bottom: 9px;padding: 9px;">
+      <strong><div style="font-size:120%;margin-left: 10px;">{{notificacion.titulo}}</div></strong>
+      <div style="font-size:80%;margin-left: 10px;">{{notificacion.fecha}}</div>
+      <div style="font-size:80%;margin-left: 10px;font-weight: 500;">{{notificacion.mensaje}}</div>
+      <button ion-button clear item-end style="float: right;
+      display: inline-block;
+      padding: 2px 5px;
+      margin-top: -63px;" (click)="borrarNotificacion(notificacion)"><ion-icon name="close"></ion-icon></button>
+    </div>
+  </div>
+</ion-content>
+
+<ion-fab top right class="animated swing" style="margin-top: 7%;">
+  <button ion-fab color="light" style="">
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+</ion-fab>

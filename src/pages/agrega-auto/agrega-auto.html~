@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color="titulo">
+    <ion-title class="tituloHeader">Agregar Auto</ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="cancelar()" style="color:#fff">
+        <span color="secundary" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+  <div style="width:100%;margin-bottom: 5%" class="animated fadeInDown">
+    <div class="tituloHeader" style="width:70%;display:inline-block;font-size: 150%">Registra tu Auto</div>
+    <div class="tituloHeader" style="width:28%;display:inline-block;text-align: right;" >
+      <ion-icon name="save"></ion-icon>
+    </div>
+  </div>
+
+  <input placeholder="Alias" class="inputText" [(ngModel)]="alias"/>
+  <input placeholder="Marca" class="inputText" [(ngModel)]="marca"/>
+
+  <div class="widthFull">
+    <input placeholder="Modelo" class="inputText clm widthMedium" [(ngModel)]="modelo"/>
+    <input placeholder="Año" class="inputText clm widthMedium" [(ngModel)]="anio"/>
+  </div>
+  <div class="widthFull">
+    <input placeholder="Placas" class="inputText clm widthMedium" [(ngModel)]="placas"/>
+    <input placeholder="Kilometraje" class="inputText clm widthMedium" [(ngModel)]="km"/>
+  </div>
+  <div class="centro">
+    <button ion-button color="naranja" class="tituloHeader botonGuardar" (click)="registrar()">Guardar</button>
+  </div>
+</ion-content>

@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Cambiar contraseña</ion-title>
+
+    <ion-buttons left  class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/misDatos/usuario.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+  <form [formGroup]="loginForm">
+    <ng-container *ngIf="idUsuario == 0">
+    <ion-label style="color:#1b155c;">Contraseña actual*</ion-label>
+    <ion-input formControlName="canterior" type="password" style="color: #000;" id="canterior"></ion-input>
+  <ion-item *ngIf="loginFormValidator.canterior.mensaje">
+    <ion-label text-wrap color="danger">
+    {{ loginFormValidator.canterior.mensaje }}
+    </ion-label>
+  </ion-item>
+  </ng-container>
+    <ion-label style="color:#1b155c;">Contraseña nueva*</ion-label>
+    <ion-input formControlName="cnueva" type="password" style="color: #000;" id="cnueva"></ion-input>
+  <ion-item *ngIf="loginFormValidator.cnueva.mensaje">
+    <ion-label text-wrap color="danger">
+    {{ loginFormValidator.cnueva.mensaje }}
+    </ion-label>
+  </ion-item>
+    <ion-label style="color:#1b155c;">Confirmar contraseña nueva*</ion-label>
+    <ion-input formControlName="cnuevac" type="password" style="color: #000;" id="cnuevac"></ion-input>
+  <ion-item *ngIf="loginFormValidator.cnuevac.mensaje">
+    <ion-label text-wrap color="danger">
+    {{ loginFormValidator.cnuevac.mensaje }}
+    </ion-label>
+  </ion-item>
+  <div class="centro animated fadeIn">
+    <div style="display: inline-block;width: 44%" class="animated fadeIn">
+      <button ion-button color="aceptar" class="tituloHeader botonGuardar" (click)="cambiarContra()">Aceptar</button>
+    </div>
+  </div>
+</form>
+</ion-content>
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()">
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+  <button *ngIf="notificacion.num > 0" ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()" class="miniBoton">
+    {{notificacion.num}}
+</button>
+</ion-fab>

@@ -1,0 +1,49 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { NotificacionModel } from '../../models/notificacionModel';
+
+/**
+ * Generated class for the NotificacionesPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
+@IonicPage()
+@Component({
+  selector: 'page-notificaciones',
+  templateUrl: 'notificaciones.html',
+})
+export class NotificacionesPage {
+  public notificaciones: NotificacionModel[] = [];
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
+    this.notificaciones.push(new NotificacionModel(1, "Ganaste vale de $100","Jue 1 Nov 2018 00:00",
+    "Tienes un mes para pasar a recoger tu vale de $100 en la estación K Energy Orizaba"));
+    this.notificaciones.push(new NotificacionModel(2, "Puntos al Doble!","Dom 28 Oct 2018 17:55",
+    "Día Lunes 29 oct desde 11:00 hasta 14:00, Puntos al Doble en todas tus cargas"));
+    this.notificaciones.push(new NotificacionModel(3, "Verifica tu Vehículo","Sab 27 Oct 2018 09:40",
+    "En cuatro días vence tu verificación Vehícular BMW X4"));
+    this.notificaciones.push(new NotificacionModel(4, "Boletos de Cine","Vier 26 Oct 2018 14:20",
+    "¡Ven por tu boleto de cine sin costo! Solo realiza una carga superior a $300.00"));
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad NotificacionesPage');
+  }
+
+  cancelar() {
+    this.viewCtrl.dismiss();
+  }
+  
+  borrarTodasNotificaciones() {
+		  this.notificaciones = [];
+  }
+  
+  borrarNotificacion(notificacion) {
+	for (let index = 0; index < this.notificaciones.length; index++) {
+		if(notificacion.id == this.notificaciones[index].id) {
+			this.notificaciones.splice(index, 1);
+		}	
+	}
+  }
+}

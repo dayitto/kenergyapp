@@ -1,0 +1,195 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
+import { ProductoModel } from '../../models/productoModel';
+import { EstadisticaModel } from '../../models/estadisticaModel';
+import { RestServiceProvider } from '../../providers/rest-service';
+import { AlertaServiceProvider } from '../../providers/alerta-service';
+import { HttpParams } from '@angular/common/http';
+
+@IonicPage()
+@Component({
+  selector: 'page-estadisticas',
+  templateUrl: 'estadisticas.html',
+})
+export class EstadisticasPage {
+  public idProducto: number = 0;
+  public idVehiculo: number = 0;
+  public idEstacion: number = 0;
+  public idAnio: number = 0;
+  public productos: ProductoModel[] = [];
+  public vehiculos: ProductoModel[] = [];
+  public estaciones: ProductoModel[] = [];
+  public anios: any[] = [];
+  //Resultados
+  public estadisticas: EstadisticaModel[] = [];
+  public totales: any[] = [];
+  //
+  public usuario: any = null;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl:ViewController,
+    private restService:RestServiceProvider, private alertaService: AlertaServiceProvider,
+    public loadingCtrl: LoadingController) {
+      this.usuario = navParams.get('usuario');
+    this.productos.push(new ProductoModel());
+    this.vehiculos.push(new ProductoModel(0,"Vehículo"));
+    this.estaciones.push(new ProductoModel(0,"Estación"));
+    var year = new Date().getFullYear();
+    this.anios.push({ id: 0, anio: "Año" });
+    for (let index = 1980; index <= year; index++) {
+      this.anios.push({ id: index, anio: index });
+    }
+
+    this.cargarCombos();
+    /*this.estadisticas.push(new EstadisticaModel("Ene"));
+    this.estadisticas.push(new EstadisticaModel("Feb"));
+    this.estadisticas.push(new EstadisticaModel("Mar"));
+    this.estadisticas.push(new EstadisticaModel("Abr"));
+    this.estadisticas.push(new EstadisticaModel("May"));
+    this.estadisticas.push(new EstadisticaModel("Jun"));
+    this.estadisticas.push(new EstadisticaModel("Jul"));
+    this.estadisticas.push(new EstadisticaModel("Ago"));
+    this.estadisticas.push(new EstadisticaModel("Sep"));
+    this.estadisticas.push(new EstadisticaModel("Oct"));
+    this.estadisticas.push(new EstadisticaModel("Nov"));
+    this.estadisticas.push(new EstadisticaModel("Dic"));*/
+
+    //this.totales.push({ totalLts: 0, totalPrecio: 0 });
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad EstadisticasPage');
+  }
+
+  cancelar(){
+    this.viewCtrl.dismiss();
+  }
+
+  cargarCombos() {
+    let loading = this.loadingCtrl.create();
+    loading.present();
+    this.productos = [];
+    this.productos.push(new ProductoModel());
+    this.vehiculos = [];
+    this.vehiculos.push(new ProductoModel(0, "Vehículo"));
+    this.estaciones = [];
+    this.estaciones.push(new ProductoModel(0, "Estación"));
+    this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      if (data == null) {
+        loading.dismiss();
+        this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+      } else {
+        let body = new HttpParams();
+        var a = this.usuario.Id;
+        //var a = 44;
+        //body.append("IdClient", a.toString());
+        var urlArmada = "stats/regular/" + a;
+        //var urlArmada = "stats/"+this.usuario.IdClient;
+        this.restService.restServiceGETToken(urlArmada, body, data.toString()).timeout(this.restService.timeOver).subscribe(
+          dataRegistro => {
+            if (Object.keys(dataRegistro['Response']).length != 0) {
+              let productos = dataRegistro['Response'].Producto;
+              productos.forEach(producto => {
+                this.productos.push(new ProductoModel(producto.Id, producto.Nombre));
+              });
+
+              let estaciones = dataRegistro['Response'].Estacion;
+              estaciones.forEach(estacion => {
+                this.estaciones.push(new ProductoModel(estacion.Id, estacion.Nombre));
+              });
+
+              let vehiculos = dataRegistro['Response'].Vehiculo;
+              vehiculos.forEach(vehiculo => {
+                this.vehiculos.push(new ProductoModel(vehiculo.Id, vehiculo.Nombre));
+              });
+              //this.buscar();
+            } else {
+              this.alertaService.warnAlert(this.restService.headerValidacion, "No se cargaron los filtros de búsqueda", null);
+            }
+            loading.dismiss();
+          }, error => {
+            loading.dismiss();
+            console.log(error);
+            this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+          }
+        );
+      }
+    }, error => {
+      loading.dismiss();
+      console.log(error);
+      this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+    });
+  }
+
+  buscar() {
+    this.estadisticas = [];
+	 this.totales = [];
+    let loading = this.loadingCtrl.create();
+    loading.present();
+    this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      if (data == null) {
+        loading.dismiss();
+        this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+      } else {
+        let body = new HttpParams();
+        var a = this.usuario.Id;
+        //var a = 44;
+        //body.append("IdClient", a.toString());
+        var urlArmada = "despachos/total/regular/" + a +"?";
+        //var urlArmada = "stats/"+this.usuario.IdClient;
+        body.append("Anio",this.idAnio.toString());
+        body.append("IdVehiculo",this.idVehiculo.toString());
+        body.append("IdEstación",this.idEstacion.toString());
+        body.append("IdProducto",this.idProducto.toString());
+        if(this.idAnio != 0) {
+        		urlArmada+="Anio="+this.idAnio;
+        }
+        if(this.idVehiculo != 0) {
+        		urlArmada+="&IdVehiculo="+this.idVehiculo;
+        }
+        if(this.idEstacion != 0) {
+        		urlArmada+="&IdEstacion="+this.idEstacion;
+        }
+        if(this.idProducto != 0) {
+        		urlArmada+="&IdProducto="+this.idProducto;
+        }
+        this.restService.restServiceGETToken(urlArmada, new HttpParams(), data.toString()).timeout(this.restService.timeOver).subscribe(
+          dataRegistro => {
+            if (Object.keys(dataRegistro['Response']).length != 0) {
+              let array = dataRegistro['Response'];
+              array.forEach(e => {
+                this.estadisticas.push(new EstadisticaModel(e.Nombre,e.Lts,e.fectivo));
+              });
+              this.totales.push({ totalLts: this.returnTotalLts(this.estadisticas), totalPrecio: this.returnTotalPrecios(this.estadisticas) });
+            } else {
+              this.alertaService.warnAlert(this.restService.headerValidacion, dataRegistro['Message'], null);
+            }
+            loading.dismiss();
+          }, error => {
+            loading.dismiss();
+            console.log(error);
+            this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+          }
+        );
+      }
+    }, error => {
+      loading.dismiss();
+      console.log(error);
+      this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+    });
+  }
+
+  returnTotalLts(estadisticas:EstadisticaModel[]){
+    let suma = 0;
+    estadisticas.forEach(e => {
+      suma+=e.lts;
+    });
+    return suma;
+  }
+
+  returnTotalPrecios(estadisticas:EstadisticaModel[]){
+    let suma = 0;
+    estadisticas.forEach(e => {
+      suma+=e.precio;
+    });
+    return suma;
+  }
+}

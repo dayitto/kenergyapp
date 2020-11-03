@@ -1,0 +1,103 @@
+<ion-header>
+    <ion-navbar color="titulo">
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title class="tituloHeader">BIENVENID@</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding class="contentHome" style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%; background-color: white;
+background-position: center center;">
+
+<div class="animated fadeIn divGasoline">
+    <ion-list>
+        <div *ngFor="let c of combustibles">
+<!--            <div class="expandible" (click)="changeValue(c)">-->
+            <div class="expandible" (click)="presentPopover($event)">
+                <ion-icon name="pin" class="iconoGasolina"></ion-icon>
+
+                <div class="nombreEstacion">{{c.nombre}}</div>
+                <ion-icon name="more" *ngIf="!c.expandible" style="background-image: url(assets/imgs/home/more.png);"></ion-icon>
+<!--                    <ion-icon name="arrow-up" *ngIf="c.expandible"></ion-icon>-->
+							<ion-icon name="more" *ngIf="c.expandible" style="background-image: url(assets/imgs/home/more.png);"></ion-icon>
+<!--                <ion-icon name="arrow-up" *ngIf="c.expandible"></ion-icon>-->
+            </div>
+            <div *ngIf="c.expandible" class="animated fadeIn">
+                    <div class="containerGas">
+                        <img src="assets/imgs/home/verde.png" alt="logo" class="animated bounceInDown imageGas" />
+                        <div class="precioGas" style="font-size: 190%;">
+                            ${{c.precioMagna}}
+                        </div>
+                    </div>
+                    <div class="containerGas">
+                        <img src="assets/imgs/home/rojo.png" alt="logo" class="animated bounceInDown imageGas" />
+                        <div class="precioGas" style="font-size: 190%;">
+                            ${{c.precioPremium}}
+                        </div>
+                    </div>
+                    <div class="containerGas">
+                        <img src="assets/imgs/home/negro.png" alt="logo" class="animated bounceInDown imageGas" />
+                        <div class="precioGas" style="font-size: 190%;">
+                            ${{c.precioDiesel}}
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </ion-list>
+</div>
+
+    <div class="tituloAutos animated rubberBand" (click)="agregarAuto()">
+        <div class="clm divPresentacionAutos tituloHeader">MIS AUTOS</div>
+        <ion-icon name="add" class="clm"></ion-icon>
+    </div>
+    <!--  -->
+    
+
+      
+<ion-refresher slot="fixed" (ionRefresh)="cargarVehiculos1($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Arrastra para actualizar"
+      refreshingSpinner="circles"
+      refreshingText="Actualizando...">
+      </ion-refresher-content>
+  </ion-refresher>
+      
+    <ion-list class="lista">
+        <ion-item class="animated rubberBand itemVehiculo" *ngFor="let vehiculo of vehiculos" 
+        [ngStyle]="{'background-color': vehiculo.circula === 1 ? '#001432' : '#ff0000'}">
+            <ion-avatar item-start (click)="openIfoCar(vehiculo)">
+                <img src="assets/imgs/home/coche.png">
+            </ion-avatar>
+            <div style="width: 80%;" (click)="openIfoCar(vehiculo)">
+                <div class="clm widthFull">
+                    <h1  class="clm">{{vehiculo.modelo}}</h1>
+                    <p>{{vehiculo.placa}}</p>
+
+                </div>
+                <img *ngIf="vehiculo.tipo == 1" src="assets/imgs/home/92.png" class="imagenEnd tipoGas" style="width: 20px;margin-top: -50px;left: 116%;">
+         		 <img *ngIf="vehiculo.tipo == 2" src="assets/imgs/home/87.png" class="imagenEnd tipoGas" style="width: 20px;margin-top: -50px;left: 116%;">
+         		 <img *ngIf="vehiculo.tipo == 3" src="assets/imgs/home/45.png" class="imagenEnd tipoGas" style="width: 20px;margin-top: -50px;left: 116%;">
+                <div class="clm widthFull">
+                		
+                    <img *ngIf="vehiculo.circula == 1" class="imagenEnd tipoGas" src="assets/imgs/home/noCircula.png" style="width: 32px;margin-top: -23px;left: 112%;">
+                </div>
+            </div>
+
+        </ion-item>
+    </ion-list>
+    
+
+</ion-content>
+
+<ion-fab top right class="animated swing">
+    <button ion-fab color="light" (click)="abrirNotificacion()">
+        <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+    </button>
+    <button ion-fab color="light" (click)="abrirNotificacion()" class="miniBoton">
+        {{notificaciones}}
+    </button>
+</ion-fab>

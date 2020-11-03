@@ -1,0 +1,249 @@
+page-mi-auto-info {
+    .area{
+        border-radius: 5px;
+        background-color: #d4d4d4;
+        vertical-align: middle;
+        width: 100%;
+        border: none;
+        margin-bottom: 8px;
+    }
+    .botonGuardar{
+        width: 30%;
+        margin-top: 1%;
+        vertical-align: top;
+        border-radius: 7px;
+    }
+
+    .clm{
+        display: inline-block;
+    }
+
+    .widthFull{
+        width: 100%;
+    }
+
+    .widthMedium{
+        width: 49.4% !important;
+    }
+
+    input{
+        text-indent: 20px;
+    }
+
+    textarea{
+        text-indent: 20px;
+    }
+
+    ::placeholder {
+        color: #5b4f5f;
+        opacity: 1; /* Firefox */
+        margin-left: 12px;
+    }
+    
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+       color: #5b4f5f;
+       margin-left: 12px;
+    }
+    
+    ::-ms-input-placeholder { /* Microsoft Edge */
+       color: #5b4f5f;
+       margin-left: 12px;
+    }
+
+    .inputText{
+        border-radius: 5px;
+        background-color: #d4d4d4;
+        vertical-align: middle;
+        height: 28px;
+        width: 100%;
+        border: none;
+        margin-bottom: 8px;
+        padding-left: 14px;
+        font-size: 120%;
+    }
+    .button-clear-md {
+        border-color: transparent;
+        color: #000000;
+        background-color: transparent;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        opacity: 1;
+    }
+    .button-clear-ios {
+        border-color: transparent;
+        color: #000000;
+        background-color: transparent;
+    }
+
+    .tituloDiv{
+        font-size: 123%;
+        font-weight: 700;
+        font-style: italic;
+        margin-bottom: 8px;
+        margin-top: 1em;
+    }
+
+.image-container {
+  min-height: 200px;
+  background-size: cover;
+}
+ 
+@media (min-width: 0px) {
+  .images {
+    column-count: 2;
+  }
+}
+ 
+@media (min-width: 420px) {
+  .images {
+    column-count: 3;
+  }
+}
+ 
+@media (min-width: 720px) {
+  .images {
+    column-count: 4;
+  }
+}
+ 
+.one-image {
+  margin: 2px;
+}
+
+.text-input{
+  color: #000;
+  border-bottom: solid 2px !important;
+  border-color: #1b155c !important;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  width: 94%;
+}
+
+.rend{
+    margin-right: 0.4em;
+}
+
+.comp{
+  margin-right: 0.3em;
+}
+
+.mont{
+  margin-right: 0.3em;
+}
+
+ion-datetime{
+  color: #000;
+  border-bottom: solid 2px !important;
+  border-color: #1b155c !important;
+  font-size: 82%;
+  min-width: 50%;
+  margin: 2% 2% !important;
+  padding: 0% 0% !important;
+}
+
+ion-label {
+  font-size: medium;
+  margin: 2% 2% !important;
+  padding: 0% 0% !important;
+}
+
+.labelD {
+  min-width: 40%;
+  font-size: medium;
+  margin: 1% 1% !important;
+  padding: 0% 0% !important;
+}
+
+.itemD{
+  min-height: 5% !important;
+  padding-left: 0;
+}
+
+ion-select{
+  color: #000;
+  border-bottom: solid 2px !important;
+  border-color: #1b155c !important;
+  font-size: 82%;
+  min-width: 55%;
+  margin: 2% 2% !important;
+  padding: 0% 0% !important;
+}
+
+ion-item{
+  padding-right: 0px !important;
+}
+
+.item-inner {
+  box-shadow: none !important;
+  }
+/*input[type="date"]::before{
+   color: #675c6b;
+   content: attr(placeholder) ": ";
+}
+input[type="date"]:focus::before {
+   content: "" !important;
+}*/
+
+.label2 {
+  min-width: 80% !important;
+  color:#1b155c;
+}
+
+ion-checkbox{
+            
+  margin: 2% 2% !important;
+  padding: 0% 0% !important;
+  }
+
+  .clase1{
+    min-width: 55%;
+  }
+
+  .clase2{
+    min-width: 40%;
+  }
+
+  .selectmant{
+    min-width: 90%;
+  }
+
+  .label3 {
+    min-width: 80% !important;
+    color:#1b155c;
+  }
+
+  .cb1{
+    margin-left: 0.6% !important;
+    margin-right: 7% !important;
+  }
+
+  .flecha{
+    margin-top: -1.1em;
+    margin-left: 90%;
+  }
+   
+  .trashButton{
+    margin-top: 0em; 
+    width: 16%; 
+    height: 25px;
+    border-color: #ffffff;
+  }
+
+  .centro{
+  bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.botonGuardar {
+    width: 80%;
+    border-radius: 7px;
+    height: 36px;
+}
+
+.scroll-content{
+  margin-bottom: 50px;
+}
+
+
+}

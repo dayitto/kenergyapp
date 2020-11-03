@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-toolbar color="titulo">
+    <ion-title class="tituloHeader" style="position: absolute;left: 13%; top: 33%;">Estadística</ion-title>
+    <ion-buttons left  class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/estadisticas/graph.png" style="width: 50%;margin-left: -13px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+    <ion-buttons start>
+      <button ion-button (click)="cancelar()" style="color:#fff;z-index: 999999;">
+        <span color="secundary" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+<div (click)="buscar()">
+  <img src="assets/imgs/estadisticas/recargar.png" style="width: 6%;">
+</div>
+  <div style="width:100%">
+    <select class="mySelect" [(ngModel)]="idProducto" 
+    style="margin-top: 14px;width: 48%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let producto of productos" [ngValue]="producto.id">
+        {{producto.descripcion}}
+      </option>
+    </select>
+
+    <select class="mySelect" [(ngModel)]="idVehiculo" 
+    style="margin-top: 14px;width: 48%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let vehiculo of vehiculos" [ngValue]="vehiculo.id">
+        {{vehiculo.descripcion}}
+      </option>
+    </select>
+
+    <select class="mySelect" [(ngModel)]="idEstacion" 
+    style="margin-top: 14px;width: 48%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let estacion of estaciones" [ngValue]="estacion.id">
+        {{estacion.descripcion}}
+      </option>
+    </select>
+
+    <select class="mySelect" [(ngModel)]="idAnio"
+    style="margin-top: 14px;width: 48%;display: inline-block;height: 31px;
+    vertical-align: middle;">
+      <option *ngFor="let anio of anios" [ngValue]="anio.id">
+        {{anio.anio}}
+      </option>
+    </select>
+  </div>
+
+  <div style="width:100%">
+    <div class="tituloHeader divAlign">
+      Mes
+    </div>
+    <div class="tituloHeader divAlign">
+      Lts.
+    </div>
+    <div class="tituloHeader divAlign">
+      $
+    </div>
+    <!--<div *ngFor="let total of totales" style="background-color: #001432;height: 30px;">
+      <div class="tituloHeader divAlignTotal">
+        Total
+      </div>
+      <div class="tituloHeader divAlignTotal">
+        {{total.totalLts}}
+      </div>
+      <div class="tituloHeader divAlignTotal">
+        {{total.totalPrecio}}
+      </div>
+    </div>-->
+    <div *ngFor="let estadistica of estadisticas" style="border-top: 1px solid;padding-bottom: 5px; padding-top: 5px;">
+    	<div *ngIf="estadistica.mes == 'Total'; else other_content">
+    		<div style="background-color: #001432;height: 30px;">
+      	<div class="tituloHeader divAlign" style="color:white;">
+        		{{estadistica.mes}}
+      	</div>
+      	<div class="tituloHeader divAlign" *ngIf="estadistica.lts != 0" style="color:white;">
+        		{{estadistica.lts}}
+      	</div>
+      	<div class="tituloHeader divAlign" *ngIf="estadistica.precio != 0" style="color:white;">
+        		{{estadistica.precio}}
+      	</div>
+      	</div>
+      </div>
+      <ng-template #other_content>
+			<div >
+				<div class="tituloHeader divAlign" >
+        			{{estadistica.mes}}
+      		</div>
+      		<div class="tituloHeader divAlign" *ngIf="estadistica.lts != 0">
+		        {{estadistica.lts | number: 0}}
+      		</div>
+      		<div class="tituloHeader divAlign" *ngIf="estadistica.precio != 0">
+        			{{estadistica.precio | currency}}
+      		</div>
+      	</div>
+		</ng-template>
+    </div>
+  </div>
+</ion-content>
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light" style="margin-top: 51%;">
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+</ion-fab>

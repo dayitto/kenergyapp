@@ -1,0 +1,157 @@
+<ng-container *ngIf="usuario != null">
+<ion-header>
+    <ion-navbar color="titulo">
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title class="tituloHeader">BIENVENID@<br/>{{usuario.Alias != "" ? usuario.Alias : usuario.Nombre}}</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: bottom center;
+background-repeat: no-repeat;
+background-color: white;">
+    <input type="hidden" id="est"/>
+        <div class="animated fadeIn divGasoline">
+            <ion-list>
+                <div *ngFor="let c of combustibles">
+        <!--            <div class="expandible" (click)="changeValue(c)">-->
+                    <div class="expandible" (click)="presentPopover($event)">
+                        <ion-icon name="pin"></ion-icon>
+        
+                        <div class="nombreEstacion">{{c.nombre}}</div>
+                        <ion-icon name="more" style="background-image: url(assets/imgs/home/more.png);" class="more"></ion-icon>
+        <!--                <ion-icon name="arrow-up" *ngIf="c.expandible"></ion-icon>-->
+                    </div>
+                    <div *ngIf="c.expandible" class="animated fadeIn">
+                            <div class="containerGas">
+                                <img src="assets/imgs/home/verde.png" alt="logo" class="animated bounceInDown imageGas" />
+                                <div class="precioGas" style="font-size: 190%;">
+                                    ${{c.precioMagna}}
+                                </div>
+                            </div>
+                            <div class="containerGas">
+                                <img src="assets/imgs/home/rojo.png" alt="logo" class="animated bounceInDown imageGas" />
+                                <div class="precioGas" style="font-size: 190%;">
+                                    ${{c.precioPremium}}
+                                </div>
+                            </div>
+                            <div class="containerGas">
+                                <img src="assets/imgs/home/negro.png" alt="logo" class="animated bounceInDown imageGas" />
+                                <div class="precioGas" style="font-size: 190%;">
+                                    ${{c.precioDiesel}}
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            
+            </ion-list>
+        </div>
+
+        <ion-slides pager="true" *ngIf="usuario.LlaveroContado == 0 && tutorial1 == false" style="height: auto;">
+            <ion-slide>
+             <img src="http://credito.kenergyfuel.com:8080/images/captura1.jpg">
+             <button style="font-size: 20px; background: none;" (click)="clickTutorial1()">Empezar<ion-icon slot="end" name="play" style="color: black; font-size: 30px;"></ion-icon></button>
+           </ion-slide>
+         </ion-slides>
+    
+    <div class="tituloAutos animated rubberBand" *ngIf="usuario.LlaveroContado == 0 && tutorial1 == true" style="background-color: #2976E4; text-align: center; margin: 0 auto; margin-bottom: 15px;">
+        <div class="clm divPresentacionAutos tituloHeader">Registra tu llavero Amigo Fiel</div>
+        <!--<ion-col><button ion-button class="tituloHeader botonGuardar" style="background-color: #c1272d;" (click)="llaveroNuevo()">Nuevo</button></ion-col>-->
+        <button ion-button class="tituloHeader botonGuardar" style="background-color: #c1272d;" (click)="llaveroExistente()">Agregar llavero</button>
+    </div>
+
+    <ion-slides pager="true" *ngIf="(tutorial1 == true && vehiculos.length == 0 && usuario.LlaveroContado > 0 && tutorial2 == false) || (usuario.LlaveroContado > 0 && vehiculos.length == 0 && tutorial2 == false)" style="height: auto;">
+        <ion-slide>
+         <img src="http://credito.kenergyfuel.com:8080/images/captura2.jpg">
+       </ion-slide>
+       <ion-slide>
+        <img class="full-image" src="http://credito.kenergyfuel.com:8080/images/captura3.jpg">
+      </ion-slide>
+      <ion-slide>
+        <img src="http://credito.kenergyfuel.com:8080/images/captura4.jpg">
+      </ion-slide>
+      <ion-slide>
+        <img src="http://credito.kenergyfuel.com:8080/images/captura5.jpg">
+        <button style="font-size: 20px; background: none;" (click)="clickTutorial2()">Continuar<ion-icon slot="end" name="play" style="color: black; font-size: 30px;"></ion-icon></button>
+      </ion-slide>
+     </ion-slides>
+
+    <div *ngIf="(vehiculos.length == 0 && tutorial2 == true) || vehiculos.length > 0" class="tituloAutos animated rubberBand" style="background-color: #10358a; margin-bottom: 5px;">
+        <ion-row style="font-size: 20px;">
+            <ion-col style="font-family: Arial; font-weight: bold; min-width: 40%;">
+                <div>MIS AUTOS</div>
+            </ion-col>
+            <ion-col style="min-width: 60%;">
+                <div style="float: right;">
+                    <div style="display: inline-block;">PUNTOS</div>
+                    <div style="display: inline-block; font-weight: bold;">{{usuarioService.puntos}}</div>
+                </div>
+            </ion-col>
+        </ion-row>
+        <!--<ion-icon name="add" class="add clm"></ion-icon>-->
+
+    </div>
+    <!--  -->
+    
+    <img src="assets/imgs/home/click.gif" (click)="agregarAuto()" *ngIf="!algunAuto" class="imgclic"> 
+
+      
+<ion-refresher slot="fixed" (ionRefresh)="cargarVehiculos1($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Arrastra para actualizar"
+      refreshingSpinner="circles"
+      refreshingText="Actualizando...">
+      </ion-refresher-content>
+  </ion-refresher>
+      
+    <ion-list class="lista">
+        <ion-row  *ngFor="let vehiculo of vehiculos" (click)="openIfoCar(vehiculo)">
+            <ion-col style="min-width: 70%;">
+                <ion-item class="animated rubberBand itemVehiculo">
+                    <ion-avatar item-start style="margin: 8px 10px 8px -8px;">
+                        <img *ngIf="vehiculo.tipo > 0" src="assets/imgs/miAuto/vehiculo{{vehiculo.tipo}}.png" style="border-radius: 0%; width: 50px; height: 60px;">
+                    </ion-avatar>
+                    <div style="border-left: 3px solid white; padding-left: 10px;">
+                        <div class="clm widthFull">
+                            <h1 class="clm" style="font-size: 18px;">{{vehiculo.modelo}}</h1>
+                            <img *ngIf="vehiculo.num == 1" src="assets/imgs/miAuto/medalla.png" style="margin-top: -10px; position: absolute; width: 15%; right: 0;">
+                            <p>{{vehiculo.placa}}</p>
+                            <p style="text-align: right; font-weight: bold; margin-right: 12px;">200 Pts.</p>
+                            <!--<div class="puntosveh">{{vehiculo.puntos}} Pts.</div>-->
+                        </div>
+                    </div>
+                </ion-item>
+            </ion-col>
+            <ion-col style="min-width: 30%;">
+                <ion-item class="animated rubberBand itemVehiculo" style="padding-left: 8px;">
+                        <h1 style="font-size: 12px; text-align: center; margin-top: 0px">ESCANEA<br> Y CARGA</h1>
+                        <img src="assets/imgs/miAuto/qr2.png" style="display:block; margin:auto; width: 40%;">
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        
+    </ion-list>
+
+</ion-content>
+
+<ion-fab top right class="animated swing">
+    <button ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()">
+        <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+    </button>
+    <button *ngIf="notificacion.num > 0" ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()" class="miniBoton">
+        {{notificacion.num}}
+    </button>
+</ion-fab>
+
+<ion-fab bottom right *ngIf="(usuario.LlaveroContado > 0 && tutorial2 == true) || vehiculos.length > 0">
+    <button ion-fab style="background-color: #e97522; width: 50px; height: 50px;" (click)="agregarAuto()">
+        <ion-icon name="add" style="font-size: 55px;"></ion-icon>
+    </button>
+</ion-fab>
+
+</ng-container>

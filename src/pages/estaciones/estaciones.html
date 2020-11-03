@@ -1,0 +1,102 @@
+<ion-header>
+  <ion-navbar color="titulo">
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Estaciones</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="presentPopover($event)" style="color:#fff; font-size: 70%;">
+        <ion-icon name="search"></ion-icon>
+      </button>
+      
+    </ion-buttons>
+
+
+    <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/estaciones/ubication.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+<input type="hidden" [(ngModel)]="displ" id="displ"/>
+<input type="hidden" id="idEst"/>
+<input type="hidden" id="muestraCercano"/>
+  <agm-map [latitude]="latOrigen" [longitude]="longOrigen" [zoom]="15" [streetViewControl]="false" 
+  (mapReady)="mapReady($event)" [zoomControl]="false">
+  <!-- <agm-marker [latitude]="latOrigen" [longitude]="longOrigen" 
+    [markerClickable]="false" [iconUrl]="iconCarro">
+    </agm-marker> -->
+    <agm-marker *ngIf="latActual != 0" [latitude]="latActual" [longitude]="longActual" 
+    [markerClickable]="false" [iconUrl]="iconCarro">
+    </agm-marker>
+    <agm-marker *ngFor="let estacion of estaciones" [latitude]="estacion.lat" [longitude]="estacion.long" 
+    [markerClickable]="true" [iconUrl]="iconEstacion" (markerClick)="llenarInfo(estacion)">
+    </agm-marker>
+    <!-- <ng-container *ngFor="let estacion of estaciones"> -->
+      <agm-direction *ngIf="latCercana != 0" [origin]="{ lat: latOrigen, lng: longOrigen }" [destination]="{ lat: latCercana, lng: longCercana }"
+      [renderOptions]="renderOptions" [markerOptions]="markerOptions"></agm-direction>
+    <!-- </ng-container> -->
+  </agm-map>
+  <!-- <div id="map" style="width:100%; height:101%;" class="animated fadeIn"></div> -->
+  
+    <div class="animated fadeIn divGasoline" style="overflow-y: scroll;position: absolute; bottom: 3%;" id="infoGas">
+<!--    <div *ngFor="let c of estaciones" style="margin-bottom: 4px;" class="estacionesClass" >-->
+      <!--<div class="expandible" (click)="changeValue(c)">
+        <ion-icon name="pin" class="iconoGasolina"></ion-icon>
+
+        <div class="nombreEstacion">{{c.nombre}}</div>
+        <ion-icon name="more" *ngIf="!c.expandible"></ion-icon>
+        <ion-icon name="arrow-up" *ngIf="c.expandible"></ion-icon>
+      </div>-->
+      <div class="animated fadeIn">
+        <div style="width:100%;background-color: #457be7;" *ngIf="getMuestraCercano() == 1"><strong style="color: white">Más cercana</strong></div>
+        <div style="width:100%;background-color: #020f32; color: white;">
+            <div style="width:75%; height: 4em; display:inline-block; vertical-align: top;">
+
+              <div align="left" style="margin-left: -30px;"><strong class="nombreEstacionN"></strong>
+                
+            <button ion-button (click)="navigateLocation()" class="botonnav">
+              <ion-icon name="navigate" class="navegar"></ion-icon>
+              Ir
+            </button>
+              </div>
+              <div align="left" style="margin-left: -30px;" class="estacionDireccion"></div>
+            </div>
+            <!--<div style="width:23%;display:inline-block">
+                <img src="assets/imgs/estaciones/gasolinera.PNG" alt="logo" class="animated bounceInDown" />
+              </div>-->
+        </div>
+        <div class="containerGas">
+          <img src="assets/imgs/home/verde.png" alt="logo" class="animated bounceInDown imageGas" />
+          <div class="precioGas uno" style="font-size: 190%;">
+            
+          </div>
+        </div>
+        <div class="containerGas">
+          <img src="assets/imgs/home/rojo.png" alt="logo" class="animated bounceInDown imageGas" />
+          <div class="precioGas dos" style="font-size: 190%;">
+            
+          </div>
+        </div>
+        <div class="containerGas">
+          <img src="assets/imgs/home/negro.png" alt="logo" class="animated bounceInDown imageGas" />
+          <div class="precioGas tres" style="font-size: 190%;">
+            
+          </div>
+        </div>
+      </div>
+<!--    </div>-->
+  </div>
+</ion-content>

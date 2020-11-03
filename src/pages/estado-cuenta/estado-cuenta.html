@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Estado de Cuenta</ion-title>
+
+
+    <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/iconos/cuenta.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content style="
+  background-image: url(assets/imgs/fondo.jpg); 
+    background-size: 100%;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-color: white;">
+  <div style="width:100%;color:#4d4d4d;background-color:#cccccc;height: 28px;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  margin-top: 10px;padding: 4px;
+    font-weight: 600;
+    font-size: 122%;">
+    Totales
+  </div>
+  <div style="width:100%;padding: 12px">
+    <div style="width:90%;    margin-bottom: -23px;">
+      <p style="display: inline-block;width:48%;color:red;text-align: start;">Pendiente Facturar</p>
+      <p style="display: inline-block;width:48%;text-align: end;">{{pendienteFacturarTotal | currency}}</p>
+    </div>
+    <div style="width:90%;    margin-bottom: -23px;">
+      <p style="display: inline-block;width:48%;color:#39437b;text-align: start;">Saldo Facturado</p>
+      <p style="display: inline-block;width:48%;text-align: end;">{{saldoFacturadoTotal | currency}}</p>
+    </div>
+    <div style="width:90%;    margin-bottom: -23px;">
+      <p style="display: inline-block;width:48%;color:#39437b;text-align: start;">Saldo Acumulado</p>
+      <p style="display: inline-block;width:48%;text-align: end;">{{saldoAcumuladoTotal | currency}}</p>
+    </div>
+    <div style="width:90%;    margin-bottom: -23px;">
+      <p style="display: inline-block;width:48%;color:#129860;text-align: start;">Saldo Disponible</p>
+      <p style="display: inline-block;width:48%;text-align: end;">{{saldoDisponibleTotal | currency}}</p>
+    </div>
+  </div>
+  <div style="width:100%;" *ngFor="let estado of edoCuentas">
+    <div style="width:100%;color:#fff;background-color:#001432;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    margin-top: 10px;
+      font-weight: 600;
+      font-size: 122%;">
+      <div style="width:100%;margin-top: -16px;
+      margin-bottom: -14px;
+      margin-left: 13px;">
+        <p style="display: inline-block;width:48%">{{estado.estacion}}</p>
+        <p style="display: inline-block;width:48%">Crédito: {{estado.creditoTotal | currency}}</p>
+      </div>
+    </div>
+    <div style="width:100%;padding: 12px">
+      <div style="width:90%;    margin-bottom: -23px;    margin-top: -22px;">
+        <p style="display: inline-block;width:48%;color:#39437b;text-align: start;">Saldo a Favor</p>
+        <p style="display: inline-block;width:48%;text-align: end;">{{estado.saldoFavor | currency}}</p>
+      </div>
+      <div style="width:90%;    margin-bottom: -23px;">
+        <p style="display: inline-block;width:48%;color:red;text-align: start;">Pendiente Facturar</p>
+        <p style="display: inline-block;width:48%;text-align: end;">{{estado.pendienteFacturar | currency}}</p>
+      </div>
+      <div style="width:90%;    margin-bottom: -23px;">
+        <p style="display: inline-block;width:48%;color:#39437b;text-align: start;">Saldo Facturado</p>
+        <p style="display: inline-block;width:48%;text-align: end;">{{estado.saldoFacturado | currency}}</p>
+      </div>
+      <div style="width:90%;    margin-bottom: -23px;">
+        <p style="display: inline-block;width:48%;color:#39437b;text-align: start;">Saldo Acumulado</p>
+        <p style="display: inline-block;width:48%;text-align: end;">{{estado.saldoAcumulado | currency}}</p>
+      </div>
+      <div style="width:90%;    margin-bottom: -23px;">
+        <p style="display: inline-block;width:48%;color:#129860;text-align: start;">Saldo Disponible</p>
+        <p style="display: inline-block;width:48%;text-align: end;">{{estado.saldoDisponible | currency}}</p>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()" class="boton1">
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+  <button *ngIf="notificacion.num > 0" ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()" class="miniBoton">
+    {{notificacion.num}}
+</button>
+</ion-fab>

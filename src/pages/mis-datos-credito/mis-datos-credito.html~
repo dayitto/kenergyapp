@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Mis Datos</ion-title>
+
+    <ion-buttons left  class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/misDatos/usuario.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+
+  <div style="text-align: right;color:#51506d;margin-top: 10px;     margin-bottom: 15px;">
+    <u><a style="color:#aaaaab; font-weight: bolder;" (click)="openAvisoPrivacidad()">Aviso de Privacidad</a></u>
+  </div>
+
+  <div style="font-size: 121%;
+  margin-top: 35px;">
+    Kanz Combustibles S.A. de C.V.
+  </div>
+  <div style="font-size: 121%;
+  margin-top: 12px;color:#181560;    font-weight: 600;">
+    Usuario: {{usuario}}
+  </div>
+  <div style="font-size: 121%;
+  margin-top: 12px;color:#181560;    font-weight: 600;">
+    Email: <div style="display:inline-block;font-weight: 100;
+    color: #000;">{{email}}</div>
+  </div>
+  
+  <div style="border-top: 1px solid;
+  margin-top: 10px;">
+  <div class="tituloHeader" style="text-align: right;
+  margin-top: 10px;" (click)="editarUsuario()">
+    <ion-icon name="save" style="color: #181560;"></ion-icon>
+  </div>
+    <div style="width:100%;margin-top: 12px;">
+      <div style="display: inline-block;width:23%;color:#181560;font-weight: 600;font-size: 121%;">Nombre: </div>
+      <input class="inputText"  style="display: inline-block;width:75%" [(ngModel)]="nombre"/>
+    </div>
+    <div style="width:100%">
+      <div style="display: inline-block;width:23%;color:#181560;font-weight: 600;font-size: 121%;">Alias: </div>
+      <input class="inputText"  style="display: inline-block;width:75%" [(ngModel)]="alias"/>
+    </div>
+    <div style="width:100%">
+      <div style="display: inline-block;width:23%;color:#181560;font-weight: 600;font-size: 121%;">Celular: </div>
+      <input class="inputText" type="number"  style="display: inline-block;width:75%" [(ngModel)]="celular"/>
+    </div>
+  </div>
+</ion-content>
+
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light" >
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+</ion-fab>

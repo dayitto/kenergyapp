@@ -1,0 +1,28 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { FacturaModel } from '../../models/facturaModel';
+import { DatosFacturacionPage } from '../datos-facturacion/datos-facturacion';
+import { EstadisticasPage } from '../estadisticas/estadisticas';
+import { Storage } from '@ionic/storage';
+import { AlertaServiceProvider } from '../../providers/alerta-service';
+import { RestServiceProvider } from '../../providers/rest-service';
+import { HttpParams } from '@angular/common/http';
+
+@IonicPage()
+@Component({
+  selector: 'page-mis-datos',
+  templateUrl: 'mis-datos.html',
+})
+export class AvisoPrivacidadPage {
+  
+
+  public usuario: any = null;
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public localStorage: Storage, private alertaService: AlertaServiceProvider,
+    private restService: RestServiceProvider, public loadingCtrl: LoadingController) {
+    //this.usuario = navParams.get("usuario");
+    
+  }
+
+  
+}

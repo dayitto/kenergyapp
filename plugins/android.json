@@ -1,0 +1,132 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-advanced-http": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-plugin-ionic-keyboard": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-plugin-ionic-webview": {
+      "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+",
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-plugin-local-notification": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-plugin-screen-orientation": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-plugin-sim": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-sms-plugin": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-sqlite-storage": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "mx.ferreyra.callnumber": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "phonegap-plugin-barcodescanner": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "phonegap-plugin-mobile-accessibility": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-plugin-file-transfer": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergyProd"
+    },
+    "cordova-plugin-file-opener2": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergyProd"
+    },
+    "cordova-plugin-filechooser": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kapp"
+    },
+    "cordova-plugin-appavailability": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kapp"
+    },
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+      "GOOGLE_API_KEY_FOR_ANDROID": "AIzaSyAkw9aCrnsbUgVgca-ZRxDQDuEIzkcQUas",
+      "OKHTTP_VERSION": "3.12.0",
+      "PACKAGE_NAME": "mx.com.abprosystems.kapp"
+    },
+    "cordova-plugin-camera": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "mx.com.abprosystems.kapp"
+    },
+    "ionic-plugin-deeplinks": {
+      "URL_SCHEME": "myapp",
+      "DEEPLINK_SCHEME": "http",
+      "DEEPLINK_HOST": "credito.kenergyfuel.com:8080",
+      "ANDROID_PATH_PREFIX": "/",
+      "ANDROID_2_PATH_PREFIX": "/",
+      "ANDROID_3_PATH_PREFIX": "/",
+      "ANDROID_4_PATH_PREFIX": "/",
+      "ANDROID_5_PATH_PREFIX": "/",
+      "DEEPLINK_2_SCHEME": " ",
+      "DEEPLINK_2_HOST": " ",
+      "DEEPLINK_3_SCHEME": " ",
+      "DEEPLINK_3_HOST": " ",
+      "DEEPLINK_4_SCHEME": " ",
+      "DEEPLINK_4_HOST": " ",
+      "DEEPLINK_5_SCHEME": " ",
+      "DEEPLINK_5_HOST": " ",
+      "PACKAGE_NAME": "mx.com.abprosystems.kapp"
+    },
+    "cordova-plugin-android-permissions": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kapp"
+    },
+    "cordova-plugin-x-socialsharing": {
+      "ANDROID_SUPPORT_V4_VERSION": "24.1.1+",
+      "PACKAGE_NAME": "mx.com.abprosystems.kapp"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-badge": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kenergy"
+    },
+    "cordova-plugin-actionsheet": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kapp"
+    },
+    "cordova-plugin-dialogs": {
+      "PACKAGE_NAME": "mx.com.abprosystems.kapp"
+    }
+  }
+}

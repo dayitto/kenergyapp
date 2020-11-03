@@ -1,0 +1,61 @@
+page-estadisticas {
+    .divAlign{
+        width:32%;
+        display: inline-block;
+        text-align: center;
+        color: #001432;
+        font-weight: 600;
+    }
+
+    .divAlignTotal{
+        width:32%;
+        display: inline-block;
+        text-align: center;
+        color: #fff;
+        font-weight: 600;
+        vertical-align: -webkit-baseline-middle;
+    }
+
+    .fab-md-light {
+        color: #fff;
+        background-color: #011432;
+    }
+    .fab-ios-light {
+        color: #fff;
+        background-color: #011432;
+    }
+
+    ion-label {
+        min-width: 40%;
+        font-size: medium;
+        margin: 2% 2% !important;
+        padding: 0% 0% !important;
+    }
+
+    ion-select {
+        min-width: 45%;
+        font-size: medium;
+        margin: 2% 2% !important;
+        padding: 0% 0% !important;
+        border-bottom: solid 0.7px;
+        border-bottom-color: black;
+    }
+
+    .miniBoton{
+        background-color: #c1272d !important;
+        width: 20px !important;
+        height: 20px !important;
+        margin-top: -60px !important;
+        margin-left: 40px !important;
+    }
+    .itemD{
+        min-height: 5% !important;
+        padding-left: 0;
+      }
+
+      .divorder{
+        width: 30%;
+        margin-left: 5%;
+        display: inline-block;
+    }
+}

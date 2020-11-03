@@ -1,0 +1,357 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, ModalController, LoadingController, PopoverController, MenuController, Events } from 'ionic-angular';
+import { CombustibleModel } from '../../models/CombustibleModel';
+import { VehiculoModel } from '../../models/vehiculoModel';
+import { AgregaAutoPage } from '../agrega-auto/agrega-auto';
+import { NotificacionesPage } from '../notificaciones/notificaciones';
+import { MiAutoPage } from '../mi-auto/mi-auto';
+import { HomeEstacionesListPage } from '../home-credito-estaciones-list/home-estaciones-list';
+import { AgregaAutoEscanerPage } from '../agrega-auto-escaner/agrega-auto-escaner';
+import { Storage } from '@ionic/storage';
+import { AlertaServiceProvider } from '../../providers/alerta-service';
+import { RestServiceProvider } from '../../providers/rest-service';
+import { HttpParams } from '@angular/common/http';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
+
+@IonicPage()
+@Component({
+  selector: 'page-home',
+  templateUrl: 'home.html',
+})
+export class HomePage {
+  public combustibles: CombustibleModel[] = [];
+  public estaciones: CombustibleModel[] = [];
+  public vehiculos: any[] = [];
+  public notificaciones: any = 0;
+  public usuario: any = null;
+
+  constructor(public navCtrl: NavController,public localStorage: Storage, public navParams: NavParams, public popoverCtrl: PopoverController, public modalController: ModalController,
+    public loadingCtrl: LoadingController,private alertaService:AlertaServiceProvider,private restService:RestServiceProvider,
+    public menuCtrl: MenuController, public events: Events,
+    private sqlite: SQLite) {
+      this.usuario = navParams.get("usuario");
+		//this.alertaService.errorAlert("usuarioHome", this.usuario, null);
+      if (this.usuario == null) {
+        
+        
+        /*let sql = "SELECT * FROM usuario where id_usuario = ?";
+  		
+  		
+  		this.sqlite.create({
+      	name: 'kenergy.db',
+      	location: 'default'
+    	}).then((db: SQLiteObject) => {
+    		db.executeSql(sql, [1])
+  				.then(response => {
+    				if(response.rows.length != 0) {
+    					//this.localStorage.set(`@userSession`, response.rows.item(0).usuario);
+						this.alertaService.errorAlert("idCliente", response.rows.item(0).id_cliente, null);
+						this.alertaService.errorAlert("usuario", response.rows.item(0).usuario, null);
+    					if(response.rows.item(0).id_cliente != 0){
+
+                    //this.navCtrl.setRoot(HomeCreditoPage, { usuario: response.rows.item(0).usuario });
+                  }else{
+                    //this.navCtrl.setRoot(HomePage, { usuario: response.rows.item(0).usuario });
+                  }
+    				} else {
+    				}
+    				
+  				})
+  			.catch(error =>  {
+  				this.alertaService.errorAlert("Error al obtener usuario", error, null)
+  			});
+  			
+  		
+  		
+  		})
+  		.catch(error =>{
+    		this.alertaService.errorAlert("Info", "Excepcion al crear BD " + error, null);
+  		});  
+  		*/
+  		
+  		
+      }else{
+        let data = {
+          valor: 1,
+          user: this.usuario
+        }
+          this.events.publish('menu:changed', data);
+      }
+      
+    this.menuCtrl.enable(true, "authenticated");
+    this.cargarEstaciones();
+    this.cargarVehiculos();
+    if (undefined != navParams.get("vehiculo")) {
+      	let v = navParams.get("vehiculo");
+		   this.openIfoCar(v);
+    }
+  }
+  cargarEstaciones() {
+    //api/station
+    let loading = this.loadingCtrl.create();
+    loading.present();
+    this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      if (data == null) {
+        loading.dismiss();
+        this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+      } else {
+        let body = new HttpParams();
+        
+			this.restService.restServiceGETToken("station/regular/Last/" + this.usuario.Id, body, data.toString()).timeout(this.restService.timeOver).subscribe(
+        		dataRegistroLast => {
+            if (undefined != dataRegistroLast['Response'] && dataRegistroLast['Response'] > 0) {
+              let idLastEstacion = dataRegistroLast['Response'];
+              
+        this.restService.restServiceGETToken("station", body, data.toString()).timeout(this.restService.timeOver).subscribe(
+          dataRegistro => {
+				if (Object.keys(dataRegistro['Response']).length != 0) {
+              let arrayEstaciones = dataRegistro['Response'];
+              var i = 0;
+              for (let index = 0; index < arrayEstaciones.length; index++) {
+                let estacion = arrayEstaciones[index];
+                if(idLastEstacion == estacion.Id) {
+                	this.combustibles.push(new CombustibleModel(estacion.Nombre, 0, 0, 0, false, estacion.Id));
+                	i = estacion.Id;
+                }
+
+					this.estaciones.push(new CombustibleModel(estacion.Nombre, 0, 0, 0, false, estacion.Id));
+              }
+				  loading.dismiss();
+              this.cargarPrecio(this.combustibles, i, data.toString());
+              
+              //this.combustibles.push(new CombustibleModel("Ixtaczoquitlan", 88.88, 88.88, 88.88, true));
+            } else {
+ 				  loading.dismiss();
+              this.alertaService.warnAlert(this.restService.headerValidacion, "No se encontraron estaciones", null);
+            }
+          }, error => {
+            loading.dismiss();
+            console.log(error);
+            this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+          }
+			
+        );
+		} else {
+					loading.dismiss();
+              this.alertaService.warnAlert(this.restService.headerValidacion, "No se encontró la última estación", null);
+            }
+          }, error => {
+            loading.dismiss();
+            console.log(error);
+            this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+          }
+        );
+      }
+    }, error => {
+      loading.dismiss();
+      console.log(error);
+      this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+    });
+  }
+
+  cargarPrecio(combustibles: CombustibleModel[], Id: any, token) {
+    for (let index = 0; index < 1; index++) {
+      const estacion = combustibles[0];
+      var armaUrl = "gasoline/price/" + Id;
+      this.restService.restServiceGETToken(armaUrl, new HttpParams(), token).timeout(this.restService.timeOver).subscribe(
+        dataEstacionPrecio => {
+          if (Object.keys(dataEstacionPrecio['Response']).length != 0) {
+            let arrayPrecios = dataEstacionPrecio['Response'];
+            combustibles[0] = new CombustibleModel(estacion.nombre, arrayPrecios[0].Price, arrayPrecios[1].Price, arrayPrecios[2].Price, true, estacion.id);
+          } else {
+            combustibles[0] = new CombustibleModel(estacion.nombre, 0, 0, 0, false);
+          }
+        }, error => {
+          combustibles[0] = new CombustibleModel(estacion.nombre, 0, 0, 0, false);
+          console.log(error);
+          this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+        }
+      );
+    }
+  }
+  
+  cargarVehiculos1(event) {
+  	this.cargarVehiculos();
+  	
+  	setTimeout(() => {
+      event.complete();
+    }, 2000);
+  }
+
+  cargarVehiculos() {
+    this.vehiculos = [];
+      var armaUrl = "vehicle/regular/" + this.usuario.Id;
+      this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+      this.restService.restServiceGETToken(armaUrl, new HttpParams(), data.toString()).timeout(this.restService.timeOver).subscribe(
+        dataAutos => {
+          if(dataAutos['Response']!=null && dataAutos['Response'] instanceof Array){
+            let array = dataAutos['Response'];
+            array.forEach(auto => {
+            	let sql = 'SELECT * FROM mis_autos where id_vehiculo = ?';
+  					var d = new Date();
+  					var n = d.getDay();
+  		
+  					this.sqlite.create({
+      				name: 'kenergy.db',
+      				location: 'default'
+    				}).then((db: SQLiteObject) => {
+    					db.executeSql(sql, [auto.Id])
+  							.then(response => {
+    							if(response.rows.length != 0) {
+    								let circula = 0;
+    								let tip = 0;
+    								if(null != response.rows.item(0).no_circula && n == parseInt(response.rows.item(0).no_circula)) circula = 1;
+    								
+    								if(null != response.rows.item(0).tipo_combustible && "Premium" == response.rows.item(0).tipo_combustible)) tip = 1;
+    								if(null != response.rows.item(0).tipo_combustible && "Magna" == response.rows.item(0).tipo_combustible)) tip = 2;
+									if(null != response.rows.item(0).tipo_combustible && "Diesel" == response.rows.item(0).tipo_combustible)) tip = 3;
+									
+									this.vehiculos.push({
+                					id: auto.Id,
+                					marca: auto.Marca,
+                					modelo: auto.Modelo,
+                					placa: auto.Placa,
+		               			tipo: tip,
+                					circula: circula
+              					});
+    							} else {
+									this.vehiculos.push({
+                					id: auto.Id,
+                					marca: auto.Marca,
+                					modelo: auto.Modelo,
+                					placa: auto.Placa,
+		               			tipo: 0,
+                					circula: 0
+              					});
+    							}
+  							})
+  						.catch(error => this.alertaService.errorAlert("Info Error", error, null));
+  		
+  					})
+  					.catch(error =>{
+  						this.vehiculos.push({
+                		id: auto.Id,
+                		marca: auto.Marca,
+                		modelo: auto.Modelo,
+                		placa: auto.Placa,
+		               tipo: 87,
+                		circula: 0
+              		});
+    					this.alertaService.errorAlert("Info", "Excepcion al crear BD " + error, null);
+  					});            	
+            	
+            });
+          } 
+        }, error => {
+          console.log(error);
+          this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+        }
+      );
+      }, error => {
+        console.log(error);
+        this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+      });
+  }
+  
+  openSesion() {
+    this.localStorage.ready().then(() => {
+      this.localStorage.get(`@userSession`).then((data) => {
+        if (data != null) {
+          this.usuario = data;
+          let dato = {
+            valor: 2,
+            user: this.usuario
+          }
+          if(this.usuario.IdClient == 0){
+            let dato2 = {
+              valor: 1,
+              user: this.usuario
+            }
+            this.events.publish('menu:changed', dato2);
+            this.cargarVehiculos();
+          }else{
+            this.events.publish('menu:changed', dato);
+          }
+        } else {
+          this.alertaService.warnAlert(this.restService.headerValidacion, "Usuario sin sesión, no se cargarán sus datos", null);
+        }
+      });
+    });
+
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad HomePage');
+  }
+
+  changeValue(c: CombustibleModel) {
+    if (!c.expandible) {
+      let loading = this.loadingCtrl.create();
+      loading.present();
+      this.restService.getToken().timeout(this.restService.timeOver).subscribe(data => {
+        if (data == null) {
+          loading.dismiss();
+          this.alertaService.warnAlert(this.restService.headerValidacion, this.restService.mensajeValidacionAdmin, null);
+        } else {
+          let body = new HttpParams();
+          var armaUrl = "gasoline/price/" + c.id;
+          this.restService.restServiceGETToken(armaUrl, new HttpParams(), data.toString()).timeout(this.restService.timeOver).subscribe(
+            dataEstacionPrecio => {
+              if (Object.keys(dataEstacionPrecio['Response']).length != 0) {
+                let arrayPrecios = dataEstacionPrecio['Response'];
+                c.precioMagna = arrayPrecios[0].Price;
+                c.precioPremium = arrayPrecios[1].Price;
+                c.precioDiesel = arrayPrecios[2].Price;
+                c.expandible = true;
+              } else {
+                this.alertaService.errorAlert(this.restService.headerValidacion, "La estación no cuenta con precios", null);
+              }
+              loading.dismiss();
+            }, error => {
+              console.log(error);
+              this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+            }
+          );
+        }
+      }, error => {
+        loading.dismiss();
+        console.log(error);
+        this.alertaService.errorAlert(this.restService.headerError, this.restService.mensajeError, null);
+      });
+    } else {
+      c.expandible = !c.expandible;
+    }
+  }
+
+
+  agregarAuto() {
+    this.navCtrl.push(AgregaAutoEscanerPage);
+  }
+
+  abrirNotificacion() {
+    let modal = this.modalController.create(NotificacionesPage);
+    modal.present();
+    modal.onDidDismiss((data) => {
+      if (data) {
+
+      }
+    });
+  }
+
+  openIfoCar(vehiculo: VehiculoModel) {
+    let modal = this.modalController.create(MiAutoPage, { vehiculo });
+    modal.present();
+    modal.onDidDismiss((data) => {
+      if (data) {
+
+      }
+    });
+  }
+  
+  presentPopover(myEvent) {
+    let popover = this.popoverCtrl.create(HomeEstacionesListPage,{estaciones:this.estaciones});
+    popover.present({
+      ev: myEvent
+    }); 
+  }
+}

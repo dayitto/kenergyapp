@@ -1,0 +1,107 @@
+<ion-header>
+  <ion-navbar color="titulo">
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Estaciones</ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="presentPopover($event)" style="color:#fff">
+        <ion-icon name="more"></ion-icon>
+      </button>
+      
+    </ion-buttons>
+
+
+    <ion-buttons left *ngIf="!isOn" class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/estaciones/ubication.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+  
+  <div id="map" style="width:100%; height:101%;" class="animated fadeIn"></div>
+  <div class="animated fadeIn divGasoline" style="height: 116px; overflow-y: scroll;       position: absolute;
+  top: 20px; background: transparent;    left: 85px; width: 75%;">
+  <div 
+            style="    color: #fff;
+    width: 26%;
+    right: 5%;
+    border: 1px solid #000;
+    border-radius: 14px;
+    /* margin-bottom: 0px; */
+    position: absolute;
+    /* margin-top: 20px; */
+    background-color: #000000;">
+                {{progresoKm}} Km
+            </div>
+  <ion-item>
+    <ion-range min="5" max="40" color="secondary" [(ngModel)]="progresoKm">
+      <ion-label slot="start">5</ion-label>
+      <ion-label slot="end">40</ion-label>
+    </ion-range>
+  </ion-item>
+	<img src="assets/imgs/estadisticas/recargar.png" (click)="selectRangeVal()" style="width: 6%; position: absolute;
+     left: 0px;
+  margin-top: -37px;">
+  <!--<button style="    color: #fff;
+    background-color: #e77423;
+    text-align: center;
+    padding: 11px;
+    border-radius: 8px;" color="light" (click)="selectRangeVal()">Buscar</button>-->
+    </div>
+    <div class="animated fadeIn divGasoline" style="height: 140px; overflow-y: scroll;position: absolute;
+  margin-top: -153px;">
+<!--    <div *ngFor="let c of estaciones" style="margin-bottom: 4px;" class="estacionesClass" >-->
+      <!--<div class="expandible" (click)="changeValue(c)">
+        <ion-icon name="pin" class="iconoGasolina"></ion-icon>
+
+        <div class="nombreEstacion">{{c.nombre}}</div>
+        <ion-icon name="more" *ngIf="!c.expandible"></ion-icon>
+        <ion-icon name="arrow-up" *ngIf="c.expandible"></ion-icon>
+      </div>-->
+      <div class="animated fadeIn">
+        <div style="width:100%;background-color: #eeeff1;">
+            <div style="width:75%;display:inline-block;    background-color: #eeeff1;
+            vertical-align: top;">
+              <div align="left" style="margin-left: -30px;"><strong class="nombreEstacionN"></strong></div>
+              <div align="left" style="margin-left: -30px;" class="estacionDireccion"></div>
+            </div>
+            <!--<div style="width:23%;display:inline-block">
+                <img src="assets/imgs/estaciones/gasolinera.PNG" alt="logo" class="animated bounceInDown" />
+              </div>-->
+        </div>
+        <div class="containerGas">
+          <img src="assets/imgs/home/verde.png" alt="logo" class="animated bounceInDown imageGas" />
+          <div class="precioGas uno" style="font-size: 190%;">
+            
+          </div>
+        </div>
+        <div class="containerGas">
+          <img src="assets/imgs/home/rojo.png" alt="logo" class="animated bounceInDown imageGas" />
+          <div class="precioGas dos" style="font-size: 190%;">
+            
+          </div>
+        </div>
+        <div class="containerGas">
+          <img src="assets/imgs/home/negro.png" alt="logo" class="animated bounceInDown imageGas" />
+          <div class="precioGas tres" style="font-size: 190%;">
+            
+          </div>
+        </div>
+      </div>
+<!--    </div>-->
+  </div>
+</ion-content>

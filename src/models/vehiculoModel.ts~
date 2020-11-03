@@ -1,0 +1,40 @@
+export class VehiculoModel {
+    constructor(
+        public selected: boolean = false,
+        public placa: string = "",
+        public circula: number = 1, //por default circula
+        public modelo: string = "",
+        public tipoGasolina: number = 1,
+        //De la pantalla de mi auto
+        public km: number = 999999,
+        public id: number = 0,
+        public Id: number = 0,
+        public puntos: number = 15430,
+        public alias: string = "",
+        public marca: string = "",
+        public anio: Number = null,
+        public estado: string = "",
+        public rendimientoEstimado: Number = null,
+        public ultimoKilometraje: Number = null,
+        public ultimaFechaVerificacion: Date = new Date(),
+        public proximaFechaVerificacion: Date = new Date(),
+        public agencia: string = "",
+        public telefono: string = "",
+        //Datos del seguro
+        public companiaSeguro: string = "",
+        public poliza: string = "",
+        public fechaVencimiento: Date = new Date(),
+        public montoPoliza: Number = null,
+        public telefonoSeguro: string = "",
+        //alertas y recordatorios
+        public verificacion: boolean = false,
+        public vencimiento: boolean = false,
+        public mantenimiento: boolean = false,
+        public mantenimientoRango: boolean = false,
+        public pagoTenencia: boolean = false,
+        public hoyNoCircula: boolean = false,
+        public descripcion:String = "",
+        public tipo: Number = 0,
+    ) { }
+
+}

@@ -1,0 +1,11 @@
+<ion-list>
+  <ion-list-header class="tituloHeader" style="color: #fff;
+    background-color: #e77423;
+    text-align: center;">Cargas</ion-list-header>
+  <div style="color: #000;
+    font-size: 150%;
+    border-bottom: 1px solid #e3e5e6;
+    margin-top: 8px; margin-left: 11px;" *ngFor="let carga of cargas" (click)="cargaCarga(carga)">
+    {{carga.precio}} {{carga.fecha}}
+  </div>
+</ion-list>

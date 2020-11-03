@@ -1,0 +1,38 @@
+page-agrega-auto-escaner {
+    .text-input{
+        color: #000;
+    }
+
+    .text-input-md {
+        margin: 8px 8px;
+        padding: 0;
+        width: calc(100% - 8px - 8px);
+    }
+    
+    .item-inner {
+        box-shadow: none !important;
+        }
+
+    ion-label {
+        min-width: 25%;
+        font-size: medium;
+        margin: 2% 2% !important;
+        padding: 0% 0% !important;
+    }
+    .fab-md-light {
+        color: #fff;
+        background-color: #011432;
+    }
+    .fab-ios-light {
+        color: #fff;
+        background-color: #011432;
+    }
+    .miniBoton{
+        background-color: #c1272d !important;
+        width: 20px !important;
+        height: 20px !important;
+        margin-top: -60px !important;
+        margin-left: 40px !important;
+    }
+
+}

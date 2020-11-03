@@ -1,0 +1,130 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Mis Datos</ion-title>
+
+    <ion-buttons left  class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/misDatos/usuario.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content *ngIf="usuario != null"  padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: bottom center;
+background-repeat: no-repeat;
+background-color: white;">
+  <form [formGroup]="loginForm">
+  <!--<input id="pts" readonly="true" class="inputText clm widthMedium" style="background-color:#60B1F0; margin-left: 1.2em;"/> Puntos Totales-->
+  <!-- <input id="ptst" readonly="true" class="inputText clm widthMedium" style="background-color:#8b8b8b; margin-left: 1.2em;"/> Puntos Temporales -->
+  <ion-item style="width:100%">
+    <ion-label style="color:#1b155c;" class="labelD">Nombre*</ion-label>
+    <ion-input formControlName="nombre" style="color: #000;" id="nombre"></ion-input>
+  </ion-item>
+  <ion-item style="width:100%">
+    <ion-label style="color:#1b155c;" class="labelD">Contraseña</ion-label>
+    <ion-input formControlName="contra" type="password" style="color: #000;" class="rend" readonly="true" id="contra"></ion-input>
+  </ion-item>
+  <div style="display: inline-block;width: 52%" class="animated fadeIn">
+    <button ion-button color="adicional" class="tituloHeader botonPass" (click)="cambiarContrasenia()">Cambiar Contraseña</button>
+  </div>
+  <ion-item style="width:100%">
+    <ion-label style="color:#1b155c;" class="labelD">E-mail</ion-label>
+    <ion-input formControlName="email" type="email" style="color: #000;" class="rend" readonly="true" id="edad"></ion-input>
+  </ion-item>
+  <div style="display: inline-block;width: 52%" class="animated fadeIn">
+    <button ion-button color="adicional" class="tituloHeader botonPass" (click)="cambiarEmail()">Cambiar E-mail</button>
+  </div>
+  <ion-item style="width:100%">
+    <ion-label style="color:#1b155c;" class="labelD">Alias*</ion-label>
+    <ion-input formControlName="alias" style="color: #000;" id="alias"></ion-input>
+  </ion-item>
+  <ion-item *ngIf="loginFormValidator.alias.mensaje">
+    <ion-label text-wrap color="danger">
+    {{ loginFormValidator.alias.mensaje }}
+    </ion-label>
+  </ion-item>
+  <ion-item style="width:100%">
+    <ion-label style="color:#1b155c;" class="labelD">Teléfono*</ion-label>
+    <ion-input formControlName="telefono" style="color: #000;" class="rend" id="telefono"></ion-input>
+  </ion-item>
+  <ion-item *ngIf="loginFormValidator.telefono.mensaje">
+    <ion-label text-wrap color="danger">
+    {{ loginFormValidator.telefono.mensaje }}
+    </ion-label>
+  </ion-item>
+  <ion-item style="width:100%">
+    <ion-label style="color:#1b155c;" class="labelD">Fecha de nacimiento*</ion-label>
+    <ion-datetime displayFormat="DD/MM/YYYY" formControlName="nacimiento" style="color: #000;" doneText="Aceptar"
+       cancelText="Cancelar" id="nacimiento"></ion-datetime>
+  </ion-item>
+  <ion-item *ngIf="loginFormValidator.nacimiento.mensaje">
+    <ion-label text-wrap color="danger">
+    {{ loginFormValidator.nacimiento.mensaje }}
+    </ion-label>
+  </ion-item>
+
+  <ion-row>
+    <ion-col style="text-align: center">
+    <div class="animated fadeIn">
+      <button ion-button color="aceptar" class="tituloHeader botonGuardar" (click)="guardarUsuario()">Guardar</button>
+    </div>
+</ion-col>
+  <ion-col style="text-align: center">
+    <div class="animated fadeIn">
+      <button ion-button color="cancelar" class="tituloHeader botonGuardar" (click)="cancelar()">Cancelar</button>
+    </div>
+  </ion-col>
+  </ion-row>
+</form>
+
+  <div class="titulo animated rubberBand" (click)="facturarA()">
+    <div class="clm divPresentacionAutos tituloHeader">Facturar A:</div>
+    <ion-icon name="add" class="clm"></ion-icon>
+  </div>
+
+  <div *ngFor="let factura of facturas" class="animated fadeIn">
+      <div style="box-shadow: 0px 0px 6px 1px #b0b2b3;background-color: #001432;
+                  border-radius: 5px;margin-bottom: 9px;padding: 9px;">
+        <ion-row>
+          <ion-col style="min-width: 70%;">
+            <strong><div style="font-size:120%;margin-left: 10px;color:#fff">{{factura.rfc}}</div></strong>
+          </ion-col>
+          <ion-col style="min-width: 30%;">
+            <ion-row>
+              <ion-col>
+                <ion-icon name="create" style="color: white; margin-top: -2px;" (click)="editarFacturarA(factura)"></ion-icon>
+              </ion-col>
+              <ion-col>
+                <button ion-button clear style="height: 18px; margin-top: -10px;" (click)="eliminarFacturarAlerta(factura.id)">
+                  <ion-icon name="trash"></ion-icon>
+              </button>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+        <div style="font-size:80%;margin-left: 10px;color:#fff">{{factura.razonSocial}}</div>
+        <div style="font-size:80%;margin-left: 10px;color:#fff">{{factura.calle}}</div>
+        <div style="font-size:80%;margin-left: 10px;font-weight: 500;color:#fff">{{factura.correoElectronico}}</div>
+      </div>
+    </div>
+</ion-content>
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()">
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+  <button *ngIf="notificacion.num > 0" ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()" class="miniBoton">
+    {{notificacion.num}}
+</button>
+</ion-fab>

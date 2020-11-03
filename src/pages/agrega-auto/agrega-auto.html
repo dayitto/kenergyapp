@@ -1,0 +1,133 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Agregar Auto</ion-title>
+
+    <ion-buttons left  class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/miAuto/carro.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: bottom center;
+background-repeat: no-repeat;
+background-color: white;">
+  <div style="width:100%;margin-bottom: 5%" class="animated fadeInDown">
+    <div class="tituloHeader" style="width:70%;display:inline-block;font-size: 150%">Registra tu Auto</div>
+  </div>
+  <form [formGroup]="loginForm">
+    <input type="hidden" id="editado"/>
+    <!--<ion-label position="floating" style="color:#181560;">Alias del auto*</ion-label>
+    <ion-input formControlName="alias" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="alias"></ion-input>
+
+    <ion-item *ngIf="loginFormValidator.alias.mensaje">
+      <ion-label text-wrap color="danger">
+      {{ loginFormValidator.alias.mensaje }}
+      </ion-label>
+    </ion-item>-->
+
+    <ion-label position="floating" style="color:#181560;">Marca*</ion-label>
+    <ion-input formControlName="marca" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="marca"></ion-input>
+
+    <ion-item *ngIf="loginFormValidator.marca.mensaje">
+      <ion-label text-wrap color="danger">
+      {{ loginFormValidator.marca.mensaje }}
+      </ion-label>
+    </ion-item>
+
+    <ion-label position="floating" style="color:#181560;">Modelo*</ion-label>
+    <ion-input formControlName="modelo" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="modelo"></ion-input>
+
+    <ion-item *ngIf="loginFormValidator.modelo.mensaje">
+      <ion-label text-wrap color="danger">
+      {{ loginFormValidator.modelo.mensaje }}
+      </ion-label>
+    </ion-item>
+
+    <ion-label position="floating" style="color:#181560;">Año*</ion-label>
+    <ion-input formControlName="anio" type="number" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="anio"></ion-input>
+    <ion-item *ngIf="loginFormValidator.anio.mensaje">
+      <ion-label text-wrap color="danger">
+      {{ loginFormValidator.anio.mensaje }}
+      </ion-label>
+    </ion-item>
+
+    <ion-label position="floating" style="color:#181560;">Placa*</ion-label>
+    <ion-input formControlName="placa" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="placa"></ion-input>
+    <ion-item *ngIf="loginFormValidator.placa.mensaje">
+      <ion-label text-wrap color="danger">
+      {{ loginFormValidator.placa.mensaje }}
+      </ion-label>
+    </ion-item>
+
+    <ion-label position="floating" style="color:#181560;">Kilometraje</ion-label>
+    <ion-input formControlName="km" type="number" style="color: #000;" autocapitalize="off" autocomplete="off" autocorrect="off" id="km"></ion-input>
+
+    <ion-item style="width:100%">
+      <ion-label style="color:#1b155c;">Tipo:</ion-label>
+      <ion-select formControlName="tipo" style="color:#000" okText="Aceptar" 
+        cancelText="Cancelar" id="tipo">
+          <ion-option value="0">
+            Seleccionar
+          </ion-option>
+          <ion-option value="1">
+            Carro
+          </ion-option>
+          <ion-option value="2">
+            Moto
+          </ion-option>
+          <ion-option value="3">
+            SUV
+          </ion-option>
+          <ion-option value="4">
+            Camioneta
+          </ion-option>
+        </ion-select>
+    </ion-item>
+    <ion-item *ngIf="loginFormValidator.tipo.mensaje">
+      <ion-label text-wrap color="danger">
+      {{ loginFormValidator.tipo.mensaje }}
+      </ion-label>
+    </ion-item>
+    <!--<ion-label position="floating" style="color:#1b155c;">Tipo de vehículo</ion-label>
+    <ion-row>
+      <ion-col id="tipo1" style="background-color: #001432;" (click)="seleccionarTipo(1)">
+        <img src="assets/imgs/miAuto/vehiculo1.png" style="border-radius: 0%;">
+      </ion-col>
+      <ion-col id="tipo2" style="background-color: #001432;" (click)="seleccionarTipo(2)">
+        <img src="assets/imgs/miAuto/vehiculo2.png" style="border-radius: 0%;">
+      </ion-col>
+      <ion-col id="tipo3" style="background-color: #001432;" (click)="seleccionarTipo(3)">
+        <img src="assets/imgs/miAuto/vehiculo3.png" style="border-radius: 0%;">
+      </ion-col>
+      <ion-col id="tipo4" style="background-color: #001432;" (click)="seleccionarTipo(4)">
+        <img src="assets/imgs/miAuto/vehiculo4.png" style="border-radius: 0%;">
+      </ion-col>
+    </ion-row>-->
+    
+    <div class="centro">
+      <button ion-button color="aceptar" class="tituloHeader botonGuardar" (click)="registrar()">Guardar</button>
+    </div>
+  </form>
+</ion-content>
+<ion-fab top right class="animated swing">
+  <button ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()">
+      <img src="assets/imgs/home/gas-station.png" alt="logo" class="claseImg animated fadeIn" />
+  </button>
+  <button *ngIf="notificacion.num > 0" ion-fab color="light" (click)="mostrarNotif.abrirNotificacion()" class="miniBoton">
+    {{notificacion.num}}
+</button>
+</ion-fab>

@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar color="titulo">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    
+    <ion-title class="tituloHeader" style="position: absolute;left: 25%; top: 33%;">Recuperar contraseña</ion-title>
+
+    <ion-buttons left  class="animated fadeIn">
+      <button icon-only="" ion-button="" class="disable-hover bar-button bar-button-ios bar-button-default bar-button-default-ios">
+        <span class="button-inner">
+          <img src="assets/imgs/misDatos/usuario.png" style="width: 65%;margin-left: -27px;">
+        </span>
+        <div class="button-effect">
+
+        </div>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding style="
+background-image: url(assets/imgs/fondo.jpg); 
+background-size: 100%;
+background-position: center center;">
+  <form [formGroup]="loginForm">
+    <ion-label style="color:#1b155c;">Teclea tu E-mail*</ion-label>
+    <ion-input formControlName="email" type="email" style="color: #000;" id="email"></ion-input>
+  <ion-item *ngIf="loginFormValidator.email.mensaje">
+    <ion-label text-wrap color="danger">
+    {{ loginFormValidator.email.mensaje }}
+    </ion-label>
+  </ion-item>
+    <ion-label style="color:#1b155c;">Confirma tu E-mail*</ion-label>
+    <ion-input formControlName="emailc" type="email" style="color: #000;" id="emailc"></ion-input>
+  <ion-item *ngIf="loginFormValidator.emailc.mensaje">
+    <ion-label text-wrap color="danger">
+    {{ loginFormValidator.emailc.mensaje }}
+    </ion-label>
+  </ion-item>
+  <div class="centro animated fadeIn">
+    <div style="display: inline-block;width: 44%" class="animated fadeIn">
+      <button ion-button color="aceptar" class="tituloHeader botonGuardar" (click)="enviarCorreo()">Aceptar</button>
+    </div>
+  </div>
+</form>
+</ion-content>
